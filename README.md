@@ -1,9 +1,13 @@
 # eniGame
-Small labyrinth Web game, dungeon exploration, going through rooms which contains an enigma
-- Random level generation (procedural)
-- Level Editor
-- Solution checker and best option finder
-
-HTML, CSS, Js (with 3D libraries)
-
-Tools : Github, Trello, Teams
+<p>Small labyrinth Web game, dungeon exploration, going through rooms which contains a puzzle</p>
+<ul>
+  <li>- Random level generation (procedural)</li>
+  <li>- Level Editor</li>
+  <li>- Solution checker (seeds)</li>
+  <li>- Level solver in C (uses the seed of a level)</li>
+</ul>
+<p>The project is hosted on a website.</p>
+<br/>
+<p>HTML, CSS, PHP, Js, C</p>
+<br/>
+<p>Tools : Github, Trello, Teams, Globoard, Gitkraken, Git</p>
