@@ -43,11 +43,11 @@ if (isset($_POST["del"])) {
 }
 ?>
 
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" style="box-shadow: 0px 6px 5px grey;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="box-shadow: 0px 6px 5px grey;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="home.php">𝓣𝓣𝓢𝓚8</a>
+    <a class="navbar-brand text-danger" href="home.php">LOGO</a>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -68,14 +68,7 @@ if (isset($_POST["del"])) {
                 <a class="nav-link" href="needHelp.php">Need Help ?</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" method="get" action="searchAction.php">
-            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#Cart" href="#">Cart <span class="badge"><?php echo count($_SESSION['cart']) ?><i class="fas fa-shopping-cart"></i></span></a>
-            </li>
             <?php
             echo ('<li class="nav-item');
             if ($connected == true) {
@@ -123,60 +116,6 @@ if ($connected == false) {
         </div>');
 }
 ?>
-<!-- CART -->
-<div class=" modal fade" id="Cart">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="text-align: center;">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Your Cart</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-                <?php
-                $totalProduct = 0;
-                if (empty($_SESSION['cart'])) echo '<br/><h3>Your cart is empty</h3><br/>';
-                else {
-                    $totalPrice = 0;
-                    echo '<form method="POST" action="' . test_input($_SERVER["PHP_SELF"]) . '"><table class="table table-striped table-hover"><thead><tr><th scope="col">Product</th><th>Brand</th><th>Type</th><th>Price</th><th></th></tr></thead><tbody>';
-                    include("include/connect.php");
-                    foreach ($_SESSION['cart'] as $ref) {
-                        $query = 'SELECT NAME,BRAND,TYPE,PRICE FROM stock WHERE REF="' . $ref . '";';
-                        $result = mysqli_query($link, $query);
-                        if ($result) {
-                            $queryResult = mysqli_num_rows($result);
-                            if ($queryResult > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo '<tr><th scope="row">' . $row['NAME'] . '</th>';
-                                    echo '<td>' . $row['BRAND'] . '</td>';
-                                    echo '<td>' . $row['TYPE'] . '</td>';
-                                    echo '<td>' . $row['PRICE'] . '$</td>';
-                                    echo '<td><button class="btn btn-danger" type="submit" name="del" value="' . $ref . '">Del</button></td>';
-                                    echo '</tr>';
-                                    $totalProduct++;
-                                    $totalPrice += $row['PRICE'];
-                                }
-                            }
-                        }
-                    }
-                    echo '<tr><th>TOTAL</th><th>' . $totalProduct . '</th><th>/</th><th>' . $totalPrice . '</th></tr>';
-                    echo '</tbody></table></form>';
-                }
-                ?>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <?php
-                if ($totalProduct >= 1) {
-                    echo('<a href="checkout.php"><button type="button" class="btn btn-success">Checkout</button></a>');
-                }
-                ?>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Register modal-->
 <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-hidden="true">
