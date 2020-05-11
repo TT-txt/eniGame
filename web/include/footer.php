@@ -1,5 +1,7 @@
-<?php if(isset($link))//Close the SQL connexion
-mysqli_close($link);
+<?php
+if (isset($link)) { 
+    mysqli_close($link);//Close the SQL connexion
+}
 ?>
 <!-- Footer -->
 <footer class="page-footer font-small unique-color-dark bg-dark text-white">
@@ -15,23 +17,23 @@ mysqli_close($link);
                 <!-- Grid column -->
                 <div class="col-md-6 col-lg-7 text-center text-md-right">
                     <!-- Facebook -->
-                    <a class="fb-ic text-light" href="https://fr-fr.facebook.com/alienworkshop/">
+                    <a class="fb-ic text-light" href="#">
                         <i class="fab fa-facebook-f white-text mr-4"> </i>
                     </a>
                     <!-- Twitter -->
-                    <a class="tw-ic text-light" href="https://twitter.com/cttquipaye">
+                    <a class="tw-ic text-light" href="#">
                         <i class="fab fa-twitter white-text mr-4"> </i>
                     </a>
                     <!-- Google +-->
-                    <a class="gplus-ic text-light" href="mailto:hugo.martel@student.yncrea.fr">
+                    <a class="gplus-ic text-light" href="#">
                         <i class="fab fa-google-plus-g white-text mr-4"> </i>
                     </a>
                     <!--Linkedin -->
-                    <a class="li-ic text-light" href="https://www.linkedin.com/in/th%C3%A9odore-martin-b627821a1/">
+                    <a class="li-ic text-light" href="#">
                         <i class="fab fa-linkedin-in white-text mr-4"> </i>
                     </a>
                     <!--Instagram-->
-                    <a class="ins-ic text-light" href="https://www.instagram.com/chrisjoslin_/?hl=fr">
+                    <a class="ins-ic text-light" href="#">
                         <i class="fab fa-instagram white-text"> </i>
                     </a>
                 </div>
@@ -47,9 +49,9 @@ mysqli_close($link);
             <!-- Grid column -->
             <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                 <!-- Content -->
-                <h6 class="text-uppercase font-weight-bold">𝓣𝓣𝓢𝓚8 skate shop</h6>
-                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                <p>𝓣𝓣𝓢𝓚8 is an online skate shop made by and for skating fans like us ! We are skate enthusiasts and would love to share our passion with you ! Have a look around it is all for you.</p>
+                <h6 class="text-uppercase font-weight-bold">eniGame</h6>
+                <hr class="deep-purple accent-2 mb-5 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <p style="text-align:justify;">eniGame is a randomised dungeon crawler in which you have to find the exit of an infinite amount of levels which are created procedurally. You also have the possibility to create your own levels!</p>
             </div>
             <!-- Grid column -->
 
@@ -57,16 +59,25 @@ mysqli_close($link);
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
                 <!-- Links -->
-                <h6 class="text-uppercase font-weight-bold">Products</h6>
-                <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                <h6 class="text-uppercase font-weight-bold">The Team</h6>
+                <hr class="deep-purple accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px;">
                 <p>
-                    <a href="shop.php?type=Deck">Decks</a>
+                    <a href="mailto:louis.ducrocq@student.yncrea.fr">Louis Ducrocq</a>
                 </p>
                 <p>
-                    <a href="shop.php?type=Wheels">Wheels</a>
+                    <a href="mailto:noe.klopocki@student.yncrea.fr">Noé Klopocki</a>
                 </p>
                 <p>
-                    <a href="shop.php?type=Truck">Trucks</a>
+                    <a href="mailto:louis.manouvrier@student.yncrea.fr">Louis Manouvrier</a>
+                </p>
+                <p>
+                    <a href="mailto:hugo.martel@student.yncrea.fr">Hugo Martel</a>
+                </p>
+                <p>
+                    <a href="mailto:theodore.martin@student.yncrea.fr">Théodore Martin</a>
+                </p>
+                <p>
+                    <a href="mailto:marie.pivette@student.yncrea.fr">Marie Pivette</a>
                 </p>
             </div>
             <!-- Grid column -->
@@ -78,17 +89,17 @@ mysqli_close($link);
                 <h6 class="text-uppercase font-weight-bold">Useful links</h6>
                 <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                 <p>
-                    <a href="home.php" >Home page</a>
+                    <a href="home.php">Home page</a>
                 </p>
                 <p>
-                    <a href="profile.php">Your Account</a>
+                    <a href="profile.php">Your account</a>
                 </p>
                 <p>
-                    <a href="purchases.php">Check your purchases</a>
+                    <a href="scores.php">Your scores</a>
                 </p>
 
                 <p>
-                    <a href="needHelp.php">Help</a>
+                    <a href="rules.php">The rules</a>
                 </p>
 
             </div>

@@ -10,11 +10,10 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
     $password = htmlspecialchars($_POST['password']);
 
     include("connect.php");
-    //SQL QUERY FOR LOGIN, PASSWORD
-    $queryLogin = "SELECT ID,LOGIN, PASSWORD, NAME FROM `users` WHERE LOGIN=\"$login\" AND PASSWORD=\"$password\"";
+    //SQL QUERY FOR login, password
+    $queryLogin = "SELECT ID,login, password, name FROM `USERS` WHERE login=\"$login\" AND password=\"$password\"";
     $result = mysqli_query($link, $queryLogin);
     $array = mysqli_fetch_assoc($result);
-    mysqli_close($link);
 
     if (!$array) //if the query didn't return an user
     { // Setting auth and name with wrong default values
@@ -25,21 +24,12 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
         // Setting session variables
         $_SESSION["auth"] = 1;
         //RECUPERER LE NOM
-        $_SESSION["name"] = $array["NAME"];
-        $_SESSION["login"] = $array["LOGIN"];
+        $_SESSION["name"] = $array["name"];
+        $_SESSION["login"] = $array["login"];
         $_SESSION["id"] = $array["ID"];
         //CONNECTED
         $connected = true;
     }
-}
-if (!isset($_SESSION["cart"])) $_SESSION["cart"] = array();
-
-/*
-DELETE CART ITEMS
-*/
-if (isset($_POST["del"])) {
-    if (($key = array_search($_POST["del"], $_SESSION["cart"])) !== false)
-        unset($_SESSION["cart"][$key]);
 }
 ?>
 
@@ -52,30 +42,29 @@ if (isset($_POST["del"])) {
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="shop.php">Shop</a>
+                <a class="nav-link" href="#">Rules</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Products
+                    Leaderboards
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="shop.php?type=Deck">Decks</a>
-                    <a class="dropdown-item" href="shop.php?type=Wheels">Wheels</a>
-                    <a class="dropdown-item" href="shop.php?type=Truck">Trucks</a>
+                    <a class="dropdown-item" href="#">By Score</a>
+                    <a class="dropdown-item" href="#">By Levels</a>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="needHelp.php">Need Help ?</a>
+                <a class="nav-link" href="#">The Team</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <?php
             echo ('<li class="nav-item');
             if ($connected == true) {
-                echo (' dropdown"><button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle">' . $_SESSION["name"] . '</button>
+                echo (' dropdown"><button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle" style="min-width:150px">' . $_SESSION["name"] . '</button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="profile.php">Profile</a>
-                    <a class="dropdown-item" href="purchases.php">Purchases</a>
+                    <a class="dropdown-item" href="scores.php">Scores</a>
                     <a class="dropdown-item text-danger" href="disconnect.php">Disconnect</a>
                 </div>');
             } else {
@@ -122,7 +111,7 @@ if ($connected == false) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registerlabel">𝓡𝓮𝓰𝓲𝓼𝓽𝓮𝓻</h5>
+                <h5 class="modal-title" id="registerlabel">Register</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -139,54 +128,23 @@ if ($connected == false) {
                         <input type="password" class="form-control" name="passwd2" placeholder="Enter again" required>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control" name="name" placeholder="Name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phone">Phone :</label>
-                            <input type="text" class="form-control" name="phone" placeholder="Phone" required>
-                        </div>
-                    </div>
-                    <div class="form group">
-                        <label for="adress">Address:</label>
-                        <input type="text" class="form-control" name="address" placeholder="Address" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-8">
-                            <label for="city">City :</label>
-                            <input type="text" class="form-control" name="city" placeholder="City" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="zipcode">Zipcode</label>
-                            <input class="form-control" type="text" placeholder="Zipcode" name="zipcode" required>
+                        <div class="col-md-12">
+                            <label for="name">Username:</label>
+                            <input type="text" class="form-control" name="name" placeholder="Username" required>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-7">
-                            <label for="country">Country :</label>
-                            <select class="form-control" name="country" name="country" required>
-                                <option value="">Choose a country</option>
-                                <option value="France">France</option>
-                                <option value="England">England</option>
-                                <option value="US">USA</option>
-                                <option value="Belgium">Belgium</option>
-                                <option value="Netherlands">Netherlands</option>
-                                <option value="Australia">Australia</option>
-                                <option value="Japan">Japan</option>
-                                <option value="Russia">Russia</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5">
-                            <label for="submit">Submit:</label><br />
+                        <div class="col-md-12 text-center">
+                            <br/>
                             <button type="submit" class="btn btn-success">Register</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 <!--Cart modal-->
