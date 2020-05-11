@@ -1,5 +1,5 @@
 <?php include("include/head.php"); ?>
-<title>eniGame</title>
+<title>eniGame ~ Rules</title>
 </head>
 
 <body>

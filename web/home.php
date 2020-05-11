@@ -35,8 +35,10 @@
 	<aside>
 		aside
 	</aside>
-	<main>
-		test
+	<main class="game">
+		<script>
+			// TODO
+		</script>
 	</main>
 	<?php include("include/footer.php"); ?>
 </body>
