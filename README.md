@@ -1,1 +1,1 @@
-# enigmGame
+# eniGame
