@@ -1,5 +1,5 @@
 # eniGame
-langage: Written in HTML, CSS, PHP, Js, C
+<p>Langages : Written in HTML, CSS, PHP, Js, C</p>
 <p>Small labyrinth Web game, dungeon exploration, going through rooms which contains a puzzle</p>
 <ul>
   <li> Random level generation (procedural)</li>
