@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>randoms</title>
     <script src="include/three/three.js"></script>
+    <script src="include/three/OrbitControls.js"></script>
     <style>
         #scene-container{
             position: absolute;
@@ -17,36 +18,254 @@
     <div id="scene-container">
         <!-- This div will hold our scene-->
         <script>
-            const container = document.querySelector('#scene-container');
-            var scene = new THREE.Scene();
-            scene.background = new THREE.Color('skyblue');
-            var fov = 35;
-            var aspect = container.clientWidth / container.clientHeight;
-            var near = 0.1;
-            var far = 100;
-            var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-            camera.position.set(0,0,10);
-            var geometry = new THREE.BoxBufferGeometry(2,2,2);
-            var material = new THREE.MeshStandardMaterial({color: 0x800080 });
-            var mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-            var light = new THREE.DirectionalLight(0xffffff, 5.0);
-            light.position.set(10,10,10);
-            scene.add(light);
-            const renderer = new THREE.WebGLRenderer({antialias: true});
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            container.appendChild(renderer.domElement);
-            renderer.render(scene, camera);
-            function animate(){
-                requestAnimationFrame(animate);
-                mesh.rotation.x +=0.05;
-                mesh.rotation.y+=0.01;
-                mesh.scale.x = Math.random() * 10;
-                camera.position.z+=0.1;
-                renderer.render(scene, camera);
+            class coord{
+                constructor(x, y, z){
+                    this.x = x;
+                    this.y = y;
+                    this.z = z;
+                }
             }
-            animate();
+            class mapConstruction{
+                constructor(walls){
+                    this.walls = walls;
+                }
+            }
+
+            function createMap(mapConstructor) {
+                //creating map group
+                const map = new THREE.Group();
+                //loading everything in order to make the floor
+                let textureLoader = new THREE.TextureLoader();
+                const floorTexture = textureLoader.load('textures/stone.png');
+                floorTexture.encoding = THREE.sRGBEncoding;
+                floorTexture.anisotropy = 16;
+                const floorMaterial = new THREE.MeshStandardMaterial({map: floorTexture});
+                const block = new THREE.BoxBufferGeometry(1,1,1);
+                const floor = new THREE.Group();
+                floor.name = "Floor";
+                //loading everything to create a wall
+                //loading and encoding textures
+                const wallTextureCobble = textureLoader.load('textures/stoneBrick.png');
+                const wallTextureCracked = textureLoader.load('textures/crackedStoneBrick.png');
+                const wallTextureMossy = textureLoader.load('textures/mossyStoneBricks.png');
+                wallTextureCobble.encoding = THREE.sRGBEncoding;
+                wallTextureCobble.anisotropy = 16;
+                wallTextureCracked.encoding = THREE.sRGBEncoding;
+                wallTextureCracked.anisotropy = 16;
+                wallTextureMossy.encoding = THREE.sRGBEncoding;
+                wallTextureMossy.anisotropy = 16;
+                //creating materials
+                const wallMaterialCobble = new THREE.MeshStandardMaterial({map: wallTextureCobble});
+                const wallMaterialCracked = new THREE.MeshStandardMaterial({map: wallTextureCracked});
+                const wallMaterialMossy = new THREE.MeshStandardMaterial({map: wallTextureMossy});
+                const walls = new THREE.Group();
+                walls.name = "Walls";
+
+                const backWalls = new THREE.Group();
+
+                for(let x = 0; x < 5; x-=-1){
+                    for(let z = 0; z < 5; z-=-1){
+                        let floorPart = new THREE.Mesh( block, floorMaterial);
+                        floorPart.position.set(x, 0, z);
+                        floor.add(floorPart);
+                    }
+                }
+
+                for(coord of mapConstructor.walls){
+                    let texture_choice = Math.random() * 10 % 5;
+                    if(texture_choice <= 3){
+                        //normal stonebrick;
+                        let wallPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+                        wallPartBrick.position.set(coord.x, coord.y, coord.z);
+                        walls.add(wallPartBrick);
+                    }
+                    else if(texture_choice > 3 && texture_choice <= 4){
+                        //cracked
+                        let wallPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+                        wallPartCracked.position.set(coord.x, coord.y, coord.z);
+                        walls.add(wallPartCracked);
+                    }
+                    else{
+                        //mossy
+                        let wallPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+                        wallPartMossy.position.set(coord.x, coord.y, coord.z);
+                        walls.add(wallPartMossy);
+                    }
+                }
+
+                for(let z = 0; z < 5; z-=-1){
+                    for(let y = 0; y < 5; y-=-1){
+                        let texture_choice = Math.random() * 10 % 5;
+                        if(texture_choice <= 3){
+                            //normal stonebrick;
+                            let wallBackPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+                            wallBackPartBrick.position.set(-1, y, z);
+                            backWalls.add(wallBackPartBrick);
+                        }
+                        else if(texture_choice > 3 && texture_choice <= 4){
+                            //cracked
+                            let wallBackPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+                            wallBackPartCracked.position.set(-1, y, z);
+                            backWalls.add(wallBackPartCracked);
+                        }
+                        else{
+                            //mossy
+                            let wallBackPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+                            wallBackPartMossy.position.set(-1, y, z);
+                            backWalls.add(wallBackPartMossy );
+                        }
+                    }
+                }
+
+                for(let x = -1; x < 5; x-=-1){
+                    for(let y = 0; y < 5; y-=-1){
+                        let texture_choice = Math.random() * 10 % 5;
+                        if(texture_choice <= 3){
+                            //normal stonebrick;
+                            let wallBackPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+                            wallBackPartBrick.position.set(x, y, -1);
+                            backWalls.add(wallBackPartBrick);
+                        }
+                        else if(texture_choice > 3 && texture_choice <= 4){
+                            //cracked
+                            let wallBackPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+                            wallBackPartCracked.position.set(x, y, -1);
+                            backWalls.add(wallBackPartCracked);
+                        }
+                        else{
+                            //mossy
+                            let wallBackPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+                            wallBackPartMossy.position.set(x, y, -1);
+                            backWalls.add(wallBackPartMossy );
+                        }
+                    }
+                }
+
+                scene.add(backWalls);
+                scene.add(floor);
+                scene.add(walls);
+                scene.add(map);
+            }
+            let container;
+			let camera;
+			let controls;
+			let renderer;
+			let scene;
+			let mesh;
+
+			function init() {
+
+				container = document.querySelector('#scene-container');
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color(0x8FBCD4);
+
+                let test = new mapConstruction([new coord(3, 1, 1), new coord(1, 1, 3)]); 
+
+				createCamera();
+				createControls();
+				createLights();
+				createMap(test);
+				createRenderer();
+
+				renderer.setAnimationLoop(() => {
+
+					render();
+
+				});
+
+			}
+
+			function createCamera() {
+
+				camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
+
+				camera.position.set(20, 10, 20);
+
+			}
+
+			function createControls() {
+				controls = new THREE.OrbitControls(camera, container);
+			}
+
+			function createLights() {
+
+				const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+				scene.add(ambientLight);
+
+				const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+				mainLight.position.set(10, 10, 10);
+				// remember to add the light to the scene
+				scene.add(ambientLight, mainLight);
+
+			}
+
+			function createRenderer() {
+
+				renderer = new THREE.WebGLRenderer({
+					antialias: true
+				});
+				renderer.setSize(container.clientWidth, container.clientHeight);
+
+				renderer.setPixelRatio(window.devicePixelRatio);
+
+				renderer.gammaFactor = 2.2;
+				renderer.gammaOutput = true;
+
+				container.appendChild(renderer.domElement);
+
+			}
+
+			// perform any updates to the scene, called once per frame
+			// avoid heavy computation here
+
+			// render, or 'draw a still image', of the scene
+			function render() {
+
+				renderer.render(scene, camera);
+
+			}
+
+			/*
+			 ************** EVENTS ****************
+			 */
+
+			// a function that will be called every time the window gets resized.
+			// It can get called a lot, so don't put any heavy computation in here!
+			function onWindowResize() {
+
+				// set the aspect ratio to match the new browser window aspect ratio
+				camera.aspect = container.clientWidth / container.clientHeight;
+
+				// update the camera's frustum
+				camera.updateProjectionMatrix();
+
+				// update the size of the renderer AND the canvas
+				renderer.setSize(container.clientWidth, container.clientHeight);
+
+			}
+
+			window.addEventListener('resize', onWindowResize);
+
+			window.addEventListener("keydown", checkKeyPress, false); //false so the function doesn't return a thing
+
+			function checkKeyPress(key) {
+				if (key.keyCode == "37") {
+					//Left arrow key
+					mesh1.position.x -= 1;
+				} else if (key.keyCode == "38") {
+					//Up arrow key
+					mesh1.position.z += 1;
+				} else if (key.keyCode == "39") {
+					//Right arrow key
+					mesh1.position.x += 1;
+				} else if (key.keyCode == "40") {
+					//Down arrow key
+					mesh1.position.z -= 1;
+				}
+				console.log(mesh1.position);
+			}
+            init();
         </script>
     </div>
 </body>
