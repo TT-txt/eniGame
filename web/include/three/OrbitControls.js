@@ -762,7 +762,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.domElement.focus ? scope.domElement.focus() : window.focus();
 
 		var mouseAction;
-
+/*
 		switch ( event.button ) {
 
 			case 0:
@@ -785,7 +785,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				mouseAction = - 1;
 
 		}
-
+*/
 		switch ( mouseAction ) {
 
 			case THREE.MOUSE.DOLLY:
@@ -1139,8 +1139,8 @@ THREE.MapControls = function ( object, domElement ) {
 
 	THREE.OrbitControls.call( this, object, domElement );
 
-	this.mouseButtons.LEFT = THREE.MOUSE.PAN;
-	this.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
+	//this.mouseButtons.LEFT = THREE.MOUSE.PAN;
+	//this.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
 
 	this.touches.ONE = THREE.TOUCH.PAN;
 	this.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
