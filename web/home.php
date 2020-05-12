@@ -29,6 +29,7 @@
 	}
 </style>
 <script src="include/three/three.js"></script>
+<script src="include/three/OrbitControls.js"></script>
 </head>
 
 <body>
@@ -40,6 +41,7 @@
 		<script>
 			let container;
 			let camera;
+			let controls;
 			let renderer;
 			let scene;
 			let mesh;
@@ -52,6 +54,7 @@
 				scene.background = new THREE.Color(0x8FBCD4);
 
 				createCamera();
+				createControls();
 				createLights();
 				createMeshes();
 				createRenderer();
@@ -67,16 +70,14 @@
 
 			function createCamera() {
 
-				camera = new THREE.PerspectiveCamera(
-					35, // FOV
-					container.clientWidth / container.clientHeight, // aspect
+				camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
 
-					0.1, // near clipping plane
-					100, // far clipping plane
-				);
+				camera.position.set(20, 10, 20);
 
-				camera.position.set(0, 0, 10);
+			}
 
+			function createControls() {
+				controls = new THREE.OrbitControls(camera, container);
 			}
 
 			function createLights() {
@@ -97,7 +98,7 @@
 				const mainLight = new THREE.DirectionalLight(0xffffff, 5);
 				mainLight.position.set(10, 10, 10);
 				*/
-				
+
 				// remember to add the light to the scene
 				scene.add(ambientLight, mainLight);
 
@@ -135,16 +136,23 @@
 				scene.add(mesh4);
 
 				const sphereGeometry = new THREE.SphereBufferGeometry(1, 20, 20);
-				const sphereMaterial = new THREE.MeshStandardMaterial( { color: 0x800080 } );
+				const sphereMaterial = new THREE.MeshStandardMaterial({
+					color: 0x800080
+				});
 				sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 				sphereMesh.position.set(4, 2, -2);
 				scene.add(sphereMesh);
 
 				const knotGeometry = new THREE.TorusKnotBufferGeometry(0.5, 0.2, 64, 4);
-				const knotMaterial = new THREE.MeshStandardMaterial( { color: 0xffff00 } );
+				const knotMaterial = new THREE.MeshStandardMaterial({
+					color: 0xffff00
+				});
 				knotMesh = new THREE.Mesh(knotGeometry, knotMaterial);
 				knotMesh.position.set(6, 2, -2);
 				scene.add(knotMesh);
+
+				//train.position.set(6, 0, -2);
+				//scene.add(train);
 			}
 
 			function createRenderer() {
@@ -215,22 +223,23 @@
 					mesh1.position.x -= 1;
 				} else if (key.keyCode == "38") {
 					//Up arrow key
-					mesh1.position.y += 1;
+					mesh1.position.z += 1;
 				} else if (key.keyCode == "39") {
 					//Right arrow key
 					mesh1.position.x += 1;
 				} else if (key.keyCode == "40") {
 					//Down arrow key
-					mesh1.position.y -= 1;
+					mesh1.position.z -= 1;
 				}
 				console.log(mesh1.position);
 			}
 
-
+			
 			document.getElementById("cameraChange").onclick = function() {
 				camera.position.set(0, 0, 20);
 				console.log("Camera successfully changed");
 			}
+			
 			// call the init function to set everything up
 			init();
 		</script>
