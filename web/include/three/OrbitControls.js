@@ -1107,7 +1107,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	scope.domElement.addEventListener( 'touchend', onTouchEnd, false );
 	scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
 
-	scope.domElement.addEventListener( 'keydown', onKeyDown, false );
+	//scope.domElement.addEventListener( 'keydown', onKeyDown, false );
 
 	// make sure element can receive keys.
 
