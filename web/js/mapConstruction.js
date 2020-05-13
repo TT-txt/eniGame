@@ -1,7 +1,7 @@
 function createMap(mapConstructor) {
     //creating map group
     const map = new THREE.Group();
-
+    map.name = "Map; everything is here !"
     //loading everything in order to make the floor
     let textureLoader = new THREE.TextureLoader();
     const floorTexture = textureLoader.load('textures/stone.png');
@@ -43,18 +43,13 @@ function createMap(mapConstructor) {
     }
 
     //Exits
-    let rightExit = new THREE.Mesh(block, wallMaterialCobble);
-    rightExit.position.set(5, 0, 2);
-    floor.add(rightExit);
-    let bottomExit = new THREE.Mesh(block, wallMaterialCobble);
-    bottomExit.position.set(2, 0, 5);
-    floor.add(bottomExit);
-    let leftExit = new THREE.Mesh(block, wallMaterialCobble);
-    leftExit.position.set(2, 0, -1);
-    floor.add(leftExit);
-    let topExit = new THREE.Mesh(block, wallMaterialCobble);
-    topExit.position.set(-1, 0, 2);
-    floor.add(topExit);
+    let exits = new THREE.Group();
+    exits.name = "Exits";
+    for(let elt of mapConstructor.exits){
+        let exit = new THREE.Mesh(block, wallMaterialCobble);
+        exit.position.set(elt.x, elt.y, elt.z);
+        exits.add(exit);
+    }
 
     for (coord of mapConstructor.walls) {
         let texture_choice = Math.random() * 10 % 5;
@@ -80,7 +75,7 @@ function createMap(mapConstructor) {
 
     for (let y = 0; y < 4; y -= -1) {
         for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
-            if (y > 2 || z != 2) {
+            if (y > 2 || mapConstructor.exits[0].z != z) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
                     //normal stonebrick;
@@ -103,7 +98,7 @@ function createMap(mapConstructor) {
             }
         }
         for (let x = -1; x < mapConstructor.floor.x; x -= -1) {
-            if (y > 2 || x != 2) {
+            if (y > 2 || x != mapConstructor.exits[1].x) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
                     //normal stonebrick;
@@ -126,9 +121,9 @@ function createMap(mapConstructor) {
             }
         }
     }
-
-    scene.add(backWalls);
-    scene.add(floor);
-    scene.add(walls);
+    map.add(backWalls);
+    map.add(floor);
+    map.add(walls);
+    map.add(exits);
     scene.add(map);
 }
