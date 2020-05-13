@@ -32,12 +32,13 @@
 <script src="include/three/OrbitControls.js"></script>
 <script src="include/three/GLTFLoader.js"></script>
 <!-- Functions include -->
+<script src="js/classes.js"></script>
+<script src="js/maps.js"></script>
 <script src="js/camera.js"></script>
-<script src="js/event.js"></script>
 <script src="js/mesh.js"></script>
 <script src="js/model.js"></script>
 <script src="js/mapConstruction.js"></script>
-<script type="module" src="appthatimports.js"></script>
+<script src="js/event.js"></script>
 </head>
 
 <body>
@@ -47,7 +48,6 @@
 	</aside>
 	<main class="game" id="scene-container" style="width:99%">
 		<script>
-
 			let container;
 			let camera;
 			let controls;
@@ -57,6 +57,9 @@
 			const mixers = [];
 			const clock = new THREE.Clock();
 
+			/***********************
+			 ** STARTING FUNCTION **
+			 ************************/
 			function init() {
 
 				container = document.querySelector('#scene-container');
@@ -64,13 +67,14 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x8FBCD4);
 
-				let test = new map([new coord(3, 1, 1), new coord(1, 1, 3)]);
+				currentLevel = new level([testMap]);
+				currentMap = 0; // Top right of the level
 
 				createCamera();
 				createControls();
 				createLights();
 				createSkybox();
-				createMap(test);
+				createMap(currentLevel.maps[currentMap]);
 				loadModels();
 				createRenderer();
 
@@ -100,8 +104,7 @@
 
 			}
 
-			// perform any updates to the scene, called once per frame
-			// avoid heavy computation here
+			// Avoid heavy computation here
 			function update() {
 
 				const delta = clock.getDelta();
@@ -114,7 +117,7 @@
 
 			}
 
-			// render, or 'draw a still image', of the scene
+			// Render of the scene
 			function render() {
 
 				renderer.render(scene, camera);

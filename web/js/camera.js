@@ -8,8 +8,17 @@ function createCamera() {
 
 function createControls() {
     controls = new THREE.OrbitControls(camera, container);
+    //ZOOM DISTANCE
     controls.minDistance = 10;
     controls.maxDistance = 20;
+
+    //VERTICAL ROTATION
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI / 2;
+
+    //HORIZONTAL ROTATION
+    controls.minAzimuthAngle = Math.PI / 8;
+    controls.maxAzimuthAngle = 3*Math.PI / 8;
 }
 
 function createLights() {
