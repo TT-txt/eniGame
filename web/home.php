@@ -36,6 +36,7 @@
 <script src="js/event.js"></script>
 <script src="js/mesh.js"></script>
 <script src="js/model.js"></script>
+<script src="js/mapConstruction.js"></script>
 </head>
 
 <body>

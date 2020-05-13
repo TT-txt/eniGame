@@ -68,8 +68,8 @@ function createMap(mapConstructor) {
         }
     }
 
-    for (let z = 0; z < 5; z -= -1) {
-        for (let y = 0; y < 4; y -= -1) {
+    for (let y = 0; y < 5; y -= -1) {
+        for (let z = 0; z < 4; z -= -1) {
             if (y > 2 || z != 2) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
@@ -92,10 +92,7 @@ function createMap(mapConstructor) {
                 }
             }
         }
-    }
-
-    for (let x = -1; x < 5; x -= -1) {
-        for (let y = 0; y < 4; y -= -1) {
+        for (let x = -1; x < 5; x -= -1) {
             if (y > 2 || x != 2) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
