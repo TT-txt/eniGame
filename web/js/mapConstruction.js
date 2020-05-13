@@ -1,7 +1,7 @@
 function createMap(mapConstructor) {
     //generating the groups
-    const map = new THREE.Group();
-    map.name = "Map; everything is here !";
+    const mapBuild = new THREE.Group();
+    mapBuild.name = "Map; everything is here !";
     const floor = new THREE.Group();
     floor.name = "Floor";
     const walls = new THREE.Group();
@@ -16,48 +16,67 @@ function createMap(mapConstructor) {
     //creating the floor
     for (let x = 0; x < mapConstructor.floor.x; x -= -1) {
         for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
-            let floorPart = new THREE.Mesh(block, floorMaterial);
+            let floorPart = new THREE.Mesh(cube, floorMaterial);
             floorPart.position.set(x, 0, z);
             floor.add(floorPart);
         }
     }
 
     //Exits NEED UPDATE TO ADD DOORS on exit
-    for(let elt = 0; elt < mapConstructor.exits.length; elt-=-1){
-        let exit = new THREE.Mesh(block, wallMaterialCobble);
+    for (let elt = 0; elt < mapConstructor.exits.length; elt -= -1) {
+        let exit = new THREE.Mesh(cube, wallMaterialCobble);
         exit.position.set(mapConstructor.exits[elt].x, mapConstructor.exits[elt].y, mapConstructor.exits[elt].z);
         exits.add(exit);
-        switch(elt){
+        switch (elt) {
             case 0:
-                let doorTopLeft = new THREE.Mesh(SlimRectangle, doorTopMaterial);
-                let doorBottomLeft = new THREE.Mesh(SlimRectangle, doorBottomMaterial);
-                doorTopLeft.position.set(mapConstructor.exits[elt].x+0.4, 2, mapConstructor.exits[elt].y);
-                doorBottomLeft.position.set(mapConstructor.exits[elt].x+0.4, 1, mapConstructor.exits[elt].y);
-                exit.add(doorTopLeft);
-                exit.add(doorBottomLeft);
+                let doorLeft = new THREE.Mesh(slimRectangle, doorMaterial);
+                doorLeft.rotation.set(0, 0, 0);
+                doorLeft.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
+                doorL.add(doorLeft);
+                break;
+            case 1:
+                let doorTop = new THREE.Mesh(slimRectangle, doorMaterial);
+                doorTop.rotation.set(0, Math.PI / 2, 0);
+                doorTop.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
+
+                doorT.add(doorTop);
+                break;
+            case 2:
+                let doorRight = new THREE.Mesh(slimRectangle, doorMaterial);
+                doorRight.rotation.set(0, Math.PI, 0);
+                doorRight.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
+
+                doorR.add(doorRight);
+                break;
+            case 3:
+                let doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
+                doorBottom.rotation.set(0, -Math.PI / 2, 0);
+                doorBottom.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
+
+                doorB.add(doorBottom);
                 break;
         }
     }
 
     //Creating walls
     for (coord of mapConstructor.walls) {
-        if(coord.x > mapConstructor.floor.x - 1 || coord.y > mapConstructor.y - 1 || coord.z > mapConstructor.z - 1|| coord.z < 0 || coord.y < 0 || coord.z < 0) continue;
+        if (coord.x > mapConstructor.floor.x - 1 || coord.y > mapConstructor.y - 1 || coord.z > mapConstructor.z - 1 || coord.z < 0 || coord.y < 0 || coord.z < 0) continue;
         let texture_choice = Math.random() * 10 % 5;
         if (texture_choice <= 3) {
             //normal stonebrick;
-            let wallPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+            let wallPartBrick = new THREE.Mesh(cube, wallMaterialCobble);
             wallPartBrick.position.set(coord.x, coord.y, coord.z);
             walls.add(wallPartBrick);
         }
         else if (texture_choice > 3 && texture_choice <= 4) {
             //cracked
-            let wallPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+            let wallPartCracked = new THREE.Mesh(cube, wallMaterialCracked);
             wallPartCracked.position.set(coord.x, coord.y, coord.z);
             walls.add(wallPartCracked);
         }
         else {
             //mossy
-            let wallPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+            let wallPartMossy = new THREE.Mesh(cube, wallMaterialMossy);
             wallPartMossy.position.set(coord.x, coord.y, coord.z);
             walls.add(wallPartMossy);
         }
@@ -70,19 +89,19 @@ function createMap(mapConstructor) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
                     //normal stonebrick;
-                    let wallBackPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+                    let wallBackPartBrick = new THREE.Mesh(cube, wallMaterialCobble);
                     wallBackPartBrick.position.set(-1, y, z);
                     backWalls.add(wallBackPartBrick);
                 }
                 else if (texture_choice > 3 && texture_choice <= 4) {
                     //cracked
-                    let wallBackPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+                    let wallBackPartCracked = new THREE.Mesh(cube, wallMaterialCracked);
                     wallBackPartCracked.position.set(-1, y, z);
                     backWalls.add(wallBackPartCracked);
                 }
                 else {
                     //mossy
-                    let wallBackPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+                    let wallBackPartMossy = new THREE.Mesh(cube, wallMaterialMossy);
                     wallBackPartMossy.position.set(-1, y, z);
                     backWalls.add(wallBackPartMossy);
                 }
@@ -93,19 +112,19 @@ function createMap(mapConstructor) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
                     //normal stonebrick;
-                    let wallBackPartBrick = new THREE.Mesh(block, wallMaterialCobble);
+                    let wallBackPartBrick = new THREE.Mesh(cube, wallMaterialCobble);
                     wallBackPartBrick.position.set(x, y, -1);
                     backWalls.add(wallBackPartBrick);
                 }
                 else if (texture_choice > 3 && texture_choice <= 4) {
                     //cracked
-                    let wallBackPartCracked = new THREE.Mesh(block, wallMaterialCracked);
+                    let wallBackPartCracked = new THREE.Mesh(cube, wallMaterialCracked);
                     wallBackPartCracked.position.set(x, y, -1);
                     backWalls.add(wallBackPartCracked);
                 }
                 else {
                     //mossy
-                    let wallBackPartMossy = new THREE.Mesh(block, wallMaterialMossy);
+                    let wallBackPartMossy = new THREE.Mesh(cube, wallMaterialMossy);
                     wallBackPartMossy.position.set(x, y, -1);
                     backWalls.add(wallBackPartMossy);
                 }
@@ -114,23 +133,33 @@ function createMap(mapConstructor) {
     }
 
     //Creating logic elements
-    for(let elt of mapConstructor.logics){
-        if(elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1|| elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
-        switch(elt.type){
-            case 0: //pressure plate
+    for (let elt of mapConstructor.logics) {
+        if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
+        switch (elt.type) {
+            case 0: //Pressure plate
                 pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
                 pressurePlate.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
                 logic.add(pressurePlate);
                 break;
+            case 1://Pushable box
+                pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
+                pushableBox.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                pushableBox.scale.set(0.8, 0.8, 0.8);
+                logic.add(pushableBox);
             default:
                 continue;
         }
     }
 
-    map.add(backWalls);
-    map.add(floor);
-    map.add(walls);
-    map.add(exits);
-    map.add(logic);
-    scene.add(map);
+    mapBuild.add(backWalls);
+    mapBuild.add(floor);
+    mapBuild.add(walls);
+    mapBuild.add(exits);
+    //mapBuild.add(doors);
+    mapBuild.add(doorL);
+    mapBuild.add(doorT);
+    mapBuild.add(doorR);
+    mapBuild.add(doorB);
+    mapBuild.add(logic);
+    scene.add(mapBuild);
 }

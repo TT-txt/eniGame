@@ -32,74 +32,71 @@ function checkKeyPress(key) {
 
     if (key.keyCode == "37" || key.keyCode == "81") {
         //Left arrow key or q
-        if (0 == heroMesh.position.x) {
+        if (0 == hero.position.x) {
             blocked = true;
         } else {
             for (let element of currentLevel.maps[currentMap].walls) {
-                console.log(element);
-                if (element.x == heroMesh.position.x - 1 && element.z == heroMesh.position.z) {
+                if (element.x == hero.position.x - 1 && element.z == hero.position.z) {
                     blocked = true;
                     break;
                 }
             }
         }
         if (!blocked)
-            heroMesh.position.x -= 1;
-        heroMesh.rotation.z = Math.PI / 2;
+            hero.position.x -= 1;
+        hero.rotation.y = Math.PI / 2;
     } else if (key.keyCode == "38" || key.keyCode == "90") {
         //Up arrow key or z
 
-        if (0 == heroMesh.position.z) {
+        if (0 == hero.position.z) {
             blocked = true;
         } else {
             for (let element of currentLevel.maps[currentMap].walls) {
-                console.log(element);
-                if (element.x == heroMesh.position.x && element.z == heroMesh.position.z - 1) {
+                if (element.x == hero.position.x && element.z == hero.position.z - 1) {
                     blocked = true;
                     break;
                 }
             }
         }
         if (!blocked)
-            heroMesh.position.z -= 1;
-        heroMesh.rotation.z = 0;
+            hero.position.z -= 1;
+        hero.rotation.y = 0;
     } else if (key.keyCode == "39" || key.keyCode == "68") {
         //Right arrow key or d
 
-        if (currentLevel.maps[currentMap].floor.x == heroMesh.position.x + 1) {
+        if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {
             blocked = true;
         } else {
             for (let element of currentLevel.maps[currentMap].walls) {
-                console.log(element);
-                if (element.x == heroMesh.position.x + 1 && element.z == heroMesh.position.z) {
+                if (element.x == hero.position.x + 1 && element.z == hero.position.z) {
                     blocked = true;
                     break;
                 }
             }
         }
         if (!blocked)
-            heroMesh.position.x += 1;
-        heroMesh.rotation.z = Math.PI * 3 / 2;
+            hero.position.x += 1;
+        hero.rotation.y = Math.PI * 3 / 2;
     } else if (key.keyCode == "40" || key.keyCode == "83") {
         //Down arrow key or s
 
-        if (currentLevel.maps[currentMap].floor.z == heroMesh.position.z + 1) {
+        if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {
             blocked = true;
         } else {
             for (let element of currentLevel.maps[currentMap].walls) {
-                console.log(element);
-                if (element.x == heroMesh.position.x && element.z == heroMesh.position.z + 1) {
+                if (element.x == hero.position.x && element.z == hero.position.z + 1) {
                     blocked = true;
                     break;
                 }
             }
         }
         if (!blocked)
-            heroMesh.position.z += 1;
-        heroMesh.rotation.z = Math.PI;
+            hero.position.z += 1;
+        hero.rotation.y = Math.PI;
     }
-    console.log(heroMesh.position);
-    console.log(heroMesh.rotation);
+    //DEBUG
+    //console.log(hero.position);
+    //console.log(hero.rotation);
 }
 
 window.addEventListener("keydown", checkKeyPress, false); //false so the function doesn't return a thing

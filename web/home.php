@@ -34,6 +34,8 @@
 <!-- Functions include -->
 <script src="js/classes.js"></script>
 <script src="js/maps.js"></script>
+<script src="js/traps.js"></script>
+<script src="js/logic.js"></script>
 <script src="js/camera.js"></script>
 <script src="js/mesh.js"></script>
 <script src="js/model.js"></script>
@@ -48,18 +50,50 @@
 	</aside>
 	<main class="game" id="scene-container" style="width:99%">
 		<script>
+			//NEEDED TO HAVE A WORKING SCENE
 			let container;
 			let camera;
 			let controls;
 			let renderer;
 			let scene;
-			let heroMesh;
+
+			//Groups
+			let hero = new THREE.Group();
+			hero.name = "Hero";
+			let doorL = new THREE.Group();
+			doorL.name = "Left Door";
+			let doorT = new THREE.Group();
+			doorT.name = "Top Door";
+			let doorR = new THREE.Group();
+			doorR.name = "Right Door";
+			let doorB = new THREE.Group();
+			doorB.name = "Bottom Door";
+
+			//Materials
+			let floorMaterial;
+			let wallMaterialCobble;
+			let wallMaterialCracked;
+			let wallMaterialMossy;
+			let doorMaterial;
+			let pressurePlateMaterial;
+			let pushableBoxMaterial;
+
+			//Geometry
+			let cube;
+			let flatRectangle;
+			let slimRectangle;
+
+			//Meshes
+			let heroMesh; //USE hero TO MOVE THE CHAR AROUND
+			let block;
+			let door;
+			let pressurePlate;
+			let pushableBox;
+
+			//Animation
 			const mixers = [];
 			const clock = new THREE.Clock();
 
-			/***********************
-			 ** STARTING FUNCTION **
-			 ************************/
 			function init() {
 
 				container = document.querySelector('#scene-container');
@@ -70,18 +104,12 @@
 				currentLevel = testLevel;
 				currentMap = 0; // Top right of the level
 
-				// camera.js
+				createSkybox();
+				createMesh();
+				createMap(currentLevel.maps[currentMap]);
 				createCamera();
 				createControls();
 				createLights();
-
-				//mesh.js
-				createSkybox();
-
-				//mapConstruction.js
-				createMap(currentLevel.maps[currentMap]);
-
-				//model.js
 				loadModels();
 				createRenderer();
 
@@ -111,22 +139,22 @@
 
 			}
 
-			// Avoid heavy computation here
+			// perform any updates to the scene, called once per frame
+			// avoid heavy computation here
 			function update() {
 
-				const delta = clock.getDelta();
+				logicTrigger(currentLevel.maps[currentMap].logics, hero.position);
 
+			}
+
+			// render of the scene
+			function render() {
+				const delta = clock.getDelta();
 				for (const mixer of mixers) {
 
 					mixer.update(delta);
 
 				}
-
-			}
-
-			// Render of the scene
-			function render() {
-
 				renderer.render(scene, camera);
 
 			}

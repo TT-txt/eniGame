@@ -24,7 +24,7 @@ function createSkybox() {
     scene.add(skybox);
 }
 
-function createMesh() { //TT well made; probably gonna shit one day or another
+function createMesh() { 
     let textureLoader = new THREE.TextureLoader();
 
     //loading and encoding textures
@@ -32,9 +32,9 @@ function createMesh() { //TT well made; probably gonna shit one day or another
     const wallTextureCracked = textureLoader.load('textures/crackedStoneBrick.png');
     const wallTextureMossy = textureLoader.load('textures/mossyStoneBricks.png');
     const floorTexture = textureLoader.load('textures/stone.png');
-    const doorTopTexture = textureLoader.load('textures/doorTop.png');
-    const doorBottomTexture = textureLoader.load('textures/doorBottom.png');
-    const pressurePlateTexture = textureLoader.load('textures/pressurePlate.png');    
+    const doorTexture = textureLoader.load('textures/door.png');
+    const pressurePlateTexture = textureLoader.load('textures/pressurePlate.png');
+    const pushableBoxTexture = textureLoader.load('textures/pushableBox.png');
 
     floorTexture.encoding = THREE.sRGBEncoding;
     floorTexture.anisotropy = 16;
@@ -44,24 +44,24 @@ function createMesh() { //TT well made; probably gonna shit one day or another
     wallTextureCracked.anisotropy = 16;
     wallTextureMossy.encoding = THREE.sRGBEncoding;
     wallTextureMossy.anisotropy = 16;
-    doorTopTexture.encoding = THREE.sRGBEncoding;
-    doorTopTexture.anisotropy = 16;
-    doorBottomTexture.encoding = THREE.sRGBEncoding;
-    doorBottomTexture.anisotropy = 16;
+    doorTexture.encoding = THREE.sRGBEncoding;
+    doorTexture.anisotropy = 16;
     pressurePlateTexture.encoding = THREE.sRGBEncoding;
     pressurePlateTexture.anisotropy = 16;
+    pushableBoxTexture.encoding = THREE.sRGBEncoding;
+    pushableBoxTexture.anisotropy = 16;
 
     //creating materials
     floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
     wallMaterialCobble = new THREE.MeshStandardMaterial({ map: wallTextureCobble });
     wallMaterialCracked = new THREE.MeshStandardMaterial({ map: wallTextureCracked });
     wallMaterialMossy = new THREE.MeshStandardMaterial({ map: wallTextureMossy });
-    doorTopMaterial = new THREE.MeshStandardMaterial({ map: doorTopTexture });
-    doorBottomMaterial = new THREE.MeshStandardMaterial({ map: doorBottomTexture });
+    doorMaterial = new THREE.MeshStandardMaterial({ map: doorTexture });
     pressurePlateMaterial = new THREE.MeshStandardMaterial({ map: pressurePlateTexture });
+    pushableBoxMaterial = new THREE.MeshStandardMaterial({ map : pushableBoxTexture });
     
     //creating geometry
-    block = new THREE.BoxBufferGeometry(1, 1, 1);
-    flatRectangle = new THREE.BoxBufferGeometry(1, 0.1, 1);
-    SlimRectangle = new THREE.BoxBufferGeometry(0.5, 1, 1)
+    cube = new THREE.BoxBufferGeometry(1, 1, 1);
+    flatRectangle = new THREE.BoxBufferGeometry(1, 0.05, 1);
+    slimRectangle = new THREE.BoxBufferGeometry(0.25, 2, 1);
 }

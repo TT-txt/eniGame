@@ -1,47 +1,51 @@
-function logicTrigger(logics) {
+
+function logicTrigger(logics, pos) {
     for (let elt of logics) {
         switch (elt.type) {
-            case 0 ://pressurePlate
-                if (elt.activated == false && elt.coord.x == heroMesh.position.x && elt.coord.z == heroMesh.position.z) {
-                    pressurePlateOn(elt.onUse);
-                } else if (elt.activated == true && elt.coord.x != heroMesh.position.x || elt.coord.z != heroMesh.position.z){
-                    pressurePlateOff(elt.onUse);
+            case 0://pressurePlate
+                if (elt.activated == false && elt.coord.x == pos.x && elt.coord.z == pos.z) {
+                    pressurePlateOn(elt);
+                } else if (elt.activated == true && (elt.coord.x != pos.x || elt.coord.z != pos.z)) {
+                    pressurePlateOff(elt);
                 }
                 break;
-            default :
+            default:
                 break;
         }
     }
 }
 
-function doorOpen() {
-    exit.rotation.z += Math.PI / 2;
+function doorOpen(toActivate) {
+    slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI/2));
+    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z);
+    toActivate.activated = true;
+    //TODO CHANGE TO STICK TO THE WALL
 }
 
-function doorClose() {
-    exit.rotation.z -= Math.PI / 2;
+function doorClose(toActivate) {
+    slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(-Math.PI/2));
+    toActivate.activated = false;
+    //TODO REVERT POSITION
 }
 
-function pressurePlateOn(action) {
-    switch (action) {
-        case 0 :
+function pressurePlateOn(logicElem) {
+    switch (logicElem.onUse) {
+        case 0:
             //Open the map doors
-            doorOpen();
-            console.log("Doors opened!");
+            doorOpen(logicElem);
             break;
-        default :
+        default:
             break;
     }
 }
 
-function pressurePlateOn(action) {
-    switch (action) {
-        case 0 :
+function pressurePlateOff(logicElem) {
+    switch (logicElem.onUse) {
+        case 0:
             //Open the map doors
-            doorClose();
-            console.log("Doors closed!");
+            doorClose(logicElem);
             break;
-        default :
+        default:
             break;
     }
 }

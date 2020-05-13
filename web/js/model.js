@@ -13,7 +13,8 @@ function loadModels() {
 
         const action = mixer.clipAction(animation);
         action.play();
-        scene.add(heroMesh);
-        heroMesh.position.set(2, 0.5, 2);
+        hero.add(heroMesh);
+        scene.add(hero);
+        hero.position.set(2, 0.5, 2);
     }
 }
