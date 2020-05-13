@@ -6,22 +6,14 @@ class coord {
     }
 }
 class map {
-    constructor(walls, floor, traps, puzzle, solved, type, exits) {
+    constructor(walls, floor, traps, logics, solved, type, exits) {
         this.walls = walls; //array containing COORD of walls
-        this.floor = floor; //dimension of the floor, coord of the maximum (x, 0 , z)
+        this.floor = new coord(5,0,5); //dimension of the floor, coord of the maximum (x, 0 , z)
         this.traps = traps; //array containing all var in trap class
-        this.puzzle = puzzle; //array containing something
-        this.solved = solved; //boolean, not hard to understand
-        this.type = type; //map type
-        this.exits = exits; //array with the exits, 0=>left, 1=>top; 2=>right; 3=>bottom
-    }
-}
-
-class trap {
-    constructor(type, coord, activated) {
-        this.type = type; //string or char, or id, idk yet
-        this.coord = coord; //coord of the trap
-        this.activated = activated; //boolean
+        this.logics = logics; //array containing all logic elt
+        this.solved = false; //boolean, not hard to understand
+        this.type = 0; //map type
+        this.exits = [new coord(-1, 0, 2), new coord(2, 0, -1), new coord(5, 0, 2), new coord(2, 0, 5)]; //array with the exits, 0=>left, 1=>top; 2=>right; 3=>bottom
     }
 }
 
@@ -39,3 +31,21 @@ class level {
         this.theme = theme; //texture themes
     }
 } 
+
+class trap {
+    constructor(type, coord, activated) {
+        this.type = type; //id, see the table
+        this.coord = coord; //coord of the trap
+        this.activated = activated; //boolean
+    }
+}
+
+class logic {
+    constructor(type, coord, onUse, activated){
+        this.type = type; //id, see the table
+        this.coord = coord; //coord of the elt
+        this.onUse = onUse; //char containing what to do if the player is on it
+        this.activated = false; //is on/off
+        
+    }
+}

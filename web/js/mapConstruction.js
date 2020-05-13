@@ -1,39 +1,19 @@
 function createMap(mapConstructor) {
-    //creating map group
+    //generating the groups
     const map = new THREE.Group();
-    map.name = "Map; everything is here !"
-    //loading everything in order to make the floor
-    let textureLoader = new THREE.TextureLoader();
-    const floorTexture = textureLoader.load('textures/stone.png');
-    floorTexture.encoding = THREE.sRGBEncoding;
-    floorTexture.anisotropy = 16;
-    const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
-    const block = new THREE.BoxBufferGeometry(1, 1, 1);
+    map.name = "Map; everything is here !";
     const floor = new THREE.Group();
     floor.name = "Floor";
-
-    //loading everything to create a wall
-    //loading and encoding textures
-    const wallTextureCobble = textureLoader.load('textures/stoneBrick.png');
-    const wallTextureCracked = textureLoader.load('textures/crackedStoneBrick.png');
-    const wallTextureMossy = textureLoader.load('textures/mossyStoneBricks.png');
-    wallTextureCobble.encoding = THREE.sRGBEncoding;
-    wallTextureCobble.anisotropy = 16;
-    wallTextureCracked.encoding = THREE.sRGBEncoding;
-    wallTextureCracked.anisotropy = 16;
-    wallTextureMossy.encoding = THREE.sRGBEncoding;
-    wallTextureMossy.anisotropy = 16;
-
-    //creating materials
-    const wallMaterialCobble = new THREE.MeshStandardMaterial({ map: wallTextureCobble });
-    const wallMaterialCracked = new THREE.MeshStandardMaterial({ map: wallTextureCracked });
-    const wallMaterialMossy = new THREE.MeshStandardMaterial({ map: wallTextureMossy });
     const walls = new THREE.Group();
     walls.name = "Walls";
-    
-    //creating the backWalls
     const backWalls = new THREE.Group();
+    backWalls.name = "BackWalls";
+    let exits = new THREE.Group();
+    exits.name = "Exits";
+    let logic = new THREE.Group();
+    logic.name = "Logic";
 
+    //creating the floor
     for (let x = 0; x < mapConstructor.floor.x; x -= -1) {
         for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
             let floorPart = new THREE.Mesh(block, floorMaterial);
@@ -42,16 +22,26 @@ function createMap(mapConstructor) {
         }
     }
 
-    //Exits
-    let exits = new THREE.Group();
-    exits.name = "Exits";
-    for(let elt of mapConstructor.exits){
+    //Exits NEED UPDATE TO ADD DOORS on exit
+    for(let elt = 0; elt < mapConstructor.exits.length; elt-=-1){
         let exit = new THREE.Mesh(block, wallMaterialCobble);
-        exit.position.set(elt.x, elt.y, elt.z);
+        exit.position.set(mapConstructor.exits[elt].x, mapConstructor.exits[elt].y, mapConstructor.exits[elt].z);
         exits.add(exit);
+        switch(elt){
+            case 0:
+                let doorTopLeft = new THREE.Mesh(SlimRectangle, doorTopMaterial);
+                let doorBottomLeft = new THREE.Mesh(SlimRectangle, doorBottomMaterial);
+                doorTopLeft.position.set(mapConstructor.exits[elt].x+0.4, 2, mapConstructor.exits[elt].y);
+                doorBottomLeft.position.set(mapConstructor.exits[elt].x+0.4, 1, mapConstructor.exits[elt].y);
+                exit.add(doorTopLeft);
+                exit.add(doorBottomLeft);
+                break;
+        }
     }
 
+    //Creating walls
     for (coord of mapConstructor.walls) {
+        if(coord.x > mapConstructor.floor.x - 1 || coord.y > mapConstructor.y - 1 || coord.z > mapConstructor.z - 1|| coord.z < 0 || coord.y < 0 || coord.z < 0) continue;
         let texture_choice = Math.random() * 10 % 5;
         if (texture_choice <= 3) {
             //normal stonebrick;
@@ -73,6 +63,7 @@ function createMap(mapConstructor) {
         }
     }
 
+    //creating BackWalls
     for (let y = 0; y < 4; y -= -1) {
         for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
             if (y > 2 || mapConstructor.exits[0].z != z) {
@@ -121,9 +112,25 @@ function createMap(mapConstructor) {
             }
         }
     }
+
+    //Creating logic elements
+    for(let elt of mapConstructor.logics){
+        if(elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1|| elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
+        switch(elt.type){
+            case 0: //pressure plate
+                pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
+                pressurePlate.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                logic.add(pressurePlate);
+                break;
+            default:
+                continue;
+        }
+    }
+
     map.add(backWalls);
     map.add(floor);
     map.add(walls);
     map.add(exits);
+    map.add(logic);
     scene.add(map);
 }

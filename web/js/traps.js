@@ -1,4 +1,4 @@
-const trapActivate = (trap) => {
+function trapActivate(trap){
     switch(trap.type){
         //TODO
     }

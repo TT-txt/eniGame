@@ -42,7 +42,19 @@
             let controls;
             let renderer;
             let scene;
+            //Materials
+            let floorMaterial;
+            let wallMaterialCobble;
+            let wallMaterialCracked;
+            let wallMaterialMossy;
+            let doorMaterial;
+            let pressurePlateMaterial;
+            //Meshes
             let heroMesh;
+            let block;
+            let flatRectangle;
+            let door;
+
             const mixers = [];
             const clock = new THREE.Clock();
 
@@ -54,14 +66,14 @@
                 scene.background = new THREE.Color(0x8FBCD4);
 
                 currentLevel = testLevel;
-                // currentLevel = personLevel;
                 currentMap = 0; // Top right of the level
 
+                createSkybox();
+                createMesh();
+                createMap(currentLevel.maps[currentMap]);
                 createCamera();
                 createControls();
                 createLights();
-                createSkybox();
-                createMap(currentLevel.maps[currentMap]);
                 loadModels();
                 createRenderer();
 
@@ -96,6 +108,8 @@
             function update() {
 
                 const delta = clock.getDelta();
+
+                //logicTrigger(currentLevel.maps[currentMap].logics);
 
                 for (const mixer of mixers) {
 
