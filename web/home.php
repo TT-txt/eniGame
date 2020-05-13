@@ -62,6 +62,19 @@
 					this.z = z;
 				}
 			}
+			class mapConstruction {
+    			constructor(walls, traps) {
+        			this.walls = walls; //array containing COORD of walls
+        			this.traps = traps; //array containing all var in trap class
+    			}                      
+			}
+
+			class trap{
+			    constructor(type, coord){
+			        this.type = type; //string or char, or id, idk yet
+			        this.coord = coord; //coord of the trap
+			    }
+			}
 
 			function init() {
 

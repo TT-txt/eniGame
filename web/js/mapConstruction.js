@@ -1,9 +1,3 @@
-class mapConstruction {
-    constructor(walls) {
-        this.walls = walls;
-    }
-}
-
 function createMap(mapConstructor) {
     //creating map group
     const map = new THREE.Group();
