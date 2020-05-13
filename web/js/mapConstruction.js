@@ -30,8 +30,8 @@ function createMap(mapConstructor) {
     //creating the backWalls
     const backWalls = new THREE.Group();
 
-    for (let x = 0; x < 5; x -= -1) {
-        for (let z = 0; z < 5; z -= -1) {
+    for (let x = 0; x < mapConstructor.floor.x; x -= -1) {
+        for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
             let floorPart = new THREE.Mesh(block, floorMaterial);
             floorPart.position.set(x, 0, z);
             floor.add(floorPart);
@@ -69,7 +69,7 @@ function createMap(mapConstructor) {
     }
 
     for (let y = 0; y < 5; y -= -1) {
-        for (let z = 0; z < 4; z -= -1) {
+        for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
             if (y > 2 || z != 2) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {
@@ -92,7 +92,7 @@ function createMap(mapConstructor) {
                 }
             }
         }
-        for (let x = -1; x < 5; x -= -1) {
+        for (let x = -1; x < mapConstructor.floor.x; x -= -1) {
             if (y > 2 || x != 2) {
                 let texture_choice = Math.random() * 10 % 5;
                 if (texture_choice <= 3) {

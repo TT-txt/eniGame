@@ -2,14 +2,14 @@ function createCamera() {
 
     camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
 
-    camera.position.set(20, 10, 20);
+    camera.position.set(15, 8, 15);
 
 }
 
 function createControls() {
     controls = new THREE.OrbitControls(camera, container);
     controls.minDistance = 10;
-    controls.maxDistance = 30;
+    controls.maxDistance = 20;
 }
 
 function createLights() {

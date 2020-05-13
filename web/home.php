@@ -37,6 +37,7 @@
 <script src="js/mesh.js"></script>
 <script src="js/model.js"></script>
 <script src="js/mapConstruction.js"></script>
+<script type="module" src="appthatimports.js"></script>
 </head>
 
 <body>
@@ -46,6 +47,7 @@
 	</aside>
 	<main class="game" id="scene-container" style="width:99%">
 		<script>
+
 			let container;
 			let camera;
 			let controls;
@@ -55,27 +57,6 @@
 			const mixers = [];
 			const clock = new THREE.Clock();
 
-			class coord {
-				constructor(x, y, z) {
-					this.x = x;
-					this.y = y;
-					this.z = z;
-				}
-			}
-			class mapConstruction {
-    			constructor(walls, traps) {
-        			this.walls = walls; //array containing COORD of walls
-        			this.traps = traps; //array containing all var in trap class
-    			}                      
-			}
-
-			class trap{
-			    constructor(type, coord){
-			        this.type = type; //string or char, or id, idk yet
-			        this.coord = coord; //coord of the trap
-			    }
-			}
-
 			function init() {
 
 				container = document.querySelector('#scene-container');
@@ -83,7 +64,7 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x8FBCD4);
 
-				let test = new mapConstruction([new coord(3, 1, 1), new coord(1, 1, 3)]);
+				let test = new map([new coord(3, 1, 1), new coord(1, 1, 3)]);
 
 				createCamera();
 				createControls();
