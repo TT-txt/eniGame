@@ -67,7 +67,7 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x8FBCD4);
 
-				currentLevel = new level([testMap]);
+				currentLevel = testLevel;
 				currentMap = 0; // Top right of the level
 
 				createCamera();

@@ -16,6 +16,12 @@
     <script src="js/model.js"></script>
     <script src="js/mapConstruction.js"></script>
     <script src="js/event.js"></script>
+
+    <!-- tmp levels include -->
+    <script src="tmp-tests/louisD.js"></script>
+    <script src="tmp-tests/louisM.js"></script>
+    <script src="tmp-tests/marie.js"></script>
+    <script src="tmp-tests/noe.js"></script>
     <style>
         #scene-container {
             position: absolute;
@@ -45,7 +51,8 @@
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x8FBCD4);
 
-                currentLevel = new level([testMap]);
+                currentLevel = testLevel;
+                // currentLevel = personLevel;
                 currentMap = 0; // Top right of the level
 
                 createCamera();
