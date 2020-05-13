@@ -68,7 +68,7 @@ if (isset($link)) {
                     <a href="mailto:noe.klopocki@student.yncrea.fr">Noé Klopocki</a>
                 </p>
                 <p>
-                    <a href="mailto:louis.manouvrier@student.yncrea.fr">Louis Manouvrier</a>
+                    <a href="mailto:louis.manouvrier@student.yncrea.fr">Louis Manouvriez</a>
                 </p>
                 <p>
                     <a href="mailto:hugo.martel@student.yncrea.fr">Hugo Martel</a>
