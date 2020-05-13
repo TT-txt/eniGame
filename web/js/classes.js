@@ -6,18 +6,18 @@ class coord {
     }
 }
 class map {
-    constructor(walls, floor, traps, logic, solved, type) {
+    constructor(walls, floor, traps, puzzle, solved, type) {
         this.walls = walls; //array containing COORD of walls
         this.floor = floor; //dimension of the floor, coord of the maximum (x, 0 , z)
         this.traps = traps; //array containing all var in trap class
-        this.logic = logic; //array containing something
+        this.puzzle = puzzle; //array containing something
         this.solved = solved; //boolean, not hard to understand
         this.type = type; //map type
-    }                      
+    }
 }
 
-class trap{
-    constructor(type, coord, activated){
+class trap {
+    constructor(type, coord, activated) {
         this.type = type; //string or char, or id, idk yet
         this.coord = coord; //coord of the trap
         this.activated = activated; //boolean
@@ -32,8 +32,9 @@ maps array :
 15 ... 19
 20 ... 24
 ************************ */
-class level{
-    constructor(maps){
+class level {
+    constructor(maps, theme) {
         this.maps = maps; //containing array with all the maps in the level (25)
+        this.theme = theme; //texture themes
     }
 } 

@@ -78,11 +78,12 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
 
 	// Mouse buttons
-	//this.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+	this.mouseButtons = { LEFT: THREE.MOUSE.ROTATE}; //, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
 	//EDITED
 
 	// Touch fingers
-	this.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+	this.touches = { ONE: THREE.TOUCH.ROTATE}; //, TWO: THREE.TOUCH.DOLLY_PAN };
+	//EDITED
 
 	// for reset
 	this.target0 = this.target.clone();
@@ -762,14 +763,14 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.domElement.focus ? scope.domElement.focus() : window.focus();
 
 		var mouseAction;
-/*
+
 		switch ( event.button ) {
 
 			case 0:
 
 				mouseAction = scope.mouseButtons.LEFT;
 				break;
-
+/*
 			case 1:
 
 				mouseAction = scope.mouseButtons.MIDDLE;
@@ -779,15 +780,15 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 				mouseAction = scope.mouseButtons.RIGHT;
 				break;
-
+*/
 			default:
 
 				mouseAction = - 1;
 
 		}
-*/
-		switch ( mouseAction ) {
 
+		switch ( mouseAction ) {
+			/*
 			case THREE.MOUSE.DOLLY:
 
 				if ( scope.enableZoom === false ) return;
@@ -797,7 +798,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				state = STATE.DOLLY;
 
 				break;
-
+			*/
 			case THREE.MOUSE.ROTATE:
 
 				if ( event.ctrlKey || event.metaKey || event.shiftKey ) {
@@ -806,7 +807,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 					handleMouseDownPan( event );
 
-					state = STATE.PAN;
+					//state = STATE.PAN;
 
 				} else {
 
@@ -819,7 +820,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				}
 
 				break;
-
+			/*
 			case THREE.MOUSE.PAN:
 
 				if ( event.ctrlKey || event.metaKey || event.shiftKey ) {
@@ -841,7 +842,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 				}
 
 				break;
-
+			*/
 			default:
 
 				state = STATE.NONE;
@@ -1139,11 +1140,11 @@ THREE.MapControls = function ( object, domElement ) {
 
 	THREE.OrbitControls.call( this, object, domElement );
 
-	//this.mouseButtons.LEFT = THREE.MOUSE.PAN;
+	this.mouseButtons.LEFT = THREE.MOUSE.PAN;
 	//this.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
 
-	this.touches.ONE = THREE.TOUCH.PAN;
-	this.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
+	//this.touches.ONE = THREE.TOUCH.PAN;
+	//this.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
 
 };
 

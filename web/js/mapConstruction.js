@@ -38,13 +38,19 @@ function createMap(mapConstructor) {
         }
     }
 
-    //Right and Bottom exits
+    //Exits
     let rightExit = new THREE.Mesh(block, wallMaterialCobble);
     rightExit.position.set(5, 0, 2);
     floor.add(rightExit);
     let bottomExit = new THREE.Mesh(block, wallMaterialCobble);
     bottomExit.position.set(2, 0, 5);
     floor.add(bottomExit);
+    let leftExit = new THREE.Mesh(block, wallMaterialCobble);
+    leftExit.position.set(2, 0, -1);
+    floor.add(leftExit);
+    let topExit = new THREE.Mesh(block, wallMaterialCobble);
+    topExit.position.set(-1, 0, 2);
+    floor.add(topExit);
 
     for (coord of mapConstructor.walls) {
         let texture_choice = Math.random() * 10 % 5;
@@ -68,7 +74,7 @@ function createMap(mapConstructor) {
         }
     }
 
-    for (let y = 0; y < 5; y -= -1) {
+    for (let y = 0; y < 4; y -= -1) {
         for (let z = 0; z < mapConstructor.floor.z; z -= -1) {
             if (y > 2 || z != 2) {
                 let texture_choice = Math.random() * 10 % 5;
