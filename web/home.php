@@ -62,11 +62,6 @@
 					this.z = z;
 				}
 			}
-			class mapConstruction {
-				constructor(walls) {
-					this.walls = walls;
-				}
-			}
 
 			function init() {
 
