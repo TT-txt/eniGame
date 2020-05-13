@@ -70,11 +70,18 @@
 				currentLevel = testLevel;
 				currentMap = 0; // Top right of the level
 
+				// camera.js
 				createCamera();
 				createControls();
 				createLights();
+
+				//mesh.js
 				createSkybox();
+
+				//mapConstruction.js
 				createMap(currentLevel.maps[currentMap]);
+
+				//model.js
 				loadModels();
 				createRenderer();
 

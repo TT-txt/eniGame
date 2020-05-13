@@ -10,7 +10,7 @@ function createControls() {
     controls = new THREE.OrbitControls(camera, container);
     //ZOOM DISTANCE
     controls.minDistance = 10;
-    controls.maxDistance = 20;
+    controls.maxDistance = 30;
 
     //VERTICAL ROTATION
     controls.minPolarAngle = 0;

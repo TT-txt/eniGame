@@ -1,6 +1,7 @@
 function createMap(mapConstructor) {
     //creating map group
     const map = new THREE.Group();
+
     //loading everything in order to make the floor
     let textureLoader = new THREE.TextureLoader();
     const floorTexture = textureLoader.load('textures/stone.png');
@@ -10,6 +11,7 @@ function createMap(mapConstructor) {
     const block = new THREE.BoxBufferGeometry(1, 1, 1);
     const floor = new THREE.Group();
     floor.name = "Floor";
+
     //loading everything to create a wall
     //loading and encoding textures
     const wallTextureCobble = textureLoader.load('textures/stoneBrick.png');
@@ -21,12 +23,14 @@ function createMap(mapConstructor) {
     wallTextureCracked.anisotropy = 16;
     wallTextureMossy.encoding = THREE.sRGBEncoding;
     wallTextureMossy.anisotropy = 16;
+
     //creating materials
     const wallMaterialCobble = new THREE.MeshStandardMaterial({ map: wallTextureCobble });
     const wallMaterialCracked = new THREE.MeshStandardMaterial({ map: wallTextureCracked });
     const wallMaterialMossy = new THREE.MeshStandardMaterial({ map: wallTextureMossy });
     const walls = new THREE.Group();
     walls.name = "Walls";
+    
     //creating the backWalls
     const backWalls = new THREE.Group();
 
