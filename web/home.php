@@ -56,6 +56,7 @@
 			let controls;
 			let renderer;
 			let scene;
+			let gameStarted;//TO BEGIN TESTING LOGIC ELTS
 
 			//Groups
 			let hero = new THREE.Group();
@@ -113,6 +114,9 @@
 				loadModels();
 				createRenderer();
 
+				//Will not be set automatically in the future (mapLoader)
+				gameStarted = true;//Used in update
+
 				renderer.setAnimationLoop(() => {
 					update();
 					render();
@@ -143,7 +147,7 @@
 			// avoid heavy computation here
 			function update() {
 
-				logicTrigger(currentLevel.maps[currentMap].logics, hero.position);
+				logicTrigger(currentLevel.maps[currentMap].logics, hero.position ,gameStarted);
 
 			}
 

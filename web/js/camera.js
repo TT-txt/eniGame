@@ -9,7 +9,7 @@ function createCamera() {
 function createControls() {
     controls = new THREE.OrbitControls(camera, container);
     let target = new THREE.Vector3();
-    controls.target.set(currentLevel.maps[currentMap].floor.x / 2, 0, currentLevel.maps[currentMap].floor.z / 2);
+    controls.target.set(currentLevel.maps[currentMap].floor.x / 2, 1, currentLevel.maps[currentMap].floor.z / 2);
     //ZOOM DISTANCE
     controls.minDistance = 10;
     controls.maxDistance = 30;

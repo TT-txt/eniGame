@@ -13,7 +13,7 @@ class map {
         this.walls = walls; //array containing COORD of walls
         this.floor = floor; //dimension of the floor, coord of the maximum (x, 0 , z)
         this.traps = traps; //array containing all var in trap class
-        this.logics = logics; //array containing all logic elt
+        this.logics = logics; //array containing all logic elt ENTER THEM BY ID !
         this.solved = solved; //boolean, not hard to understand
         this.type = type; //map type
         this.exits = exits; //array with the exits, 0=>left, 1=>top; 2=>right; 3=>bottom
@@ -54,6 +54,9 @@ class trap {
 +----------------+----+
 */
 
+/*****************************************************
+!!!!!!!!!!!!! ENTER LOGIC ELEMENTS BY ID !!!!!!!!!!!!!
+******************************************************/
 class logic {
     constructor(type, coord, onUse, activated){
         this.type = type; //id, see the table

@@ -62,6 +62,6 @@ function createMesh() {
     
     //creating geometry
     cube = new THREE.BoxBufferGeometry(1, 1, 1);
-    flatRectangle = new THREE.BoxBufferGeometry(1, 0.05, 1);
+    flatRectangle = new THREE.BoxBufferGeometry(0.9, 0.05, 0.9);
     slimRectangle = new THREE.BoxBufferGeometry(0.25, 2, 1);
 }
