@@ -1,0 +1,24 @@
+éléments d'intéraction:
+
+plaque de pression (toggle on/off)/(press on/ unpress off) avec couleur pour différents set obstacles coloré
+caisse poussable (destructible(bois)/indestructible(metal))
+spawner a caisse destructible (peut avoir un maximum de caisse sur le niveau)
+
+
+éléments d'obstacles:
+
+lance-flamme (bloque une ligne jusqu'a un element quand est activé) (constant ou clignote(fréquence variable d'un niveau a l'autre))(tue le joueur)
+piege a flèche 1 (quand activé tir unique sur un ligne jusqu'a un element)(tue le joueur)
+piege a flèche 2 (quand activé tir répété(fréquence variable d'un niveau a l'autre) sur un ligne jusqu'a un element)(tue le joueur)
+trappe (fait un trou)(peut etre comblé avec une caisse)(tue le joueur)
+rocher indiana jones (roule jusqu'a mur ou element)(se détruit quand collision)(peut détruire mur)(tue le joueur)
+lustre/pigeon enorme qui tombe du ciel (tue le joueur)
+porte verouillé (ne tue pas le joueur)
+
+
+éléments de décor:
+
+mur, arbre, ... (dépend du type de monde)
+eau (bloque le personnage)(peut etre comblé avec une caisse)
+plaque a ressort (quand activé fait sauter l'élément dessus vers une autre case)
+
