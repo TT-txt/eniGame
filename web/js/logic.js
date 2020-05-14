@@ -1,13 +1,13 @@
-function logicTrigger(logics, pos, gameStarted) {
+function logicTrigger(logics, heroPos, gameStarted) {
     if (gameStarted) {
         let isPressurePlate = false;//Is there a pressure plate in the map
         for (let elt of logics) {
             switch (elt.type) {
                 case 0://pressurePlate
                     isPressurePlate = true;
-                    if (elt.activated == false && elt.coord.x == pos.x && elt.coord.z == pos.z) {
+                    if (elt.activated == false && elt.coord.x == heroPos.x && elt.coord.z == heroPos.z) {
                         pressurePlateOn(elt);
-                    } else if (elt.activated == true && (elt.coord.x != pos.x || elt.coord.z != pos.z)) {
+                    } else if (elt.activated == true && (elt.coord.x != heroPos.x || elt.coord.z != heroPos.z)) {
                         pressurePlateOff(elt);
                     }
                     break;

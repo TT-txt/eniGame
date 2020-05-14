@@ -138,12 +138,12 @@ function createMap(mapConstructor) {
         switch (elt.type) {
             case 0: //Pressure plate
                 pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
-                pressurePlate.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                pressurePlate.position.set(elt.coord.x, elt.coord.y - 0.49, elt.coord.z);
                 logic.add(pressurePlate);
                 break;
             case 1://Pushable box
                 pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
-                pushableBox.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                pushableBox.position.set(elt.coord.x, elt.coord.y - 0.1, elt.coord.z);
                 pushableBox.scale.set(0.8, 0.8, 0.8);
                 logic.add(pushableBox);
             default:
