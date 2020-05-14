@@ -6,11 +6,34 @@
 		width: 100%;
 		padding: 0;
 		margin: 0;
+		background-color: #e0e0e0;
 	}
 
 	.btn {
 		margin:10px;
 	}
+	
+    .btn-success{
+        background-color:#6351ce !important;  border-color: #6351ce !important; 
+	}
+	
+    .btn-success:hover, .btn-success:active, .btn-success:visited{
+        border-color: #A9A9A9 !important; 
+	}
+
+    .text-autre{
+	color: #6351ce !important;
+	}
+
+    .row{
+	margin-right: 0px !important;
+	}
+	
+     @font-face{
+	font-family:"jeu";
+	src: url('8-BIT WONDER.TTF');
+	}
+
 </style>
 <script src="include/three/three.js"></script>
 <script src="include/three/OrbitControls.js"></script>
@@ -32,13 +55,13 @@
 	<div class="row">
 		<div class="col-lg-1">
 		</div>
-		<div class="col-lg-10">
-			<aside class="row" style="text-align:center;padding:20px;background-color:red;">
-				<button type="button" id="cameraChange" class="btn btn-primary">TEST</button>
+		<div class="col-lg-10" style="box-shadow: 0px 6px 5px grey; padding-right: 0px !important;">
+			<aside class="row" style="text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;">
+				<button type="button" id="cameraChange" class="btn btn-dark">TEST</button>
 			</aside>
-			<main class="row game" id="scene-container" style="text-align: center;">
+			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
 				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
-					<h1 style="color:white;">eniGame</h1>
+					<h1 style="color:white; font-family:jeu">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
 					<br />
 					<button id="TUTORIAL" type="button" class="btn btn-outline-secondary" onclick="">TUTORIAL</button>
