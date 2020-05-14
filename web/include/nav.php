@@ -32,15 +32,14 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
     }
 }
 ?>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="box-shadow: 0px 6px 5px grey;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="box-shadow: 0px 6px 5px grey; margin-bottom:20px;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand text-danger" href="home.php">LOGO</a>
+    <a class="navbar-brand text-autre" href="home.php">LOGO</a>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03" >
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item">
                 <a class="nav-link" href="#">Rules</a>
             </li>
@@ -68,7 +67,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
                     <a class="dropdown-item text-danger" href="disconnect.php">Disconnect</a>
                 </div>');
             } else {
-                echo ('"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Connect">Connect</button>');
+                echo ('"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#Connect">Connect</button>');
             }
             echo ('</li>');
             ?>
@@ -92,7 +91,8 @@ if ($connected == false) {
                         </div>
                         <br />
                         <input type="password" class="form-control" placeholder="Password" name="password" required /><br /><br />
-                        <button type="submit" class="btn btn-primary">Connect</button>
+                        <style>.btn-success{background-color:#6351ce !important;}</style> 
+                        <button type="submit" class="btn btn-success">Connect</button>
                         <!--<button type="submit" class="btn btn-success">Register</button>-->
                         <a class="btn btn-success text-light" data-toggle="modal" data-target="#register" data-dismiss="modal" role="button">Register</a>
                     </form>
