@@ -7,6 +7,10 @@
 		padding: 0;
 		margin: 0;
 	}
+
+	.btn {
+		margin:10px;
+	}
 </style>
 <script src="include/three/three.js"></script>
 <script src="include/three/OrbitControls.js"></script>
