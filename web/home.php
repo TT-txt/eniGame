@@ -26,144 +26,146 @@
 <body>
 	<?php include("include/nav.php"); ?>
 	<div class="row">
-		<div class="lg-col-1">
+		<div class="col-lg-1">
 		</div>
-		<div class="lg-col-10">
-			<aside class="row" style="text-align:center;padding-top:20px;">
+		<div class="col-lg-10">
+			<aside class="row" style="text-align:center;padding:20px;background-color:red;">
 				<button type="button" id="cameraChange" class="btn btn-primary">Change Camera View</button>
 			</aside>
-			<main class="row game" id="scene-container" style="width:99%">
-				<menu>
-					<h1>eniGame</h1>
+			<main class="row game" id="scene-container">
+				<menu id="MENU" style="background-color:black;width:100%">
+					<h1 style="color:white;">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
-					<br/>
-					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
-					<br/>
+					<br />
+					<button id="TUTORIAL" type="button" class="btn btn-outline-secondary" onclick="">TUTORIAL</button>
+					<br />
 					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
 				</menu>
-			<script>
-			//NEEDED TO HAVE A WORKING SCENE
-			let container;
-			let camera;
-			let controls;
-			let renderer;
-			let scene;
-			let gameStarted;//TO BEGIN TESTING LOGIC ELTS
+				<script>
+					//NEEDED TO HAVE A WORKING SCENE
+					let container;
+					let camera;
+					let controls;
+					let renderer;
+					let scene;
+					let gameStarted; //TO BEGIN TESTING LOGIC ELTS
 
-			//Groups
-			let mapBuild = new THREE.Group();
-			mapBuild.name = "Map; everything is here !";
-			let hero = new THREE.Group();
-			hero.name = "Hero";
-			let doorL = new THREE.Group();
-			doorL.name = "Left Door";
-			let doorT = new THREE.Group();
-			doorT.name = "Top Door";
-			let doorR = new THREE.Group();
-			doorR.name = "Right Door";
-			let doorB = new THREE.Group();
-			doorB.name = "Bottom Door";
+					//Groups
+					let mapBuild = new THREE.Group();
+					mapBuild.name = "Map; everything is here !";
+					let hero = new THREE.Group();
+					hero.name = "Hero";
+					let doorL = new THREE.Group();
+					doorL.name = "Left Door";
+					let doorT = new THREE.Group();
+					doorT.name = "Top Door";
+					let doorR = new THREE.Group();
+					doorR.name = "Right Door";
+					let doorB = new THREE.Group();
+					doorB.name = "Bottom Door";
 
-			//Materials
-			let floorMaterial;
-			let wallMaterialCobble;
-			let wallMaterialCracked;
-			let wallMaterialMossy;
-			let doorMaterial;
-			let pressurePlateMaterial;
-			let pushableBoxMaterial;
+					//Materials
+					let floorMaterial;
+					let wallMaterialCobble;
+					let wallMaterialCracked;
+					let wallMaterialMossy;
+					let doorMaterial;
+					let dispenserMaterial = [];
+					let pressurePlateMaterial;
+					let pushableBoxMaterial;
 
-			//Geometry
-			let cube;
-			let flatRectangle;
-			let slimRectangle;
+					//Geometry
+					let cube;
+					let flatRectangle;
+					let slimRectangle;
 
-			//Meshes
-			let heroMesh; //USE hero TO MOVE THE CHAR AROUND
-			let block;
-			let door;
-			let pressurePlate;
-			let pushableBox;
+					//Meshes
+					let heroMesh; //USE hero TO MOVE THE CHAR AROUND
+					let block;
+					let door;
+					let dispenser;
+					let pressurePlate;
+					let pushableBox;
 
-			//Animation
-			const mixers = [];
-			const clock = new THREE.Clock();
+					//Animation
+					const mixers = [];
+					const clock = new THREE.Clock();
 
-			function init() {
-				toVanish = document.querySelector("#PLAY");
-				toVanish.style["display"] = "none";
+					function init() {
+						toVanish = document.querySelector("#MENU");
+						toVanish.style["display"] = "none";
 
-				container = document.querySelector('#scene-container');
+						container = document.querySelector('#scene-container');
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color(0x8FBCD4);
+						scene = new THREE.Scene();
+						scene.background = new THREE.Color(0x8FBCD4);
 
-				currentLevel = testLevel;
-				currentMap = 0; // Top right of the level
+						currentLevel = testLevel;
+						currentMap = 0; // Top right of the level
 
-				createSkybox();
-				createMesh();
-				createMap(currentLevel.maps[currentMap]);
-				createCamera();
-				createControls();
-				createLights();
-				loadModels();
-				createRenderer();
+						createSkybox();
+						createMesh();
+						createMap(currentLevel.maps[currentMap]);
+						createCamera();
+						createControls();
+						createLights();
+						loadModels();
+						createRenderer();
 
-				//Will not be set automatically in the future (mapLoader)
-				gameStarted = true;//Used in update
+						//Will not be set automatically in the future (mapLoader)
+						gameStarted = true; //Used in update
 
-				renderer.setAnimationLoop(() => {
-					update();
-					render();
+						renderer.setAnimationLoop(() => {
+							update();
+							render();
 
-				});
+						});
 
-			}
+					}
 
-			function createRenderer() {
+					function createRenderer() {
 
-				renderer = new THREE.WebGLRenderer({
-					antialias: true
-				});
-				renderer.setSize(container.clientWidth, container.clientHeight);
+						renderer = new THREE.WebGLRenderer({
+							antialias: true
+						});
+						renderer.setSize(container.clientWidth, container.clientHeight);
 
-				renderer.setPixelRatio(window.devicePixelRatio);
+						renderer.setPixelRatio(window.devicePixelRatio);
 
-				renderer.gammaFactor = 2.2;
-				renderer.gammaOutput = true;
+						renderer.gammaFactor = 2.2;
+						renderer.gammaOutput = true;
 
-				renderer.physicallyCorrectLights = true;
+						renderer.physicallyCorrectLights = true;
 
-				container.appendChild(renderer.domElement);
+						container.appendChild(renderer.domElement);
 
-			}
+					}
 
-			// perform any updates to the scene, called once per frame
-			// avoid heavy computation here
-			function update() {
+					// perform any updates to the scene, called once per frame
+					// avoid heavy computation here
+					function update() {
 
-				logicTrigger(currentLevel.maps[currentMap].logics, hero.position ,gameStarted);
+						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
-			}
+					}
 
-			// render of the scene
-			function render() {
-				const delta = clock.getDelta();
-				for (const mixer of mixers) {
+					// render of the scene
+					function render() {
+						const delta = clock.getDelta();
+						for (const mixer of mixers) {
 
-					mixer.update(delta);
+							mixer.update(delta);
 
-				}
-				renderer.render(scene, camera);
+						}
+						renderer.render(scene, camera);
 
-			}
-		</script>
-	</main>
+					}
+				</script>
+			</main>
+		</div>
+		<div class="col-lg-1">
+		</div>
 	</div>
-	<div class="lg-col-1">
-	</div>
-	<div class="row">
 	<?php include("include/footer.php"); ?>
 </body>
 

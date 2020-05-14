@@ -33,7 +33,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
 }
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="box-shadow: 0px 6px 5px grey;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="box-shadow: 0px 6px 5px grey;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -146,5 +146,3 @@ if ($connected == false) {
     </div>
 </div>
 </div>
-
-<!--Cart modal-->
