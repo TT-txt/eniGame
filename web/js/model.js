@@ -3,7 +3,7 @@ function loadModels() {
     const loader = new THREE.GLTFLoader();
 
     loader.load("models/Soldier.glb", handle_load);
-    //loader.load("models/Parrot.glb", handle_load); EASTER EGG
+    //loader.load("models/Parrot.glb", handle_load); //EASTER EGG
 
     function handle_load(gltf) {
         heroMesh = gltf.scene.children[0];

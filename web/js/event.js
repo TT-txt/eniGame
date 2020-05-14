@@ -36,6 +36,10 @@ function checkKeyPress(key) {
             /*
             **************Left arrow key or q**************
             */
+            if (currentLevel.maps[currentMap].solved && hero.position.x - 1 == currentLevel.maps[currentMap].exits[0].x && hero.position.z == currentLevel.maps[currentMap].exits[0].z) {
+                //Return to menu
+                console.log("YEET");
+            }
             if (0 == hero.position.x) {// Default Wall
                 blocked = true;
             } else {
@@ -66,7 +70,7 @@ function checkKeyPress(key) {
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
                                 pushableBox.position.x -= 1;//Updating the render
-                                element.coord.x -=1;//Updating the map
+                                element.coord.x -= 1;//Updating the map
                                 break;
                             }
                         }
@@ -81,6 +85,10 @@ function checkKeyPress(key) {
             /*
             **************Up arrow key or z**************
             */
+            if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[1].x && hero.position.z - 1 == currentLevel.maps[currentMap].exits[1].z) {
+                //Return to menu
+                console.log("YEET");
+            }
             if (0 == hero.position.z) {// Default Wall
                 blocked = true;
             } else {
@@ -126,7 +134,12 @@ function checkKeyPress(key) {
             /*
             **************Right arrow key or d**************
             */
-
+            if (currentLevel.maps[currentMap].solved && hero.position.x + 1 == currentLevel.maps[currentMap].exits[2].x && hero.position.z == currentLevel.maps[currentMap].exits[2].z) {
+                blocked = false;
+                currentMap++;
+                currentLevel.maps[currentMap].spawnPoint.set(hero.position.x - currentLevel.maps[currentMap--].floor.x, hero.position.y - currentLevel.maps[currentMap--].floor.y, hero.position.z - currentLevel.maps[currentMap--].floor.z);
+                mapReset();
+            }
             if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
                 blocked = true;
             } else {
@@ -173,6 +186,11 @@ function checkKeyPress(key) {
             **************Down arrow key or s**************
             */
 
+            if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[3].x && hero.position.z + 1 == currentLevel.maps[currentMap].exits[3].z) {
+                //Return to menu
+                console.log("YEET");
+            }
+
             if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {// Default Wall
                 blocked = true;
             } else {
@@ -215,14 +233,7 @@ function checkKeyPress(key) {
                 hero.position.z += 1;
             hero.rotation.y = Math.PI;
         } else if (key.keyCode == "82") { //checking if key pressed is r
-            for (child of scene.children) { 
-                if (child.name == "Map") { //getting the array position of the map group in order to reset it
-                    scene.remove(child); //removing it
-                    gameStarted = false;
-                    break;
-                }
-            }
-            createMap(currentLevel.maps[currentMap]); //re creating the map
+            mapReset();
         }
     }
 }

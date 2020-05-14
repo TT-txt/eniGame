@@ -1,13 +1,3 @@
-/*class coord {
-    constructor(x, y, z) {
-        this.x = x;//easy
-        this.y = y;//to 
-        this.z = z;//understand
-    }
-}
-*/
-//new THREE.Vector3(x, y, z)
-
 class map {
     constructor(walls, floor, traps, logics, solved, type, exits, spawnPoint) {
         this.walls = walls; //array containing COORD of walls
@@ -21,8 +11,15 @@ class map {
     }
 }
 
+/*
+EXIT ARRAY
+    1
+0       2
+    3
+*/
+
 /* ************************
-maps array :
+level array :
 0 1 2 3 4
 5 6 7 8 9
 10 ... 14
@@ -35,6 +32,14 @@ class level {
         this.theme = theme; //texture themes
     }
 } 
+/* ************************
+level array :
+0 1 2 3 4
+5 6 7 8 9
+10 ... 14
+15 ... 19
+20 ... 24
+************************ */
 
 class trap {
     constructor(type, coord, activated, facing) {

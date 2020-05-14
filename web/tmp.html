@@ -20,10 +20,6 @@
 	<script src="js/event.js"></script>
 
 	<!-- tmp levels include -->
-	<script src="tmp-tests/louisD.js"></script>
-	<script src="tmp-tests/louisM.js"></script>
-	<script src="tmp-tests/marie.js"></script>
-	<script src="tmp-tests/noe.js"></script>
 	<style>
 		#scene-container {
 			position: absolute;
@@ -90,8 +86,9 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color(0x8FBCD4);
 
-				currentLevel = testLevel;
+				currentLevel = startLevel;
 				currentMap = 0; // Top right of the level
+				currentLevel.maps[currentMap].solved = false;
 
 				createSkybox();
 				createMesh();
@@ -106,6 +103,7 @@
 					update();
 					render();
 
+					//if (currentLevel.maps[currentMap].solved) return;
 				});
 
 			}
@@ -131,6 +129,7 @@
 			// perform any updates to the scene, called once per frame
 			// avoid heavy computation here
 			function update() {
+				//if (currentLevel.maps[currentMap].solved) return;
 
 				logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
@@ -138,6 +137,8 @@
 
 			// render of the scene
 			function render() {
+				//if (currentLevel.maps[currentMap].solved) return;
+
 				const delta = clock.getDelta();
 				for (const mixer of mixers) {
 

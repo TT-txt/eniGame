@@ -38,7 +38,7 @@ function doorOpen(toActivate) {
     doorT.position.set(doorT.position.x-0.4, doorT.position.y, doorT.position.z);
     doorB.position.set(doorB.position.x+0.4, doorB.position.y, doorB.position.z);
     doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z+0.4);
-    toActivate.activated = true;
+    currentLevel.maps[currentMap].solved = true;
 }
 
 function doorClose(toActivate) {
@@ -48,7 +48,7 @@ function doorClose(toActivate) {
     doorT.position.set(doorT.position.x+0.4, doorT.position.y, doorT.position.z);
     doorB.position.set(doorB.position.x-0.4, doorB.position.y, doorB.position.z);
     doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z-0.4);
-    toActivate.activated = false;
+    currentLevel.maps[currentMap].solved = false;
 }
 
 function pressurePlateOn(logicElem) {
@@ -57,6 +57,7 @@ function pressurePlateOn(logicElem) {
             //Open the map doors
             //logicElem.coord.y-= 0.2;//Shows that the pressure plate in onUse
             doorOpen(logicElem);
+            logicElem.activated = true;
             break;
         default:
             break;
@@ -69,6 +70,7 @@ function pressurePlateOff(logicElem) {
             //Open the map doors
             //logicElem.coord.y+= 0.2;//Shows that the pressure plate in onUse
             doorClose(logicElem);
+            logicElem.activated = false;
             break;
         default:
             break;
