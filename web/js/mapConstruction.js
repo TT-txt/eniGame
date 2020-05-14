@@ -1,7 +1,7 @@
 function createMap(mapConstructor) {
     //generating the groups
     const mapBuild = new THREE.Group();
-    mapBuild.name = "Map; everything is here !";
+    mapBuild.name = "Map";
     const floor = new THREE.Group();
     floor.name = "Floor";
     const walls = new THREE.Group();
@@ -12,6 +12,8 @@ function createMap(mapConstructor) {
     exits.name = "Exits";
     let logic = new THREE.Group();
     logic.name = "Logic";
+    let trap = new THREE.Group();
+    trap.name = "Traps";
 
     //creating the floor
     for (let x = 0; x < mapConstructor.floor.x; x -= -1) {
@@ -143,7 +145,8 @@ function createMap(mapConstructor) {
                 break;
             case 1://Pushable box
                 pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
-                pushableBox.position.set(elt.coord.x, elt.coord.y - 0.1, elt.coord.z);
+                pushableBox.position.set(elt.activated.x, elt.activated.y - 0.1, elt.activated.z);
+                elt.coord.set (elt.activated.x, elt.activated.y - 0.1, elt.activated.z)
                 pushableBox.scale.set(0.8, 0.8, 0.8);
                 logic.add(pushableBox);
             default:
@@ -151,15 +154,55 @@ function createMap(mapConstructor) {
         }
     }
 
+    for(let elt of mapConstructor.traps){
+        if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
+        switch(elt.type){
+            case 0://SPIKES, to do
+                break;
+            case 1://arrow 1
+            let dispenser = new THREE.Mesh(cube, dispenserMaterial);
+            dispenser.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                switch(elt.facing){
+                    case 'e':    
+                        trap.add(dispenser);
+                        break;
+                    case 's':
+                        dispenser.rotation.y+= Math.PI / 2;
+                        trap.add(dispenser);
+                        break;
+                    case 'n':
+                        dispenser.rotation.y-= Math.PI / 2;
+                        trap.add(dispenser);
+                        break;
+                    case 'w':
+                        dispenser.rotation.y += Math.PI;
+                        trap.add(dispenser);
+                        break;
+                    default:
+                        continue;
+                }
+                break;
+            default:
+                continue;
+        }
+    }
+
+    //spawning the hero
+    hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
+
+    gameStarted = true;
+
     mapBuild.add(backWalls);
     mapBuild.add(floor);
     mapBuild.add(walls);
     mapBuild.add(exits);
-    //mapBuild.add(doors);
     mapBuild.add(doorL);
     mapBuild.add(doorT);
     mapBuild.add(doorR);
     mapBuild.add(doorB);
     mapBuild.add(logic);
+    mapBuild.add(trap);
     scene.add(mapBuild);
 }
+
+//Build inznnaoi fa

@@ -65,9 +65,8 @@ function checkKeyPress(key) {
                                 }
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
-                                pushableBox.position.x -= 1;
-                                element.coord.x -= 1
-                                console.log(element);
+                                pushableBox.position.x -= 1;//Updating the render
+                                element.coord.x -=1;//Updating the map
                                 break;
                             }
                         }
@@ -112,8 +111,7 @@ function checkKeyPress(key) {
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
                                 pushableBox.position.z -= 1;//Updating the render
-                                element.coord.z -= 1;//Updating the Map
-                                console.log(element);
+                                element.coord.z -= 1; //Updating the map
                                 break;
                             }
                         }
@@ -143,7 +141,7 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z  && currentLevel.maps[currentMap].floor.x-1 == element.coord.x) {
+                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z && currentLevel.maps[currentMap].floor.x - 1 == element.coord.x) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;
@@ -159,8 +157,7 @@ function checkKeyPress(key) {
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
                                 pushableBox.position.x += 1;
-                                element.coord.x += 1
-                                console.log(element);
+                                element.coord.x += 1;
                                 break;
                             }
                         }
@@ -190,7 +187,7 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z-1 == element.coord.z) {
+                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z - 1 == element.coord.z) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;
@@ -206,7 +203,7 @@ function checkKeyPress(key) {
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
                                 pushableBox.position.z += 1;//Updating the render
-                                element.coord.z += 1;//Updating the Map
+                                element.coord.z += 1;//Updating the map.
                                 console.log(element);
                                 break;
                             }
@@ -217,10 +214,16 @@ function checkKeyPress(key) {
             if (!blocked)
                 hero.position.z += 1;
             hero.rotation.y = Math.PI;
+        } else if (key.keyCode == "82") { //checking if key pressed is r
+            for (child of scene.children) { 
+                if (child.name == "Map") { //getting the array position of the map group in order to reset it
+                    scene.remove(child); //removing it
+                    gameStarted = false;
+                    break;
+                }
+            }
+            createMap(currentLevel.maps[currentMap]); //re creating the map
         }
-        //DEBUG
-        //console.log(hero.position);
-        //console.log(hero.rotation);
     }
 }
 

@@ -16,7 +16,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     if (isPressurePlate) {
                         for (let elt2 of logics) {
                             if (elt2.type == 0) {
-                                if (elt2.activated = false && elt2.coord.x == elt.coord.x && elt2.coord.z == elt.coord.z) {
+                                if (elt2.activated == false && elt2.coord.x == elt.coord.x && elt2.coord.z == elt.coord.z) {
                                     pressurePlateOn(elt2);
                                 }
                             }
@@ -31,23 +31,31 @@ function logicTrigger(logics, heroPos, gameStarted) {
     }
 }
 
-function doorOpen(toActivate) {
+function doorOpen(toActivate) { 
     slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
-    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z);
+    //Moving the doors to stick to the wall
+    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z-0.4);
+    doorT.position.set(doorT.position.x-0.4, doorT.position.y, doorT.position.z);
+    doorB.position.set(doorB.position.x+0.4, doorB.position.y, doorB.position.z);
+    doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z+0.4);
     toActivate.activated = true;
-    //TODO CHANGE TO STICK TO THE WALL
 }
 
 function doorClose(toActivate) {
     slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
+    //Moving the doors to stick to the wall
+    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z+0.4);
+    doorT.position.set(doorT.position.x+0.4, doorT.position.y, doorT.position.z);
+    doorB.position.set(doorB.position.x-0.4, doorB.position.y, doorB.position.z);
+    doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z-0.4);
     toActivate.activated = false;
-    //TODO REVERT POSITION
 }
 
 function pressurePlateOn(logicElem) {
     switch (logicElem.onUse) {
         case 0:
             //Open the map doors
+            //logicElem.coord.y-= 0.2;//Shows that the pressure plate in onUse
             doorOpen(logicElem);
             break;
         default:
@@ -59,6 +67,7 @@ function pressurePlateOff(logicElem) {
     switch (logicElem.onUse) {
         case 0:
             //Open the map doors
+            //logicElem.coord.y+= 0.2;//Shows that the pressure plate in onUse
             doorClose(logicElem);
             break;
         default:
