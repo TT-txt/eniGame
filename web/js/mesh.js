@@ -28,13 +28,23 @@ function createMesh() {
     let textureLoader = new THREE.TextureLoader();
 
     //loading and encoding textures
-    const wallTextureCobble = textureLoader.load('textures/stoneBrick.png');
-    const wallTextureCracked = textureLoader.load('textures/crackedStoneBrick.png');
-    const wallTextureMossy = textureLoader.load('textures/mossyStoneBricks.png');
-    const floorTexture = textureLoader.load('textures/stone.png');
-    const doorTexture = textureLoader.load('textures/door.png');
-    const pressurePlateTexture = textureLoader.load('textures/pressurePlate.png');
-    const pushableBoxTexture = textureLoader.load('textures/pushableBox.png');
+    const wallTextureCobble = textureLoader.load('textures/env/walls/stoneBrick.png');
+    const wallTextureCracked = textureLoader.load('textures/env/walls/crackedStoneBrick.png');
+    const wallTextureMossy = textureLoader.load('textures/env/walls/mossyStoneBricks.png');
+    const floorTexture = textureLoader.load('textures/env/floor/stone.png');
+    const doorTexture = textureLoader.load('textures/logic/door.png');
+    const pressurePlateTexture = textureLoader.load('textures/logic/pressurePlate.png');
+    const pushableBoxTexture = textureLoader.load('textures/logic/pushableBox.png');
+    const dispenserFrontTexture = textureLoader.load('textures/trap/dispenser/dispenserFront.png');
+    const dispenserSideTexture = textureLoader.load('textures/trap/dispenser/dispenserSide.png');
+    const dispenserTopTexture = textureLoader.load('textures/trap/dispenser/dispenserTop.png');
+
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserFrontTexture}));
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserTopTexture}));
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
+    dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
 
     floorTexture.encoding = THREE.sRGBEncoding;
     floorTexture.anisotropy = 16;
@@ -50,6 +60,12 @@ function createMesh() {
     pressurePlateTexture.anisotropy = 16;
     pushableBoxTexture.encoding = THREE.sRGBEncoding;
     pushableBoxTexture.anisotropy = 16;
+    dispenserFrontTexture.encoding = THREE.sRGBEncoding;
+    dispenserFrontTexture.anisotropy = 16;
+    dispenserSideTexture.encoding = THREE.sRGBEncoding;
+    dispenserSideTexture.anisotropy = 16;
+    dispenserTopTexture.encoding = THREE.sRGBEncoding;
+    dispenserTopTexture.anisotropy = 16;
 
     //creating materials
     floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
@@ -62,6 +78,6 @@ function createMesh() {
     
     //creating geometry
     cube = new THREE.BoxBufferGeometry(1, 1, 1);
-    flatRectangle = new THREE.BoxBufferGeometry(1, 0.05, 1);
+    flatRectangle = new THREE.BoxBufferGeometry(0.9, 0.05, 0.9);
     slimRectangle = new THREE.BoxBufferGeometry(0.25, 2, 1);
 }

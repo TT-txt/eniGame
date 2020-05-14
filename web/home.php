@@ -3,29 +3,9 @@
 <style>
 	body {
 		height: 100%;
+		width: 100%;
 		padding: 0;
 		margin: 0;
-		display: grid;
-		grid-template-areas: "navbar navbar"
-			"sidebar content"
-			"footer footer";
-		grid-template-columns: 10% 90%;
-	}
-
-	nav {
-		grid-area: navbar;
-	}
-
-	aside {
-		grid-area: sidebar;
-	}
-
-	div.content {
-		grid-area: content;
-	}
-
-	footer {
-		grid-area: footer;
 	}
 </style>
 <script src="include/three/three.js"></script>
@@ -45,19 +25,34 @@
 
 <body>
 	<?php include("include/nav.php"); ?>
-	<aside style="text-align:center;padding-top:20px;">
-		<button type="button" id="cameraChange" class="btn btn-primary">Change Camera View</button>
-	</aside>
-	<main class="game" id="scene-container" style="width:99%">
-		<script>
+	<div class="row">
+		<div class="lg-col-1">
+		</div>
+		<div class="lg-col-10">
+			<aside class="row" style="text-align:center;padding-top:20px;">
+				<button type="button" id="cameraChange" class="btn btn-primary">Change Camera View</button>
+			</aside>
+			<main class="row game" id="scene-container" style="width:99%">
+				<menu>
+					<h1>eniGame</h1>
+					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
+					<br/>
+					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
+					<br/>
+					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
+				</menu>
+			<script>
 			//NEEDED TO HAVE A WORKING SCENE
 			let container;
 			let camera;
 			let controls;
 			let renderer;
 			let scene;
+			let gameStarted;//TO BEGIN TESTING LOGIC ELTS
 
 			//Groups
+			let mapBuild = new THREE.Group();
+			mapBuild.name = "Map; everything is here !";
 			let hero = new THREE.Group();
 			hero.name = "Hero";
 			let doorL = new THREE.Group();
@@ -95,6 +90,8 @@
 			const clock = new THREE.Clock();
 
 			function init() {
+				toVanish = document.querySelector("#PLAY");
+				toVanish.style["display"] = "none";
 
 				container = document.querySelector('#scene-container');
 
@@ -112,6 +109,9 @@
 				createLights();
 				loadModels();
 				createRenderer();
+
+				//Will not be set automatically in the future (mapLoader)
+				gameStarted = true;//Used in update
 
 				renderer.setAnimationLoop(() => {
 					update();
@@ -143,7 +143,7 @@
 			// avoid heavy computation here
 			function update() {
 
-				logicTrigger(currentLevel.maps[currentMap].logics, hero.position);
+				logicTrigger(currentLevel.maps[currentMap].logics, hero.position ,gameStarted);
 
 			}
 
@@ -158,10 +158,12 @@
 				renderer.render(scene, camera);
 
 			}
-
-			init();
 		</script>
 	</main>
+	</div>
+	<div class="lg-col-1">
+	</div>
+	<div class="row">
 	<?php include("include/footer.php"); ?>
 </body>
 

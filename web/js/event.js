@@ -26,77 +26,205 @@ window.addEventListener("keydown", function (e) {
 
 // Player movements
 var blocked = true;
+var unmovableBox = false;
 
 function checkKeyPress(key) {
-    blocked = false;
+    if (gameStarted) {
+        blocked = false;
+        unmovableBox = false;
+        if (key.keyCode == "37" || key.keyCode == "81") {
+            /*
+            **************Left arrow key or q**************
+            */
+            if (0 == hero.position.x) {// Default Wall
+                blocked = true;
+            } else {
+                // Manually placed walls
+                for (let element of currentLevel.maps[currentMap].walls) {
+                    if (element.x == hero.position.x - 1 && element.z == hero.position.z) {//Case of an alone player
+                        blocked = true;
+                        break;
+                    }
+                }
 
-    if (key.keyCode == "37" || key.keyCode == "81") {
-        //Left arrow key or q
-        if (0 == hero.position.x) {
-            blocked = true;
-        } else {
-            for (let element of currentLevel.maps[currentMap].walls) {
-                if (element.x == hero.position.x - 1 && element.z == hero.position.z) {
-                    blocked = true;
+                // PushableBox special case
+                for (let element of currentLevel.maps[currentMap].logics) {
+                    if (element.type == 1) {
+                        if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x) {
+                            unmovableBox = true;//If a box is between the player and the default wall
+                            blocked = true;
+                            break;
+                        }
+
+                        if (element.coord.x == hero.position.x - 1 && element.coord.z == hero.position.z && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            for (let element2 of currentLevel.maps[currentMap].walls) {
+                                if (element2.x == hero.position.x - 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
+                                    unmovableBox = true;
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!unmovableBox) {//If the pushableBox is movable
+                                pushableBox.position.x -= 1;//Updating the render
+                                element.coord.x -=1;//Updating the map
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!blocked)
+                hero.position.x -= 1;
+            hero.rotation.y = Math.PI / 2;
+
+        } else if (key.keyCode == "38" || key.keyCode == "90") {
+            /*
+            **************Up arrow key or z**************
+            */
+            if (0 == hero.position.z) {// Default Wall
+                blocked = true;
+            } else {
+                // Manually placed walls
+                for (let element of currentLevel.maps[currentMap].walls) {
+                    if (element.x == hero.position.x && element.z == hero.position.z - 1) {//Case of an alone player
+                        blocked = true;
+                        break;
+                    }
+                }
+
+                // PushableBox special case
+                for (let element of currentLevel.maps[currentMap].logics) {
+                    if (element.type == 1) {
+                        if (hero.position.z - 2 == -1 && hero.position.x == element.coord.x && 0 == element.coord.z) {
+                            unmovableBox = true;//If a box is between the player and the default wall
+                            blocked = true;
+                            break;
+                        }
+
+                        if (element.coord.x == hero.position.x && element.coord.z == hero.position.z - 1 && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            for (let element2 of currentLevel.maps[currentMap].walls) {
+                                if (element2.x == hero.position.x && element2.z == hero.position.z - 2) {//Case of a solid wall behind the pushableBox
+                                    unmovableBox = true;
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!unmovableBox) {//If the pushableBox is movable
+                                pushableBox.position.z -= 1;//Updating the render
+                                element.coord.z -= 1; //Updating the map
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!blocked)
+                hero.position.z -= 1;
+            hero.rotation.y = 0;
+
+        } else if (key.keyCode == "39" || key.keyCode == "68") {
+            /*
+            **************Right arrow key or d**************
+            */
+
+            if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
+                blocked = true;
+            } else {
+                // Manually placed walls
+                for (let element of currentLevel.maps[currentMap].walls) {
+                    if (element.x == hero.position.x + 1 && element.z == hero.position.z) {//Case of an alone player
+                        blocked = true;
+                        break;
+                    }
+                }
+
+                // PushableBox special case
+                for (let element of currentLevel.maps[currentMap].logics) {
+                    if (element.type == 1) {
+                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z && currentLevel.maps[currentMap].floor.x - 1 == element.coord.x) {
+                            unmovableBox = true;//If a box is between the player and the default wall
+                            blocked = true;
+                            break;
+                        }
+
+                        if (element.coord.x == hero.position.x + 1 && element.coord.z == hero.position.z && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            for (let element2 of currentLevel.maps[currentMap].walls) {
+                                if (element2.x == hero.position.x + 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
+                                    unmovableBox = true;
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!unmovableBox) {//If the pushableBox is movable
+                                pushableBox.position.x += 1;
+                                element.coord.x += 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!blocked)
+                hero.position.x += 1;
+            hero.rotation.y = Math.PI * 3 / 2;
+
+        } else if (key.keyCode == "40" || key.keyCode == "83") {
+            /*
+            **************Down arrow key or s**************
+            */
+
+            if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {// Default Wall
+                blocked = true;
+            } else {
+                // Manually placed walls
+                for (let element of currentLevel.maps[currentMap].walls) {
+                    if (element.x == hero.position.x && element.z == hero.position.z + 1) {//Case of an alone player
+                        blocked = true;
+                        break;
+                    }
+                }
+
+                // PushableBox special case
+                for (let element of currentLevel.maps[currentMap].logics) {
+                    if (element.type == 1) {
+                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z - 1 == element.coord.z) {
+                            unmovableBox = true;//If a box is between the player and the default wall
+                            blocked = true;
+                            break;
+                        }
+
+                        if (element.coord.x == hero.position.x && element.coord.z == hero.position.z + 1 && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            for (let element2 of currentLevel.maps[currentMap].walls) {
+                                if (element2.x == hero.position.x && element2.z == hero.position.z + 2) {//Case of a solid wall behind the pushableBox
+                                    unmovableBox = true;
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!unmovableBox) {//If the pushableBox is movable
+                                pushableBox.position.z += 1;//Updating the render
+                                element.coord.z += 1;//Updating the map.
+                                console.log(element);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!blocked)
+                hero.position.z += 1;
+            hero.rotation.y = Math.PI;
+        } else if (key.keyCode == "82") { //checking if key pressed is r
+            for (child of scene.children) { 
+                if (child.name == "Map") { //getting the array position of the map group in order to reset it
+                    scene.remove(child); //removing it
+                    gameStarted = false;
                     break;
                 }
             }
+            createMap(currentLevel.maps[currentMap]); //re creating the map
         }
-        if (!blocked)
-            hero.position.x -= 1;
-        hero.rotation.y = Math.PI / 2;
-    } else if (key.keyCode == "38" || key.keyCode == "90") {
-        //Up arrow key or z
-
-        if (0 == hero.position.z) {
-            blocked = true;
-        } else {
-            for (let element of currentLevel.maps[currentMap].walls) {
-                if (element.x == hero.position.x && element.z == hero.position.z - 1) {
-                    blocked = true;
-                    break;
-                }
-            }
-        }
-        if (!blocked)
-            hero.position.z -= 1;
-        hero.rotation.y = 0;
-    } else if (key.keyCode == "39" || key.keyCode == "68") {
-        //Right arrow key or d
-
-        if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {
-            blocked = true;
-        } else {
-            for (let element of currentLevel.maps[currentMap].walls) {
-                if (element.x == hero.position.x + 1 && element.z == hero.position.z) {
-                    blocked = true;
-                    break;
-                }
-            }
-        }
-        if (!blocked)
-            hero.position.x += 1;
-        hero.rotation.y = Math.PI * 3 / 2;
-    } else if (key.keyCode == "40" || key.keyCode == "83") {
-        //Down arrow key or s
-
-        if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {
-            blocked = true;
-        } else {
-            for (let element of currentLevel.maps[currentMap].walls) {
-                if (element.x == hero.position.x && element.z == hero.position.z + 1) {
-                    blocked = true;
-                    break;
-                }
-            }
-        }
-        if (!blocked)
-            hero.position.z += 1;
-        hero.rotation.y = Math.PI;
     }
-    //DEBUG
-    //console.log(hero.position);
-    //console.log(hero.rotation);
 }
 
 window.addEventListener("keydown", checkKeyPress, false); //false so the function doesn't return a thing
