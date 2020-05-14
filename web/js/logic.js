@@ -16,7 +16,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     if (isPressurePlate) {
                         for (let elt2 of logics) {
                             if (elt2.type == 0) {
-                                if (elt2.coord.x == elt.coord.x && elt2.coord.z == elt.coord.z) {
+                                if (elt2.activated = false && elt2.coord.x == elt.coord.x && elt2.coord.z == elt.coord.z) {
                                     pressurePlateOn(elt2);
                                 }
                             }
