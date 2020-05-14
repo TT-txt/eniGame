@@ -4,7 +4,7 @@ if (isset($link)) {
 }
 ?>
 <!-- Footer -->
-<footer class="page-footer font-small unique-color-dark bg-dark text-white">
+<footer class="page-footer font-small unique-color-dark bg-dark text-white" style="margin-top: 20px;">
     <div style="background-color: #6351ce;">
         <div class="container">
             <!-- Grid row-->
@@ -111,7 +111,7 @@ if (isset($link)) {
                 <h6 class="text-uppercase font-weight-bold">Contact</h6>
                 <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                 <p>
-                    <i class="fas fa-home mr-3"></i> France, Lille, 3 Rue des Lilas</p>
+                    <i class="fas fa-home mr-3"></i> Lille, 41 Boulevard Vauban</p>
                 <p>
                     <i class="fas fa-envelope mr-3"></i> contact@TTSK8.com</p>
                 <p>
@@ -129,7 +129,7 @@ if (isset($link)) {
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2020 Copyright: made by <a href="https://github.com/HugoMartel">Hugo Martel</a>, and <a href="https://github.com/TT-txt">TT-txt</a></div>
+    <div class="footer-copyright text-center py-3">© 2020 Copyright: made by <a href="#">TT-corp</a></div>
     <!-- Copyright -->
 
 </footer>
