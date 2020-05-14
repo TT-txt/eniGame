@@ -30,17 +30,17 @@
 		</div>
 		<div class="col-lg-10">
 			<aside class="row" style="text-align:center;padding:20px;background-color:red;">
-				<button type="button" id="cameraChange" class="btn btn-primary">Change Camera View</button>
+				<button type="button" id="cameraChange" class="btn btn-primary">TEST</button>
 			</aside>
-			<main class="row game" id="scene-container">
-				<menu id="MENU" style="background-color:black;width:100%">
+			<main class="row game" id="scene-container" style="text-align: center;">
+				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
 					<h1 style="color:white;">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
 					<br />
 					<button id="TUTORIAL" type="button" class="btn btn-outline-secondary" onclick="">TUTORIAL</button>
 					<br />
 					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
-				</menu>
+				</div>
 				<script>
 					//NEEDED TO HAVE A WORKING SCENE
 					let container;
