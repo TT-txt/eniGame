@@ -16,7 +16,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     if (isPressurePlate) {
                         for (let j = 0; j < logics.length; j++) {
                             if (logics[j].type == 0) {
-                                if (logics[j].activated == false && logics[j].coord.x == logics[j].coord.x && logics[j].coord.z == logics[j].coord.z) {
+                                if (logics[j].activated == false && logics[j].coord.x == logics[i].coord.x && logics[j].coord.z == logics[i].coord.z) {
                                     pressurePlateOn(logics[j], j);// /!\ use the plate coord /!\
                                 }
                             }
@@ -28,28 +28,37 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     break;
             }
         }
-        console.log(currentLevel.maps[currentMap].logics[0].activated);
+        //console.log(currentLevel.maps[currentMap].logics[0].activated);
     }
 }
 
 function doorOpen() {
-    slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
-    //Moving the doors to stick to the wall
-    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z - 0.4);
-    doorT.position.set(doorT.position.x - 0.4, doorT.position.y, doorT.position.z);
-    doorB.position.set(doorB.position.x + 0.4, doorB.position.y, doorB.position.z);
-    doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z + 0.4);
-    currentLevel.maps[currentMap].solved = true;
+    if (!(currentLevel.maps[currentMap].solved)) {
+        slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
+        
+        //Moving the doors to stick to the wall
+        //doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z - 0.4);
+        //doorT.position.set(doorT.position.x - 0.4, doorT.position.y, doorT.position.z);
+        //doorB.position.set(doorB.position.x + 0.4, doorB.position.y, doorB.position.z);
+        //doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z + 0.4);
+
+        currentLevel.maps[currentMap].solved = true;
+    }
 }
 
 function doorClose() {
-    slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
-    //Moving the doors to stick to the wall
-    doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z + 0.4);
-    doorT.position.set(doorT.position.x + 0.4, doorT.position.y, doorT.position.z);
-    doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
-    doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z - 0.4);
-    currentLevel.maps[currentMap].solved = false;
+    if (currentLevel.maps[currentMap].solved) {
+        slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
+
+        //Moving the doors to stick to the wall
+        /*
+        doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z + 0.4);
+        doorT.position.set(doorT.position.x + 0.4, doorT.position.y, doorT.position.z);
+        doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
+        doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z - 0.4);
+        */
+        currentLevel.maps[currentMap].solved = false;
+    }
 }
 
 function pressurePlateOn(logicElem, toActivateIndex) {

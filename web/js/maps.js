@@ -27,4 +27,4 @@ const startMap1 = new map(
     new THREE.Vector3(2, 1, 2),
 );
 
-const startLevel = new level([startMap0, startMap1]);
+const startLevel = new level([startMap0,startMap1]);

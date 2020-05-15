@@ -42,7 +42,6 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[2].x, 1, currentLevel.maps[currentMap].exits[2].z);
                 //hero.position.x -= 1;
                 hero.rotation.y = Math.PI / 2;
-                doorClose();
                 mapReset();
             }
             if (0 == hero.position.x) {// Default Wall
@@ -96,7 +95,6 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[3].x, 1, currentLevel.maps[currentMap].exits[3].z);
                 //hero.position.z -= 1;
                 hero.rotation.y = 0;
-                doorClose();
                 mapReset();
             }
 
@@ -151,7 +149,6 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[0].x, 1, currentLevel.maps[currentMap].exits[0].z);
                 //hero.position.x += 1;
                 hero.rotation.y = Math.PI * 3 / 2;
-                doorClose();
                 mapReset();
             }
             if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
@@ -208,7 +205,6 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[1].x, 1, currentLevel.maps[currentMap].exits[1].z);
                 //hero.position.z += 1;
                 hero.rotation.y = Math.PI;
-                doorClose();
                 mapReset();
             }
 

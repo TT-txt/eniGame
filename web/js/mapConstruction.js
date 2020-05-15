@@ -222,6 +222,7 @@ function createMap(mapConstructor) {
 
 //Map Reset
 function mapReset() {
+    doorClose();
     for (child of scene.children) {
         if (child.name == "Map") { //getting the array position of the map group in order to reset it
             scene.remove(child); //removing it
@@ -230,6 +231,9 @@ function mapReset() {
             break;
         }
     }
+    /*for(let elt of currentLevel.maps[currentMap].logics){
+        if(!elt.type)
+            elt.activated = false;
+    }*/
     createMap(currentLevel.maps[currentMap]); //re creating the map
-
 }
