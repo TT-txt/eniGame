@@ -33,12 +33,6 @@
 	<div id="scene-container" style="width:99%;height:99%;">
 		<!-- This div will hold our scene-->
 		<script>
-			//NEEDED TO HAVE A WORKING SCENE
-			let container;
-			let camera;
-			let controls;
-			let renderer;
-			let scene;
 			let gameStarted;//TO START USING CONTROLS AND TESTING LOGICS
 			let currentLevel;
 			let currentMap;
@@ -73,7 +67,6 @@
 			//Meshes
 			let heroMesh; //USE hero TO MOVE THE CHAR AROUND
 			let block;
-			let door;
 			let pressurePlate;
 			let pushableBox;
 
@@ -147,9 +140,7 @@
 
 				}
 				renderer.render(scene, camera);
-
 			}
-
 			init();
 		</script>
 	</div>
