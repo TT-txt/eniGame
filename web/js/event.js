@@ -36,9 +36,14 @@ function checkKeyPress(key) {
             /*
             **************Left arrow key or q**************
             */
+            //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x - 1 == currentLevel.maps[currentMap].exits[0].x && hero.position.z == currentLevel.maps[currentMap].exits[0].z) {
-                //Return to menu
-                console.log("YEET");
+                currentMap--;
+                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[2].x, 1, currentLevel.maps[currentMap].exits[2].z);
+                //hero.position.x -= 1;
+                hero.rotation.y = Math.PI / 2;
+                doorClose();
+                mapReset();
             }
             if (0 == hero.position.x) {// Default Wall
                 blocked = true;
@@ -85,10 +90,16 @@ function checkKeyPress(key) {
             /*
             **************Up arrow key or z**************
             */
+            //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[1].x && hero.position.z - 1 == currentLevel.maps[currentMap].exits[1].z) {
-                //Return to menu
-                console.log("YEET");
+                currentMap -= 5;
+                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[3].x, 1, currentLevel.maps[currentMap].exits[3].z);
+                //hero.position.z -= 1;
+                hero.rotation.y = 0;
+                doorClose();
+                mapReset();
             }
+
             if (0 == hero.position.z) {// Default Wall
                 blocked = true;
             } else {
@@ -134,10 +145,13 @@ function checkKeyPress(key) {
             /*
             **************Right arrow key or d**************
             */
+            //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x + 1 == currentLevel.maps[currentMap].exits[2].x && hero.position.z == currentLevel.maps[currentMap].exits[2].z) {
-                blocked = false;
                 currentMap++;
-                currentLevel.maps[currentMap].spawnPoint.set(hero.position.x - currentLevel.maps[currentMap--].floor.x, hero.position.y - currentLevel.maps[currentMap--].floor.y, hero.position.z - currentLevel.maps[currentMap--].floor.z);
+                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[0].x, 1, currentLevel.maps[currentMap].exits[0].z);
+                //hero.position.x += 1;
+                hero.rotation.y = Math.PI * 3 / 2;
+                doorClose();
                 mapReset();
             }
             if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
@@ -185,10 +199,17 @@ function checkKeyPress(key) {
             /*
             **************Down arrow key or s**************
             */
-
+            //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[3].x && hero.position.z + 1 == currentLevel.maps[currentMap].exits[3].z) {
-                //Return to menu
-                console.log("YEET");
+                for (elt of currentLevel.maps[currentMap].logics) {
+                    elt.activated = false;//Resets the logics for next time
+                }
+                currentMap += 5;
+                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[1].x, 1, currentLevel.maps[currentMap].exits[1].z);
+                //hero.position.z += 1;
+                hero.rotation.y = Math.PI;
+                doorClose();
+                mapReset();
             }
 
             if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {// Default Wall
@@ -222,7 +243,6 @@ function checkKeyPress(key) {
                             if (!unmovableBox) {//If the pushableBox is movable
                                 pushableBox.position.z += 1;//Updating the render
                                 element.coord.z += 1;//Updating the map.
-                                console.log(element);
                                 break;
                             }
                         }

@@ -39,7 +39,9 @@
 			let controls;
 			let renderer;
 			let scene;
-			let gameStarted;//TO BEGIN TESTING LOGIC ELTS
+			let gameStarted;//TO START USING CONTROLS AND TESTING LOGICS
+			let currentLevel;
+			let currentMap;
 
 			//Groups
 			let hero = new THREE.Group();
@@ -88,7 +90,6 @@
 
 				currentLevel = startLevel;
 				currentMap = 0; // Top right of the level
-				currentLevel.maps[currentMap].solved = false;
 
 				createSkybox();
 				createMesh();
@@ -130,7 +131,7 @@
 			// avoid heavy computation here
 			function update() {
 				//if (currentLevel.maps[currentMap].solved) return;
-
+				console.log(currentLevel.maps[currentMap].logics);
 				logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
 			}

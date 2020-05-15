@@ -5,7 +5,7 @@ const startMap0 = new map(
         new THREE.Vector3(3, 1, 1),
         new THREE.Vector3(1, 1, 3),new THREE.Vector3(1, 2, 3),
         new THREE.Vector3(3, 1, 3),
-        new THREE.Vector3(1, 1, 4)
+        new THREE.Vector3(0, 1, 3)
     ],
     new THREE.Vector3(5, 0, 5),
     [],
@@ -23,7 +23,7 @@ const startMap1 = new map(
     [new logic(0, new THREE.Vector3(4, 1, 4), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(2, 1, 1))],
     false,
     null,
-    [new THREE.Vector3(-1, 0, 1), new THREE.Vector3(1, 0, -1), new THREE.Vector3(5, 0, 2), new THREE.Vector3(2, 0, 4)],
+    [new THREE.Vector3(-1, 0, 1), false, false, false],
     new THREE.Vector3(2, 1, 2),
 );
 

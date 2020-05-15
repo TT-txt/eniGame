@@ -1,4 +1,5 @@
 function createMap(mapConstructor) {
+    currentLevel.maps[currentMap].solved = false;
     //generating the groups
     const mapBuild = new THREE.Group();
     mapBuild.name = "Map";
@@ -25,6 +26,12 @@ function createMap(mapConstructor) {
     }
 
     //Exits
+    //Doors groups reset
+    for (child of doorL.children) doorL.children.pop();//removes the previous meshes added to each door
+    for (child of doorT.children) doorT.children.pop();
+    for (child of doorR.children) doorR.children.pop();
+    for (child of doorB.children) doorB.children.pop();
+
     for (let elt = 0; elt < mapConstructor.exits.length; elt += 1) {
         if (mapConstructor.exits[elt]) {//in order to not have 
             if ((mapConstructor.exits[elt].x < 0 || mapConstructor.exits[elt].x == mapConstructor.floor.x) || (mapConstructor.exits[elt].z < 0 || mapConstructor.exits[elt].z == mapConstructor.floor.z) && mapConstructor.exits[elt].y == 0) {
@@ -45,13 +52,13 @@ function createMap(mapConstructor) {
                         doorT.add(doorTop);
                         break;
                     case 2:
-                        let doorRight = new THREE.Mesh(slimRectangle, doorMaterial);
+                        doorRight = new THREE.Mesh(slimRectangle, doorMaterial);
                         doorRight.rotation.set(0, Math.PI, 0);
                         doorRight.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         doorR.add(doorRight);
                         break;
                     case 3:
-                        let doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
+                        doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
                         doorBottom.rotation.set(0, -Math.PI / 2, 0);
                         doorBottom.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         doorB.add(doorBottom);
@@ -140,18 +147,19 @@ function createMap(mapConstructor) {
     }
 
     //Creating logic elements
-    for (let elt of mapConstructor.logics) {
-        if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
-        switch (elt.type) {
+    for (let i = 0; i < mapConstructor.logics.length; i++) {
+        if (mapConstructor.logics[i].coord.x > mapConstructor.floor.x - 1 || mapConstructor.logics[i].coord.y > mapConstructor.y - 1 || mapConstructor.logics[i].coord.z > mapConstructor.z - 1 || mapConstructor.logics[i].coord.z < 0 || mapConstructor.logics[i].coord.y < 0 || mapConstructor.logics[i].coord.z < 0) continue;
+        switch (mapConstructor.logics[i].type) {
             case 0: //Pressure plate
                 pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
-                pressurePlate.position.set(elt.coord.x, elt.coord.y - 0.49, elt.coord.z);
+                pressurePlate.position.set(mapConstructor.logics[i].coord.x, mapConstructor.logics[i].coord.y - 0.49, mapConstructor.logics[i].coord.z);
+                currentLevel.maps[currentMap].logics[i].activated = false;
                 logic.add(pressurePlate);
                 break;
             case 1://Pushable box
                 pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
-                pushableBox.position.set(elt.activated.x, elt.activated.y - 0.1, elt.activated.z);
-                elt.coord.set(elt.activated.x, elt.activated.y - 0.1, elt.activated.z)
+                pushableBox.position.set(mapConstructor.logics[i].activated.x, mapConstructor.logics[i].activated.y - 0.1, mapConstructor.logics[i].activated.z);
+                mapConstructor.logics[i].coord.set(mapConstructor.logics[i].activated.x, mapConstructor.logics[i].activated.y - 0.1, mapConstructor.logics[i].activated.z)
                 pushableBox.scale.set(0.8, 0.8, 0.8);
                 logic.add(pushableBox);
             default:
@@ -161,22 +169,22 @@ function createMap(mapConstructor) {
 
     for (let elt of mapConstructor.traps) {
         if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
-        switch (elt.type){
+        switch (elt.type) {
             case 0://SPIKES, to do
                 break;
             case 1://arrow 1
                 let dispenser = new THREE.Mesh(cube, dispenserMaterial);
                 dispenser.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
                 switch (elt.facing) {
-                    case 'e':   
+                    case 'e':
                         trap.add(dispenser);
                         break;
                     case 's':
-                        dispenser.rotation.y+= Math.PI / 2;
+                        dispenser.rotation.y += Math.PI / 2;
                         trap.add(dispenser);
                         break;
                     case 'n':
-                        dispenser.rotation.y-= Math.PI / 2;
+                        dispenser.rotation.y -= Math.PI / 2;
                         trap.add(dispenser);
                         break;
                     case 'w':
@@ -213,11 +221,12 @@ function createMap(mapConstructor) {
 }
 
 //Map Reset
-function mapReset(){
-        for (child of scene.children) {
+function mapReset() {
+    for (child of scene.children) {
         if (child.name == "Map") { //getting the array position of the map group in order to reset it
             scene.remove(child); //removing it
             gameStarted = false;
+            currentLevel.maps[currentMap].solved = false;
             break;
         }
     }

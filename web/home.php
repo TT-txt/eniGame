@@ -10,30 +10,32 @@
 	}
 
 	.btn {
-		margin:10px;
-	}
-	
-    .btn-success{
-        background-color:#6351ce !important;  border-color: #6351ce !important; 
-	}
-	
-    .btn-success:hover, .btn-success:active, .btn-success:visited{
-        border-color: #A9A9A9 !important; 
+		margin: 10px;
 	}
 
-    .text-autre{
-	color: #6351ce !important;
+	.btn-success {
+		background-color: #6351ce !important;
+		border-color: #6351ce !important;
 	}
 
-    .row{
-	margin-right: 0px !important;
-	}
-	
-     @font-face{
-	font-family:"jeu";
-	src: url('8-BIT WONDER.TTF');
+	.btn-success:hover,
+	.btn-success:active,
+	.btn-success:visited {
+		border-color: #A9A9A9 !important;
 	}
 
+	.text-autre {
+		color: #6351ce !important;
+	}
+
+	.row {
+		margin-right: 0px !important;
+	}
+
+	@font-face {
+		font-family: "jeu";
+		src: url('8-BIT WONDER.TTF');
+	}
 </style>
 <script src="include/three/three.js"></script>
 <script src="include/three/OrbitControls.js"></script>
@@ -76,6 +78,8 @@
 					let renderer;
 					let scene;
 					let gameStarted; //TO BEGIN TESTING LOGIC ELTS
+					let currentLevel;
+					let currentMap;
 
 					//Groups
 					let mapBuild = new THREE.Group();
@@ -124,69 +128,70 @@
 
 						container = document.querySelector('#scene-container');
 
-						scene = new THREE.Scene();
-						scene.background = new THREE.Color(0x8FBCD4);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color(0x8FBCD4);
 
-						currentLevel = testLevel;
-						currentMap = 0; // Top right of the level
+				currentLevel = startLevel;
+				currentMap = 0; // Top right of the level
 
-						createSkybox();
-						createMesh();
-						createMap(currentLevel.maps[currentMap]);
-						createCamera();
-						createControls();
-						createLights();
-						loadModels();
-						createRenderer();
+				createSkybox();
+				createMesh();
+				createMap(currentLevel.maps[currentMap]);
+				createCamera();
+				createControls();
+				createLights();
+				loadModels();
+				createRenderer();
 
-						//Will not be set automatically in the future (mapLoader)
-						gameStarted = true; //Used in update
+				renderer.setAnimationLoop(() => {
+					update();
+					render();
 
-						renderer.setAnimationLoop(() => {
-							update();
-							render();
+					//if (currentLevel.maps[currentMap].solved) return;
+				});
 
-						});
+			}
 
-					}
+			function createRenderer() {
 
-					function createRenderer() {
+				renderer = new THREE.WebGLRenderer({
+					antialias: true
+				});
+				renderer.setSize(container.clientWidth, container.clientHeight);
 
-						renderer = new THREE.WebGLRenderer({
-							antialias: true
-						});
-						renderer.setSize(container.clientWidth, container.clientHeight);
+				renderer.setPixelRatio(window.devicePixelRatio);
 
-						renderer.setPixelRatio(window.devicePixelRatio);
+				renderer.gammaFactor = 2.2;
+				renderer.gammaOutput = true;
 
-						renderer.gammaFactor = 2.2;
-						renderer.gammaOutput = true;
+				renderer.physicallyCorrectLights = true;
 
-						renderer.physicallyCorrectLights = true;
+				container.appendChild(renderer.domElement);
 
-						container.appendChild(renderer.domElement);
+			}
 
-					}
+			// perform any updates to the scene, called once per frame
+			// avoid heavy computation here
+			function update() {
+				//if (currentLevel.maps[currentMap].solved) return;
+				console.log(currentLevel.maps[currentMap].logics);
+				logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
-					// perform any updates to the scene, called once per frame
-					// avoid heavy computation here
-					function update() {
+			}
 
-						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
+			// render of the scene
+			function render() {
+				//if (currentLevel.maps[currentMap].solved) return;
 
-					}
+				const delta = clock.getDelta();
+				for (const mixer of mixers) {
 
-					// render of the scene
-					function render() {
-						const delta = clock.getDelta();
-						for (const mixer of mixers) {
+					mixer.update(delta);
 
-							mixer.update(delta);
+				}
+				renderer.render(scene, camera);
 
-						}
-						renderer.render(scene, camera);
-
-					}
+			}
 				</script>
 			</main>
 		</div>
