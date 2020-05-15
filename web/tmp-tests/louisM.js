@@ -22,34 +22,16 @@ const testMapLM = new map(
         new THREE.Vector3(6, 1, 6), new THREE.Vector3(6, 2, 6), new THREE.Vector3(6, 3, 6),
         new THREE.Vector3(6, 1, 8), new THREE.Vector3(6, 2, 8), new THREE.Vector3(6, 3, 8),
         new THREE.Vector3(8, 1, 6), new THREE.Vector3(8, 2, 6), new THREE.Vector3(8, 3, 6),
-        new THREE.Vector3(8, 1, 8), new THREE.Vector3(8, 2, 8), new THREE.Vector3(8, 3, 8),
-        new THREE.Vector3(0, 1, 0)
+        new THREE.Vector3(8, 1, 8), new THREE.Vector3(8, 2, 8), new THREE.Vector3(8, 3, 8)
     ],
     new THREE.Vector3(15, 0, 15),
     null,
     [new logic(1, new THREE.Vector3(7, 0.9, 7), 0, false)],
     false,
     null,
-    [new THREE.Vector3(-1, 0, 7), new THREE.Vector3(7, 0, -1), new THREE.Vector3(7, 0, 15), new THREE.Vector3(15, 0, 7)]
+    [new THREE.Vector3(-1, 0, 7), new THREE.Vector3(7, 0, -1), new THREE.Vector3(7, 0, 15), new THREE.Vector3(15, 0, 7)],
+    new THREE.Vector3(0, 1, 0)
 );
-
-const lv1Map = new map(
-    [
-        new THREE.Vector3(0, 1, 2),
-        new THREE.Vector3(2, 1, 1),
-        new THREE.Vector3(0, 1, 3),new THREE.Vector3(0, 2, 3),new THREE.Vector3(0, 3, 3),
-        new THREE.Vector3(0, 1, 1),new THREE.Vector3(0, 2, 1),new THREE.Vector3(0, 3, 1),
-        new THREE.Vector3(1, 1, 3),
-    ],
-    new THREE.Vector3(4, 0, 4),
-    [new trap(1, new THREE.Vector3(0, 1, 0), false, "e")],
-    [new logic(0, new THREE.Vector3(2, 1, 0), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(1, 1, 1))],
-    false,
-    null,
-    [new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 0, -1), new THREE.Vector3(-1, 0, -1), new THREE.Vector3(2, 0, 4)],
-    new THREE.Vector3(2, 1, 2)
-);
-const lv1Level = new level([lv1Map]);
 
 const startMap = new map(
     [
@@ -64,7 +46,7 @@ const startMap = new map(
     [new logic(0, new THREE.Vector3(2, 1, 0), 0, false)],
     false,
     null,
-    [new THREE.Vector3(-1, 0, -1), new THREE.Vector3(2, 0, -1), new THREE.Vector3(-1, 0, -1), new THREE.Vector3(-1, 0, -1)],
+    [false, new THREE.Vector3(2, 0, -1), false, false],
     new THREE.Vector3(2, 1, 2)
 );
 const startLevel = new level([startMap]);
@@ -79,10 +61,26 @@ const lv1Map = new map(
     ],
     new THREE.Vector3(4, 0, 4),
     [new trap(1, new THREE.Vector3(0, 1, 0), false, "e")],
-    [new logic(0, new THREE.Vector3(2, 1, 0), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(1, 1, 1))],
+    [new logic(0, new THREE.Vector3(1, 1, 0), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(1, 1, 1))],
     false,
     null,
-    [new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 0, -1), new THREE.Vector3(-1, 0, -1), new THREE.Vector3(2, 0, 4)],
+    [false, new THREE.Vector3(1, 0, -1), false, new THREE.Vector3(2, 0, 4)],
     new THREE.Vector3(2, 1, 2)
 );
 const lv1Level = new level([lv1Map]);
+
+const lv2Map = new map(
+    [
+        new THREE.Vector3(3, 1, 0),new THREE.Vector3(3, 2, 0),new THREE.Vector3(3, 3, 0),
+        new THREE.Vector3(1, 1, 3),new THREE.Vector3(1, 2, 3),
+        new THREE.Vector3(2, 1, 6)
+    ],
+    new THREE.Vector3(4, 0, 7),
+    [new trap(1, new THREE.Vector3(3, 1, 6), false, "s"),new trap(1, new THREE.Vector3(3, 1, 1), false, "n")],
+    [new logic(0, new THREE.Vector3(3, 1, 4), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(2, 1, 3)), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(2, 1, 1))],
+    false,
+    null,
+    [false, false, new THREE.Vector3(4, 0, 4), new THREE.Vector3(1, 0, 7)],
+    new THREE.Vector3(1, 1, 6)
+);
+const lv2Level = new level([lv2Map]);
