@@ -33,8 +33,11 @@
 	}
 
 	@font-face {
-		font-family: "jeu";
-		src: url('8-BIT WONDER.TTF');
+    	font-family: '8bit_wondernominal';
+    	src: url('fonts/8-bit_wonder-webfont.woff2') format('woff2'),
+    	     url('fonts/8-bit_wonder-webfont.woff') format('woff');
+    	font-weight: normal;
+    	font-style: normal;
 	}
 </style>
 <script src="include/three/three.js"></script>
@@ -63,7 +66,7 @@
 			</aside>
 			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
 				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
-					<h1 style="color:white; font-family:jeu">eniGame</h1>
+					<h1 style="color:white; font-family:'8bit_wondernominal'">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
 					<br />
 					<button id="TUTORIAL" type="button" class="btn btn-outline-secondary" onclick="">TUTORIAL</button>
