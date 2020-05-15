@@ -7,8 +7,10 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     isPressurePlate = true;
                     if (logics[i].activated == false && logics[i].coord.x == heroPos.x && logics[i].coord.z == heroPos.z) {
                         pressurePlateOn(logics[i], i);
+                        console.log("PLAQUE ACTIVEE");
                     } else if (logics[i].activated == true && (logics[i].coord.x != heroPos.x || logics[i].coord.z != heroPos.z)) {
                         pressurePlateOff(logics[i], i);
+                        console.log("PLAQUE DESACTIVEE");
                     }
                     break;
                 case 1:
@@ -18,6 +20,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                             if (logics[j].type == 0) {
                                 if (logics[j].activated == false && logics[j].coord.x == logics[i].coord.x && logics[j].coord.z == logics[i].coord.z) {
                                     pressurePlateOn(logics[j], j);// /!\ use the plate coord /!\
+                                    console.log("PLAQUE ACTIVEE");
                                 }
                             }
                         }
@@ -28,35 +31,51 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     break;
             }
         }
-        //console.log(currentLevel.maps[currentMap].logics[0].activated);
     }
 }
 
 function doorOpen() {
     if (!(currentLevel.maps[currentMap].solved)) {
-        slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2));
-        
         //Moving the doors to stick to the wall
-        //doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z - 0.4);
-        //doorT.position.set(doorT.position.x - 0.4, doorT.position.y, doorT.position.z);
-        //doorB.position.set(doorB.position.x + 0.4, doorB.position.y, doorB.position.z);
-        //doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z + 0.4);
-
+        if (typeof (doorL.children[0]) != 'undefined') {
+            doorL.rotation.y += Math.PI / 2;
+            doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z - 0.4);
+        }
+        if (typeof (doorR.children[0]) != 'undefined') {
+            doorR.rotation.y += Math.PI / 2;
+            doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z + 0.4);
+        }
+        if (typeof (doorT.children[0]) != 'undefined') {
+            doorT.rotation.y += Math.PI / 2;
+            doorT.position.set(doorT.position.x - 0.4, doorT.position.y, doorT.position.z);
+        }
+        if (typeof (doorB.children[0]) != 'undefined') {
+            doorB.rotation.y -= Math.PI / 2;
+            doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
+        }
         currentLevel.maps[currentMap].solved = true;
     }
 }
 
 function doorClose() {
     if (currentLevel.maps[currentMap].solved) {
-        slimRectangle.applyMatrix4(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
-
         //Moving the doors to stick to the wall
-        /*
-        doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z + 0.4);
-        doorT.position.set(doorT.position.x + 0.4, doorT.position.y, doorT.position.z);
-        doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
-        doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z - 0.4);
-        */
+        if (typeof (doorL.children[0]) != 'undefined') {
+            doorL.rotation.y -= Math.PI / 2;
+            doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z + 0.4);
+        }
+        if (typeof (doorR.children[0]) != 'undefined') {
+            doorR.rotation.y -= Math.PI / 2;
+            doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z - 0.4);
+        }
+        if (typeof (doorT.children[0]) != 'undefined') {
+            doorT.rotation.y -= Math.PI / 2;
+            doorT.position.set(doorT.position.x + 0.4, doorT.position.y, doorT.position.z);
+        }
+        if (typeof (doorB.children[0]) != 'undefined') {
+            doorB.rotation.y -= Math.PI / 2;
+            doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
+        }
         currentLevel.maps[currentMap].solved = false;
     }
 }

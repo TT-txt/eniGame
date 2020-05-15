@@ -41,27 +41,27 @@ function createMap(mapConstructor) {
                 switch (elt) {
                     case 0:
                         let doorLeft = new THREE.Mesh(slimRectangle, doorMaterial);
-                        doorLeft.rotation.set(0, 0, 0);
-                        doorLeft.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         doorL.add(doorLeft);
+                        doorL.rotation.set(0, 0, 0);
+                        doorL.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         break;
                     case 1:
                         let doorTop = new THREE.Mesh(slimRectangle, doorMaterial);
-                        doorTop.rotation.set(0, Math.PI / 2, 0);
-                        doorTop.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         doorT.add(doorTop);
+                        doorT.rotation.set(0, Math.PI / 2, 0);
+                        doorT.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         break;
                     case 2:
                         doorRight = new THREE.Mesh(slimRectangle, doorMaterial);
-                        doorRight.rotation.set(0, Math.PI, 0);
-                        doorRight.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         doorR.add(doorRight);
+                        doorR.rotation.set(0, Math.PI, 0);
+                        doorR.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         break;
                     case 3:
-                        doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
+                        let doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
+                        doorB.add(doorBottom);
                         doorBottom.rotation.set(0, -Math.PI / 2, 0);
                         doorBottom.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
-                        doorB.add(doorBottom);
                         break;
                 }
             }
