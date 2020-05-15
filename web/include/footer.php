@@ -113,7 +113,7 @@ if (isset($link)) {
                 <p>
                     <i class="fas fa-home mr-3"></i> Lille, 41 Boulevard Vauban</p>
                 <p>
-                    <i class="fas fa-envelope mr-3"></i> contact@TTSK8.com</p>
+                    <i class="fas fa-envelope mr-3"></i> contact@enigame.com</p>
                 <p>
                     <i class="fas fa-phone mr-3"></i> + 33 6 12 34 56 78</p>
                 <p>
