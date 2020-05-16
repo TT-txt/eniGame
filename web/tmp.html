@@ -96,8 +96,6 @@
 				renderer.setAnimationLoop(() => {
 					update();
 					render();
-
-					//if (currentLevel.maps[currentMap].solved) return;
 				});
 
 			}
@@ -123,15 +121,13 @@
 			// perform any updates to the scene, called once per frame
 			// avoid heavy computation here
 			function update() {
-				//if (currentLevel.maps[currentMap].solved) return;
-				//console.log(currentLevel.maps[currentMap].logics);
+
 				logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
 			}
 
 			// render of the scene
 			function render() {
-				//if (currentLevel.maps[currentMap].solved) return;
 
 				const delta = clock.getDelta();
 				for (const mixer of mixers) {

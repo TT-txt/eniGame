@@ -1,16 +1,25 @@
 function logicTrigger(logics, heroPos, gameStarted) {
     if (gameStarted) {
-        let isPressurePlate = false;//Is there a pressure plate in the map
+        let isPressurePlate = false;//Is there a pressure plate in the map ?
+        let boxOnPlate = false;//Is there a box activating a pressurePlate ?
+
         for (let i = 0; i < logics.length; i++) {
             switch (logics[i].type) {
                 case 0://pressurePlate
+                    //Checking if a box is on a pressure plate
+                    for (let indexToCheck = i + 1; indexToCheck < logics.length; indexToCheck++)
+                        if (logics[i].coord.x == logics[indexToCheck].coord.x && logics[i].coord.z == logics[indexToCheck].coord.z)
+                            boxOnPlate = true;
+
                     isPressurePlate = true;
-                    if (logics[i].activated == false && logics[i].coord.x == heroPos.x && logics[i].coord.z == heroPos.z) {
-                        pressurePlateOn(logics[i], i);
-                        console.log("PLAQUE ACTIVEE");
-                    } else if (logics[i].activated == true && (logics[i].coord.x != heroPos.x || logics[i].coord.z != heroPos.z)) {
-                        pressurePlateOff(logics[i], i);
-                        console.log("PLAQUE DESACTIVEE");
+                    if (!boxOnPlate) {
+                        if (logics[i].activated == false && logics[i].coord.x == heroPos.x && logics[i].coord.z == heroPos.z) {
+                            pressurePlateOn(logics[i], i);
+                            console.log("PLAQUE ACTIVEE");
+                        } else if (logics[i].activated == true && (logics[i].coord.x != heroPos.x || logics[i].coord.z != heroPos.z)) {
+                            pressurePlateOff(logics[i], i);
+                            console.log("PLAQUE DESACTIVEE");
+                        }
                     }
                     break;
                 case 1:
@@ -21,6 +30,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                                 if (logics[j].activated == false && logics[j].coord.x == logics[i].coord.x && logics[j].coord.z == logics[i].coord.z) {
                                     pressurePlateOn(logics[j], j);// /!\ use the plate coord /!\
                                     console.log("PLAQUE ACTIVEE");
+                                    break;
                                 }
                             }
                         }
@@ -85,7 +95,7 @@ function pressurePlateOn(logicElem, toActivateIndex) {
         case 0:
             //Open the map doors
             //logicElem.coord.y-= 0.2;//Shows that the pressure plate in onUse
-            doorOpen(logicElem);
+            doorOpen();
             currentLevel.maps[currentMap].logics[toActivateIndex].activated = true;
             break;
         default:
@@ -98,7 +108,7 @@ function pressurePlateOff(logicElem, toActivateIndex) {
         case 0:
             //Open the map doors
             //logicElem.coord.y+= 0.2;//Shows that the pressure plate in onUse
-            doorClose(logicElem);
+            doorClose();
             currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         default:

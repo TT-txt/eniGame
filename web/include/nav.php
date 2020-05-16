@@ -36,10 +36,17 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand text-autre" href="home.php">LOGO</a>
-
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03" >
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+    <a class="navbar-brand text-autre" href="home.php">
+        <p style="color:white; font-family:'8bit_wondernominal'; margin:0;"><img src="img/logo.svg" alt="LOGO" height="80px">eniGame</p>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0" style="font-size:20px;">
+            <style>
+                li.nav-item {
+                    margin-right:60px;
+                    /*margin-left:30px; RECENTRER leaderboard*/
+                }
+            </style>
             <li class="nav-item">
                 <a class="nav-link" href="#">Rules</a>
             </li>
@@ -135,7 +142,7 @@ if ($connected == false) {
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 text-center">
-                            <br/>
+                            <br />
                             <button type="submit" class="btn btn-success">Register</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
