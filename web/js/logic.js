@@ -10,7 +10,6 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     for (let indexToCheck = i + 1; indexToCheck < logics.length; indexToCheck++)
                         if (logics[i].coord.x == logics[indexToCheck].coord.x && logics[i].coord.z == logics[indexToCheck].coord.z)
                             boxOnPlate = true;
-
                     isPressurePlate = true;
                     if (!boxOnPlate) {
                         if (logics[i].activated == false && logics[i].coord.x == heroPos.x && logics[i].coord.z == heroPos.z) {
@@ -96,11 +95,19 @@ function pressurePlateOn(logicElem, toActivateIndex) {
             //Open the map doors
             //logicElem.coord.y-= 0.2;//Shows that the pressure plate in onUse
             doorOpen();
-            currentLevel.maps[currentMap].logics[toActivateIndex].activated = true;
             break;
+        case 1://single arrow
+            for(let elt of currentLevel.maps[currentMap].traps){
+                if(logicElem.group == elt.group){
+                    trapTrigger(elt, hero.position, gameStarted);
+                }
+            }
+            break;
+
         default:
             break;
     }
+    currentLevel.maps[currentMap].logics[toActivateIndex].activated = true;
 }
 
 function pressurePlateOff(logicElem, toActivateIndex) {
@@ -109,6 +116,9 @@ function pressurePlateOff(logicElem, toActivateIndex) {
             //Open the map doors
             //logicElem.coord.y+= 0.2;//Shows that the pressure plate in onUse
             doorClose();
+            currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
+            break;
+        case 1:
             currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         default:

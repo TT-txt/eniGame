@@ -170,11 +170,16 @@ function createMap(mapConstructor) {
     for (let elt of mapConstructor.traps) {
         if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
         switch (elt.type) {
-            case 0://SPIKES, to do
+            case 0://SPIKES
+                let spikes = spikesMesh.clone();
+                spikes.position.set(elt.coord.x, elt.coord.y+1, elt.coord.z);
+                trap.add(spikes);
+                elt.activated = true;
                 break;
             case 1://arrow 1
                 let dispenser = new THREE.Mesh(cube, dispenserMaterial);
                 dispenser.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                elt.activated = false;
                 switch (elt.facing) {
                     case 'e':
                         trap.add(dispenser);
@@ -187,8 +192,6 @@ function createMap(mapConstructor) {
                         dispenser.rotation.y -= Math.PI / 2;
                         trap.add(dispenser);
                         break;
-                    case 'w':
-                        dispenser.rotation.y += Math.PI;
                     case 'w':
                         dispenser.rotation.y += Math.PI;
                         trap.add(dispenser);
@@ -206,6 +209,7 @@ function createMap(mapConstructor) {
     hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
 
     gameStarted = true;
+    trapped = false;
 
     mapBuild.add(backWalls);
     mapBuild.add(floor);
@@ -231,9 +235,5 @@ function mapReset() {
             break;
         }
     }
-    /*for(let elt of currentLevel.maps[currentMap].logics){
-        if(!elt.type)
-            elt.activated = false;
-    }*/
     createMap(currentLevel.maps[currentMap]); //re creating the map
 }

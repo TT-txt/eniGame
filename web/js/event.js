@@ -81,7 +81,7 @@ function checkKeyPress(key) {
                     }
                 }
             }
-            if (!blocked)
+            if (!blocked && !trapped)
                 hero.position.x -= 1;
             hero.rotation.y = Math.PI / 2;
 
@@ -135,7 +135,7 @@ function checkKeyPress(key) {
                     }
                 }
             }
-            if (!blocked)
+            if (!blocked && !trapped)
                 hero.position.z -= 1;
             hero.rotation.y = 0;
 
@@ -188,7 +188,7 @@ function checkKeyPress(key) {
                     }
                 }
             }
-            if (!blocked)
+            if (!blocked && !trapped)
                 hero.position.x += 1;
             hero.rotation.y = Math.PI * 3 / 2;
 
@@ -245,7 +245,7 @@ function checkKeyPress(key) {
                     }
                 }
             }
-            if (!blocked)
+            if (!blocked && !trapped)
                 hero.position.z += 1;
             hero.rotation.y = Math.PI;
         } else if (key.keyCode == "82") { //checking if key pressed is r

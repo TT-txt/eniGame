@@ -42,34 +42,38 @@ level array :
 ************************ */
 
 class trap {
-    constructor(type, coord, activated, facing) {
+    constructor(type, coord, activated, facing, group) {
         this.type = type; //id, see the table
         this.coord = coord; //coord of the trap
         this.activated = activated; //boolean
         this.facing = facing; // n e s o 
+        this.group = group; //MUST BE THE SAME AS TRAP GROUP
     }
 }
 
 /*
-+----------------+----+
-|      Traps     | ID |
-+----------------+----+
-| spikes         |  0 |
-| arrowOnce      |  1 |
-| arrowInfinite  |  2 |
-| ...            |    |
-+----------------+----+
++------------------------+----+--------+
+|          trap          | id | DONE ? |
++------------------------+----+--------+
+| spikes                 |  0 | no     |
+| arrow once             |  1 | yes    |
+| arrow once grouped     |  2 | yes    |
+| arrrow infinite        |  3 | no     |
+| arrow infinite grouped |  4 | no     |
+| flame                  |  5 | no     |
++------------------------+----+--------+
 */
 
 /*****************************************************
 !!!!!!!!!!!!! ENTER LOGIC ELEMENTS BY ID !!!!!!!!!!!!!
 ******************************************************/
 class logic {
-    constructor(type, coord, onUse, activated){
+    constructor(type, coord, onUse, activated, group){
         this.type = type; //id, see the table
         this.coord = coord; //coord of the elt
         this.onUse = onUse; //char containing what to do if the player is on it
         this.activated = activated; //is on/off
+        this.group = group; //MUST BE THE SAME AS TRAP THAT U WANT TO ACTIVATE
         
     }
 }
