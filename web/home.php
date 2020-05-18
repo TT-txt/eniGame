@@ -24,16 +24,21 @@
 		border-color: #A9A9A9 !important;
 	}
 
-	.btn-success.focus, .btn-success:focus {
-		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+	.btn-success.focus,
+	.btn-success:focus {
+		box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
 	}
 
-	.btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus {
-		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+	.btn-success:not(:disabled):not(.disabled).active:focus,
+	.btn-success:not(:disabled):not(.disabled):active:focus,
+	.show>.btn-success.dropdown-toggle:focus {
+		box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
 	}
 
-	.btn-success:hover, .btn-success:active, .btn-success:visited {
-    border-color: #A9A9A9 !important;
+	.btn-success:hover,
+	.btn-success:active,
+	.btn-success:visited {
+		border-color: #A9A9A9 !important;
 	}
 
 	.text-autre {
@@ -45,11 +50,11 @@
 	}
 
 	@font-face {
-    	font-family: '8bit_wondernominal';
-    	src: url('fonts/8-bit_wonder-webfont.woff2') format('woff2'),
-    	     url('fonts/8-bit_wonder-webfont.woff') format('woff');
-    	font-weight: normal;
-    	font-style: normal;
+		font-family: '8bit_wondernominal';
+		src: url('fonts/8-bit_wonder-webfont.woff2') format('woff2'),
+			url('fonts/8-bit_wonder-webfont.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
 	}
 </style>
 <script src="include/three/three.js"></script>
@@ -145,70 +150,71 @@
 
 						container = document.querySelector('#scene-container');
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color(0x8FBCD4);
+						scene = new THREE.Scene();
+						scene.background = new THREE.Color(0x8FBCD4);
 
-				currentLevel = startLevel;
-				currentMap = 0; // Top right of the level
+						currentLevel = loadMap("http://localhost/CIR1Project/eniGame/web/maps/tutorial.json");
+						console.log(currentLevel);
+						currentMap = 0; // Top right of the level
 
-				createSkybox();
-				createMesh();
-				createMap(currentLevel.maps[currentMap]);
-				createCamera();
-				createControls();
-				createLights();
-				loadModels();
-				createRenderer();
+						createSkybox();
+						createMesh();
+						createMap(currentLevel.maps[currentMap]);
+						createCamera();
+						createControls();
+						createLights();
+						loadModels();
+						createRenderer();
 
-				renderer.setAnimationLoop(() => {
-					update();
-					render();
+						renderer.setAnimationLoop(() => {
+							update();
+							render();
 
-					//if (currentLevel.maps[currentMap].solved) return;
-				});
+							//if (currentLevel.maps[currentMap].solved) return;
+						});
 
-			}
+					}
 
-			function createRenderer() {
+					function createRenderer() {
 
-				renderer = new THREE.WebGLRenderer({
-					antialias: true
-				});
-				renderer.setSize(container.clientWidth, container.clientHeight);
+						renderer = new THREE.WebGLRenderer({
+							antialias: true
+						});
+						renderer.setSize(container.clientWidth, container.clientHeight);
 
-				renderer.setPixelRatio(window.devicePixelRatio);
+						renderer.setPixelRatio(window.devicePixelRatio);
 
-				renderer.gammaFactor = 2.2;
-				renderer.gammaOutput = true;
+						renderer.gammaFactor = 2.2;
+						renderer.gammaOutput = true;
 
-				renderer.physicallyCorrectLights = true;
+						renderer.physicallyCorrectLights = true;
 
-				container.appendChild(renderer.domElement);
+						container.appendChild(renderer.domElement);
 
-			}
+					}
 
-			// perform any updates to the scene, called once per frame
-			// avoid heavy computation here
-			function update() {
-				//if (currentLevel.maps[currentMap].solved) return;
-				console.log(currentLevel.maps[currentMap].logics);
-				logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
+					// perform any updates to the scene, called once per frame
+					// avoid heavy computation here
+					function update() {
+						//if (currentLevel.maps[currentMap].solved) return;
+						console.log(currentLevel.maps[currentMap].logics);
+						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
-			}
+					}
 
-			// render of the scene
-			function render() {
-				//if (currentLevel.maps[currentMap].solved) return;
+					// render of the scene
+					function render() {
+						//if (currentLevel.maps[currentMap].solved) return;
 
-				const delta = clock.getDelta();
-				for (const mixer of mixers) {
+						const delta = clock.getDelta();
+						for (const mixer of mixers) {
 
-					mixer.update(delta);
+							mixer.update(delta);
 
-				}
-				renderer.render(scene, camera);
+						}
+						renderer.render(scene, camera);
 
-			}
+					}
 				</script>
 			</main>
 		</div>

@@ -50,7 +50,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
                 <a class="nav-link" href="rules.php">Rules</a>
             </li>
             <li class="nav-item dropdown" id="test">
-                <a class="nav-link dropdown-toggle" href="leaderbords.php" id="navbardrop" data-toggle="dropdown">
+                <a class="nav-link dropdown-toggle" href="" id="navbardrop" data-toggle="dropdown">
                     Leaderboards
                 </a>
                 <div class="dropdown-menu">
@@ -61,8 +61,8 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
                         text-decoration: none;
                     }
                 </style>
-                    <a class="dropdown-item" href="leaderbords.php">By Score</a>
-                    <a class="dropdown-item" href="leaderbords.php">By Levels</a>
+                    <a class="dropdown-item" href="leaderboards.php?sortBy=score">By Score</a>
+                    <a class="dropdown-item" href="leaderboards.php?sortBy=levels">By Levels</a>
                 </div>
             </li>
             <li class="nav-item" id="test">

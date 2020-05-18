@@ -1,9 +1,32 @@
-//BETA LEVEL (only one map)
+// Asynchronous call
+// url > target url
+// jsonLoadSuccess > function to call on success
+function loadMap(url) {
+    const request = new XMLHttpRequest();
+    let jsonToObject;
+    request.open('GET', url);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function () {
+        if (xhr.status != 200) { // analyze HTTP status of the response
+            jsonToObject = request.response;
+            console.log(jsonToObject);
+        }
+    }
+    console.log(jsonToObject);
+    return (jsonToObject);
+
+}
+
+/*
+******************* /\ loading levels *******************
+******************* \/ writing levels *******************
+*/
 const startMap0 = new map(
     [
-        new THREE.Vector3(1, 1, 1),new THREE.Vector3(1, 2, 1),new THREE.Vector3(1, 3, 1),
+        new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, 2, 1), new THREE.Vector3(1, 3, 1),
         new THREE.Vector3(3, 1, 1),
-        new THREE.Vector3(1, 1, 3),new THREE.Vector3(1, 2, 3),
+        new THREE.Vector3(1, 1, 3), new THREE.Vector3(1, 2, 3),
         new THREE.Vector3(3, 1, 3),
         new THREE.Vector3(0, 1, 3)
     ],
@@ -17,7 +40,7 @@ const startMap0 = new map(
 );
 
 const startMap1 = new map(
-    [new THREE.Vector3(-5, 5, -5), new THREE.Vector3(1, 1, 3), new THREE.Vector3(1, 1, 4), new THREE.Vector3(3, 2,  2),new THREE.Vector3(3, 1,  2)],
+    [new THREE.Vector3(-5, 5, -5), new THREE.Vector3(1, 1, 3), new THREE.Vector3(1, 1, 4), new THREE.Vector3(3, 2, 2), new THREE.Vector3(3, 1, 2)],
     new THREE.Vector3(5, 0, 5),
     [new trap(1, new THREE.Vector3(1, 2, 3), false, 'e')],
     [new logic(0, new THREE.Vector3(4, 1, 4), 0, false), new logic(1, new THREE.Vector3(), 0, new THREE.Vector3(2, 1, 1))],
@@ -27,4 +50,31 @@ const startMap1 = new map(
     new THREE.Vector3(2, 1, 2),
 );
 
-const startLevel = new level([startMap0,startMap1]);
+var testLevel = new level(
+    [
+        startMap0,
+        startMap1
+    ],
+    0
+);
+var objToJsonFile = JSON.stringify(testLevel);
+//console.log(objToJsonFile);
+
+// Creating a XHR object 
+let xhr = new XMLHttpRequest();
+let url = "http://localhost/CIR1Project/eniGame/web/maps/saveMap.php";
+
+// open a connection 
+xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
+
+// Set the request header i.e. which type of content you are sending 
+xhr.setRequestHeader("Content-Type", "application/json");
+
+xhr.onreadystatechange = function () {//Call a function when the state changes.
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        alert(xhr.responseText);
+    }
+}
+xhr.send("textToWrite=" + objToJsonFile);
+
+
