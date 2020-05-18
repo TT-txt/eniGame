@@ -1,5 +1,5 @@
 <?php include("include/head.php"); ?>
-<title>eniGame ~ Rules</title>
+<title>eniGame ~ theTeam</title>
 
 <style>
 	body {
@@ -63,7 +63,7 @@
 <body>
 	<?php include("include/nav.php"); ?>
 	<main>
-		Rules
+		theTeam
 	</main>
 	<?php include("include/footer.php"); ?>
 </body>

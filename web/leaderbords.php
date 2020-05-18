@@ -1,6 +1,14 @@
-<?php include("include/head.php"); ?>
-<title>eniGame ~ Rules</title>
+<?php
+include("include/head.php");
+if (!isset($_SESSION["auth"])) {
+    header("location:home.php");
+} else if ($_SESSION["auth"] != 1) {
+    header("location:home.php");
+}
+?>
 
+<title>eniGame ~ Scores</title>
+<head>
 <style>
 	body {
 		height: 100%;
@@ -57,15 +65,14 @@
     	font-style: normal;
 	}
 </style>
-
 </head>
 
 <body>
-	<?php include("include/nav.php"); ?>
-	<main>
-		Rules
-	</main>
-	<?php include("include/footer.php"); ?>
+    <?php include("include/nav.php"); ?>
+    <main>
+        Scores
+    </main>
+    <?php include("include/footer.php"); ?>
 </body>
 
 </html>
