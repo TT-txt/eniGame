@@ -106,18 +106,24 @@ if ($connected == false) {
                         <script>
                             <!--Change the password s visibility-->
                             function changeType(){
-                                var x = document.getElementById("password");
+                            var x = document.getElementById("password");
+                            var y = document.getElementById("motdepasse");
+                            
                             if (x.type === "password") {
                                 x.type = "text";
+                                y.src= "img/hide.png";
                             } else {
                                 x.type = "password";
+                                y.src = "img/see.png";
                             }
                             }
                         </script>
                         <div class="input-group mb-3">
                         <input type="password" value="" class="form-control" placeholder="Password" id="password" required />
                             <div class="input-group-append">
-                            <button type="button" class="change" onclick="changeType()"><img scr="img/visibility.jpeg" height="20px"></button> 
+                            <button type="button"  onclick="changeType()">  
+                                <img src="img/see.png" id="motdepasse" height="20px">
+                            </button> 
                             </div>
                         </div>
                        
