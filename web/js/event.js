@@ -1,16 +1,16 @@
 
 //Auto windows size
 function onWindowResize() {
+    if (typeof(container) != 'undefined') {
+        // set the aspect ratio to match the new browser window aspect ratio
+        camera.aspect = container.clientWidth / container.clientHeight;
 
-    // set the aspect ratio to match the new browser window aspect ratio
-    camera.aspect = container.clientWidth / container.clientHeight;
+        // update the camera's frustum
+        camera.updateProjectionMatrix();
 
-    // update the camera's frustum
-    camera.updateProjectionMatrix();
-
-    // update the size of the renderer AND the canvas
-    renderer.setSize(container.clientWidth, container.clientHeight);
-
+        // update the size of the renderer AND the canvas
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    }
 }
 
 window.addEventListener('resize', onWindowResize);
