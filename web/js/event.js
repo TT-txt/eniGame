@@ -39,7 +39,9 @@ function checkKeyPress(key) {
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x - 1 == currentLevel.maps[currentMap].exits[0].x && hero.position.z == currentLevel.maps[currentMap].exits[0].z) {
                 currentMap--;
-                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[2].x - 1, 1, currentLevel.maps[currentMap].exits[2].z);
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[2].x - 1;
+                currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[2].y + 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[2].z;
                 blocked = true;
                 hero.rotation.y = Math.PI / 2;
                 mapReset();
@@ -92,7 +94,9 @@ function checkKeyPress(key) {
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[1].x && hero.position.z - 1 == currentLevel.maps[currentMap].exits[1].z) {
                 currentMap -= 5;
-                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[3].x, 1, currentLevel.maps[currentMap].exits[3].z - 1);
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[3].x;
+                currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[3].y + 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z - 1;
                 blocked = true;
                 hero.rotation.y = 0;
                 mapReset();
@@ -146,7 +150,9 @@ function checkKeyPress(key) {
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x + 1 == currentLevel.maps[currentMap].exits[2].x && hero.position.z == currentLevel.maps[currentMap].exits[2].z) {
                 currentMap++;
-                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[0].x + 1, 1, currentLevel.maps[currentMap].exits[0].z);
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[0].x + 1;
+                currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[0].y + 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[0].z;
                 blocked = true;
                 hero.rotation.y = Math.PI * 3 / 2;
                 mapReset();
@@ -202,7 +208,9 @@ function checkKeyPress(key) {
                     elt.activated = false;//Resets the logics for next time
                 }
                 currentMap += 5;
-                currentLevel.maps[currentMap].spawnPoint.set(currentLevel.maps[currentMap].exits[1].x, 1, currentLevel.maps[currentMap].exits[1].z + 1);
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[1].x;
+                currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[1].y + 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z + 1;
                 blocked = true;
                 hero.rotation.y = Math.PI;
                 mapReset();

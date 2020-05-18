@@ -48,19 +48,19 @@ function doorOpen() {
         //Moving the doors to stick to the wall
         if (typeof (doorL.children[0]) != 'undefined') {
             doorL.rotation.y += Math.PI / 2;
-            doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z - 0.4);
+            doorL.position.z -= 0.4;
         }
         if (typeof (doorR.children[0]) != 'undefined') {
             doorR.rotation.y += Math.PI / 2;
-            doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z + 0.4);
+            doorR.position.z += 0.4;
         }
         if (typeof (doorT.children[0]) != 'undefined') {
             doorT.rotation.y += Math.PI / 2;
-            doorT.position.set(doorT.position.x - 0.4, doorT.position.y, doorT.position.z);
+            doorT.position.x -= 0.4;
         }
         if (typeof (doorB.children[0]) != 'undefined') {
             doorB.rotation.y -= Math.PI / 2;
-            doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
+            doorB.position.x += 0.4;
         }
         currentLevel.maps[currentMap].solved = true;
     }
@@ -71,19 +71,19 @@ function doorClose() {
         //Moving the doors to stick to the wall
         if (typeof (doorL.children[0]) != 'undefined') {
             doorL.rotation.y -= Math.PI / 2;
-            doorL.position.set(doorL.position.x, doorL.position.y, doorL.position.z + 0.4);
+            doorL.position.z += 0.4;
         }
         if (typeof (doorR.children[0]) != 'undefined') {
             doorR.rotation.y -= Math.PI / 2;
-            doorR.position.set(doorR.position.x, doorR.position.y, doorR.position.z - 0.4);
+            doorR.position.z -= 0.4;
         }
         if (typeof (doorT.children[0]) != 'undefined') {
             doorT.rotation.y -= Math.PI / 2;
-            doorT.position.set(doorT.position.x + 0.4, doorT.position.y, doorT.position.z);
+            doorT.position.x += 0.4;
         }
         if (typeof (doorB.children[0]) != 'undefined') {
             doorB.rotation.y -= Math.PI / 2;
-            doorB.position.set(doorB.position.x - 0.4, doorB.position.y, doorB.position.z);
+            doorB.position.x -= 0.4;
         }
         currentLevel.maps[currentMap].solved = false;
     }
