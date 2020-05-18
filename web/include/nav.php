@@ -42,25 +42,31 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0" style="font-size:20px;">
             <style>
-                li.nav-item {
-                    margin-right:60px;
-                    /*margin-left:30px; RECENTRER leaderboard*/
-                }
+                .navbar-expand-lg .navbar-nav .nav-link {
+                    margin-right: 60px;
+                }    
             </style>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Rules</a>
+            <li class="nav-item" id="test">
+                <a class="nav-link" href="rules.php">Rules</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            <li class="nav-item dropdown" id="test">
+                <a class="nav-link dropdown-toggle" href="leaderbords.php" id="navbardrop" data-toggle="dropdown">
                     Leaderboards
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">By Score</a>
-                    <a class="dropdown-item" href="#">By Levels</a>
+                <style>                    
+                    .dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover {
+                        background-color: #6351CE;
+                        color: white;
+                        text-decoration: none;
+                    }
+                </style>
+                    <a class="dropdown-item" href="leaderbords.php">By Score</a>
+                    <a class="dropdown-item" href="leaderbords.php">By Levels</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">The Team</a>
+            <li class="nav-item" id="test">
+                <a class="nav-link" href="theTeam.php">The Team</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -74,7 +80,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
                     <a class="dropdown-item text-danger" href="disconnect.php">Disconnect</a>
                 </div>');
             } else {
-                echo ('"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#Connect">Connect</button>');
+                echo ('"><button type="button" id="Bouton" class="btn btn-success" data-toggle="modal" data-target="#Connect">Connect</button>');
             }
             echo ('</li>');
             ?>
@@ -97,11 +103,30 @@ if ($connected == false) {
                             <input type="email" class="form-control" placeholder="Email" name="login" required>
                         </div>
                         <br />
-                        <input type="password" class="form-control" placeholder="Password" name="password" required /><br /><br />
-                        <style>.btn-success{background-color:#6351ce !important;}</style> 
+                        <script>
+                            <!--Change the password s visibility-->
+                            function changeType(){
+                                var x = document.getElementById("password");
+                            if (x.type === "password") {
+                                x.type = "text";
+                            } else {
+                                x.type = "password";
+                            }
+                            }
+                        </script>
+                        <div class="input-group mb-3">
+                        <input type="password" value="" class="form-control" placeholder="Password" id="password" required />
+                            <div class="input-group-append">
+                            <button type="button" class="change" onclick="changeType()"><img scr="img/visibility.jpeg" height="20px"></button> 
+                            </div>
+                        </div>
+                       
                         <button type="submit" class="btn btn-success">Connect</button>
-                        <!--<button type="submit" class="btn btn-success">Register</button>-->
-                        <a class="btn btn-success text-light" data-toggle="modal" data-target="#register" data-dismiss="modal" role="button">Register</a>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#register" data-dismiss="modal">Register</button>
+                        <style>
+                            .btn-success:hover, .btn-success:active, .btn-success:visited {border-color: white !important;}                          
+                            
+                        </style>
                     </form>
                     <!-- Modal footer -->
                     <div class="modal-footer">
