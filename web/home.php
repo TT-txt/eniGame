@@ -86,9 +86,9 @@
 			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
 				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
 					<h1 style="color:white; font-family:'8bit_wondernominal'">eniGame</h1>
-					<button id="PLAY" type="button" class="btn btn-success" onclick="init()">PLAY</button>
+					<button id="PLAY" type="button" class="btn btn-outline-secondary" onclick="">PLAY</button>
 					<br />
-					<button id="TUTORIAL" type="button" class="btn btn-outline-secondary" onclick="">TUTORIAL</button>
+					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/CIR1Project/eniGame/web/maps/tutorial.json')">TUTORIAL</button>
 					<br />
 					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
 				</div>
@@ -144,17 +144,17 @@
 					const mixers = [];
 					const clock = new THREE.Clock();
 
-					function init() {
+					function init(levelToPlay) {
 						toVanish = document.querySelector("#MENU");
 						toVanish.style["display"] = "none";
 
 						container = document.querySelector('#scene-container');
 
 						scene = new THREE.Scene();
-						scene.background = new THREE.Color(0x8FBCD4);
+						scene.background = new THREE.Color(0x8FBCD4);//Default blue for debug
 
-						currentLevel = loadMap("http://localhost/CIR1Project/eniGame/web/maps/tutorial.json");
-						console.log(currentLevel);
+						currentLevel = levelToPlay;
+
 						currentMap = 0; // Top right of the level
 
 						createSkybox();
@@ -169,8 +169,6 @@
 						renderer.setAnimationLoop(() => {
 							update();
 							render();
-
-							//if (currentLevel.maps[currentMap].solved) return;
 						});
 
 					}
@@ -196,16 +194,14 @@
 					// perform any updates to the scene, called once per frame
 					// avoid heavy computation here
 					function update() {
-						//if (currentLevel.maps[currentMap].solved) return;
-						console.log(currentLevel.maps[currentMap].logics);
+						
 						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 
 					}
 
 					// render of the scene
 					function render() {
-						//if (currentLevel.maps[currentMap].solved) return;
-
+						
 						const delta = clock.getDelta();
 						for (const mixer of mixers) {
 

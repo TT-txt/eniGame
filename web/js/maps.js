@@ -2,20 +2,16 @@
 // url > target url
 // jsonLoadSuccess > function to call on success
 function loadMap(url) {
-    const request = new XMLHttpRequest();
-    let jsonToObject;
-    request.open('GET', url);
-    request.responseType = 'json';
-    request.send();
-    request.onload = function () {
-        if (xhr.status != 200) { // analyze HTTP status of the response
-            jsonToObject = request.response;
-            console.log(jsonToObject);
-        }
-    }
-    console.log(jsonToObject);
-    return (jsonToObject);
+    var xhr = new XMLHttpRequest();
+    let jsonToObject = new level();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
 
+    xhr.onload = function () {
+        jsonToObject = xhr.response;
+        init(jsonToObject);
+    }
+    xhr.send();
 }
 
 /*
