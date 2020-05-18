@@ -24,6 +24,18 @@
 		border-color: #A9A9A9 !important;
 	}
 
+	.btn-success.focus, .btn-success:focus {
+		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+	}
+
+	.btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus {
+		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+	}
+
+	.btn-success:hover, .btn-success:active, .btn-success:visited {
+    border-color: #A9A9A9 !important;
+	}
+
 	.text-autre {
 		color: #6351ce !important;
 	}
@@ -53,6 +65,8 @@
 <script src="js/model.js"></script>
 <script src="js/mapConstruction.js"></script>
 <script src="js/event.js"></script>
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
 </head>
 
 <body>
@@ -62,7 +76,7 @@
 		</div>
 		<div class="col-lg-10" style="box-shadow: 0px 6px 5px grey; padding-right: 0px !important;">
 			<aside class="row" style="text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;">
-				<button type="button" id="cameraChange" class="btn btn-dark">TEST</button>
+				<button type="button" id="reset" class="btn btn-dark" onclick="mapReset()"><img src="img/reset.png" height="20px"></button>
 			</aside>
 			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
 				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
