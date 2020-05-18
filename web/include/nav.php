@@ -119,7 +119,7 @@ if ($connected == false) {
                             }
                         </script>
                         <div class="input-group mb-3">
-                        <input type="password" value="" class="form-control" placeholder="Password" id="password" required />
+                        <input type="password" value="" class="form-control" placeholder="Password" id="password" name="password" required />
                             <div class="input-group-append">
                             <button type="button"  onclick="changeType()">  
                                 <img src="img/see.png" id="motdepasse" height="20px">
