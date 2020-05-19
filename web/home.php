@@ -195,7 +195,7 @@
 					// avoid heavy computation here
 					function update() {
 						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
-						trapActivate(currentLevel.maps[currentMap]);
+						trapActivate(currentLevel.maps[currentMap], hero.position);
 					}
 
 					// render of the scene
