@@ -266,9 +266,9 @@
                         "y": 1,
                         "z": 4
                     },
-                    "onUse": 1,
+                    "onUse": 2,
                     "activated": false,
-                    "group": 1
+                    "group": 2
                 }
             ],
             "solved": false,

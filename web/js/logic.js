@@ -103,8 +103,12 @@ function pressurePlateOn(logicElem, toActivateIndex) {
                 }
             }
             break;
-
-        default:
+        case 2:
+            for(let elt of currentLevel.maps[currentMap].traps){
+                if(logicElem.group == elt.group){
+                    trapTrigger(elt, hero.position, gameStarted);
+                }
+            }
             break;
     }
     currentLevel.maps[currentMap].logics[toActivateIndex].activated = true;
@@ -119,6 +123,14 @@ function pressurePlateOff(logicElem, toActivateIndex) {
             currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         case 1:
+            currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
+            break;
+        case 2:
+            for(let elt of currentLevel.maps[currentMap].traps){
+                if(logicElem.group == elt.group){
+                    trapTrigger(elt, hero.position, gameStarted);
+                }
+            }
             currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         default:

@@ -3,35 +3,37 @@ let unmovableBox = false;
 
 
 function trapTrigger(trap, heroPos, gameStarted) {
-    if(gameStarted && !trap.activated){
+    if(gameStarted){
         switch(trap.type){
             case 0://SPIKES
-            switch(trap.facing){
-                case 'e':
-                    dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
-                    trap.activated = true;
-                    if(trap.coord.z == heroPos.z && trap.coord.x < heroPos.x) trapped = true;
-                    break;
-                case 'n':
-                    dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
-                    trap.activated = true;
-                    if(trap.coord.x == heroPos.x && trap.coord.z < heroPos.z) trapped = true;
-                    break;
-                case 'w':
-                    dispenserArrow.rotation.set(0, 0, Math.PI / 2);
-                    trap.activated = true;
-                    if(trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) trapped = true;
-                    break;
-                case 's':
-                    dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
-                    trap.activated = true;
-                    if(trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) trapped = true;
-                    break;
-                default:
-                    break;
-            }
+                if(!trap.activated){
+                    switch(trap.facing){
+                        case 'e':
+                            dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
+                            trap.activated = true;
+                            if(trap.coord.z == heroPos.z && trap.coord.x < heroPos.x) trapped = true;
+                            break;
+                        case 'n':
+                            dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
+                            trap.activated = true;
+                            if(trap.coord.x == heroPos.x && trap.coord.z < heroPos.z) trapped = true;
+                            break;
+                        case 'w':
+                            dispenserArrow.rotation.set(0, 0, Math.PI / 2);
+                            trap.activated = true;
+                            if(trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) trapped = true;
+                            break;
+                        case 's':
+                            dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
+                            trap.activated = true;
+                            if(trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) trapped = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
-
+                    
             case 1: //ARROW DISPENSER 1, need ANIMATION
                 //create arrow mesh
                 dispenserArrow = arrowMesh.clone();
@@ -64,7 +66,8 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 }
                 break;
             case 2:
-                
+                trap.activated = !trapActivate;
+                if(!trap.activated) scene.remove(dropperArrow);
                 break;
             default:
                 break;
@@ -100,7 +103,7 @@ function trapActivate(map, heroPos){
                             break;
                     }
                     break;
-                case 2:
+                case 2: //arrow infinite
                     if(arrowIn){
                         switch(elt.facing){
                             case 'e':

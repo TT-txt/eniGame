@@ -206,7 +206,7 @@ function createMap(mapConstructor) {
             case 2: //arrow infinite
                 let dropper = new THREE.Mesh(cube, dropperMaterial);
                 dropper.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
-                elt.activated = true;
+                elt.activated = true; //TODOOOOO
                 switch (elt.facing) {
                     case 'e':
                         trap.add(dropper);
@@ -261,6 +261,8 @@ function mapReset() {
             currentLevel.maps[currentMap].solved = false;
             break;
         }
+        if(typeof(dropperArrow) != 'undifined') scene.remove(dropperArrow);
+        if(typeof(dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
     }
     createMap(currentLevel.maps[currentMap]); //re creating the map
 }
