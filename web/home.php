@@ -86,6 +86,9 @@
 					let pressurePlate;
 					let pushableBox;
 
+					//random variables, finding uses somewhere
+					let arrowIn = false;
+
 					//Animation
 					const mixers = [];
 					const clock = new THREE.Clock();
