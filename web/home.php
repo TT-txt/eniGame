@@ -88,6 +88,8 @@
 
 					//random variables, finding uses somewhere
 					let arrowIn = false;
+					let dispenserArrow;
+					let dropperArrow;
 
 					//Animation
 					const mixers = [];

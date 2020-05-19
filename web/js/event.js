@@ -26,7 +26,6 @@ window.addEventListener("keydown", function (e) {
 
 // Player movements
 var blocked = true;
-var unmovableBox = false;
 
 function checkKeyPress(key) {
     if (gameStarted) {
@@ -60,7 +59,15 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x) {
+                        for(let elt of currentLevel.maps[currentMap].traps){
+                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
+                                unmovableBox = true;
+                                element.coord.y = 0;
+                                pushableBox.position.y = 0;
+                                break;
+                            }
+                        }
+                        if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x && !unmovableBox) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;
@@ -116,7 +123,15 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.z - 2 == -1 && hero.position.x == element.coord.x && 0 == element.coord.z) {
+                        for(let elt of currentLevel.maps[currentMap].traps){
+                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
+                                unmovableBox = true;
+                                element.coord.y = 0;
+                                pushableBox.position.y = 0;
+                                break;
+                            }
+                        }
+                        if (hero.position.z - 2 == -1 && hero.position.x == element.coord.x && 0 == element.coord.z && !unmovableBox) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;
@@ -171,7 +186,15 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z && currentLevel.maps[currentMap].floor.x - 1 == element.coord.x) {
+                        for(let elt of currentLevel.maps[currentMap].traps){
+                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
+                                unmovableBox = true;
+                                element.coord.y = 0;
+                                pushableBox.position.y = 0;                                
+                                break;
+                            }
+                        }
+                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z && currentLevel.maps[currentMap].floor.x - 1 == element.coord.x && !unmovableBox) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;
@@ -230,7 +253,15 @@ function checkKeyPress(key) {
                 // PushableBox special case
                 for (let element of currentLevel.maps[currentMap].logics) {
                     if (element.type == 1) {
-                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z - 1 == element.coord.z) {
+                        for(let elt of currentLevel.maps[currentMap].traps){
+                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
+                                unmovableBox = true;
+                                element.coord.y = 0;
+                                pushableBox.position.y =0;
+                                break;
+                            }
+                        }
+                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z - 1 == element.coord.z && !unmovableBox) {
                             unmovableBox = true;//If a box is between the player and the default wall
                             blocked = true;
                             break;

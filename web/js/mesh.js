@@ -38,6 +38,9 @@ function createMesh() {
     const dispenserFrontTexture = textureLoader.load('textures/trap/dispenser/dispenserFront.png');
     const dispenserSideTexture = textureLoader.load('textures/trap/dispenser/dispenserSide.png');
     const dispenserTopTexture = textureLoader.load('textures/trap/dispenser/dispenserTop.png');
+    const dropperFrontTexture = textureLoader.load('textures/trap/dropper/dropperFront.png');
+    const dropperSideTexture = textureLoader.load('textures/trap/dropper/dropperSide.png');
+    const dropperTopTexture = textureLoader.load('textures/trap/dropper/dropperTop.png');
 
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserFrontTexture}));
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
@@ -45,6 +48,13 @@ function createMesh() {
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
+
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperFrontTexture}));
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperTopTexture}));
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
+    dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
 
     floorTexture.encoding = THREE.sRGBEncoding;
     floorTexture.anisotropy = 16;
@@ -66,6 +76,12 @@ function createMesh() {
     dispenserSideTexture.anisotropy = 16;
     dispenserTopTexture.encoding = THREE.sRGBEncoding;
     dispenserTopTexture.anisotropy = 16;
+    dropperFrontTexture.encoding = THREE.sRGBEncoding;
+    dropperFrontTexture.anisotropy = 16;
+    dropperSideTexture.encoding = THREE.sRGBEncoding;
+    dropperSideTexture.anisotropy = 16;
+    dropperTopTexture.encoding = THREE.sRGBEncoding;
+    dropperTopTexture.anisotropy = 16;
 
     //creating materials
     floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });

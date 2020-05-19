@@ -203,6 +203,30 @@ function createMap(mapConstructor) {
                         continue;
                 }
                 break;
+            case 2: //arrow infinite
+                let dropper = new THREE.Mesh(cube, dropperMaterial);
+                dropper.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                elt.activated = true;
+                switch (elt.facing) {
+                    case 'e':
+                        trap.add(dropper);
+                        break;
+                    case 's':
+                        dropper.rotation.y += Math.PI / 2;
+                        trap.add(dropper);
+                        break;
+                    case 'n':
+                        dropper.rotation.y -= Math.PI / 2;
+                        trap.add(dropper);
+                        break;
+                    case 'w':
+                        dropper.rotation.y += Math.PI;
+                        trap.add(dropper);
+                        break;
+                    default:
+                        continue;
+                }
+                break;
             default:
                 continue;
         }

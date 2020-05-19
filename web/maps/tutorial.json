@@ -221,6 +221,17 @@
                     "activated": false,
                     "facing": "e",
                     "group": 2
+                },
+                {
+                    "type": 2,
+                    "coord": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 4  
+                    },
+                    "activated": true,
+                    "facing": "e",
+                    "group": 2
                 }
             ],
             "logics": [
