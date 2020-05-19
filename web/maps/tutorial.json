@@ -177,7 +177,106 @@
         null,
         null,
         {
-            
+            "walls": [
+                {
+                    "x": -5,
+                    "y": 5,
+                    "z": -5
+                },
+                {
+                    "x": 1,
+                    "y": 1,
+                    "z": 3
+                },
+                {
+                    "x": 1,
+                    "y": 1,
+                    "z": 4
+                }
+            ],
+            "floor": {
+                "x": 5,
+                "y": 0,
+                "z": 5
+            },
+            "traps": [
+                {
+                    "type": 1,
+                    "coord": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 3
+                    },
+                    "activated": false,
+                    "facing": "e",
+                    "group": 1
+                },
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 4,
+                        "y": 0,
+                        "z": 3  
+                    },
+                    "activated": false,
+                    "facing": "e",
+                    "group": 2
+                }
+            ],
+            "logics": [
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "onUse": 0,
+                    "activated": false
+                },
+                {
+                    "type": 1,
+                    "coord": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "onUse": 0,
+                    "activated": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 1
+                    }
+                },
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "onUse": 1,
+                    "activated": false,
+                    "group": 1
+                }
+            ],
+            "solved": false,
+            "type": null,
+            "exits": [
+                false,
+                {
+                    "x": 2,
+                    "y": 0,
+                    "z": -1
+                },
+                false,
+                false
+            ],
+            "spawnPoint": {
+                "x": 2,
+                "y": 1,
+                "z": 2
+            }
         }
     ],
     "theme": 0

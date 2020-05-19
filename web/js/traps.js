@@ -4,7 +4,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
     if(gameStarted && !trap.activated){
         switch(trap.type){
             case 0://SPIKES
-                if(heroPos.x == trap.coord.x && trap.coord.z == heroPos.z) trapped = true;
+                //if(heroPos.x == trap.coord.x && trap.coord.z == heroPos.z) trapped = true;
                 break;
 
             case 1: //ARROW DISPENSER 1, need ANIMATION
@@ -49,12 +49,12 @@ function trapTrigger(trap, heroPos, gameStarted) {
     }
 }
 
-function trapActivate(map){
+function trapActivate(map, heroPos){
     for(let elt of map.traps){
         if(elt.activated){
             switch(elt.type){
                 case 0://SPIKES
-
+                    if(heroPos.x == elt.coord.x && elt.coord.z == heroPos.z) trapped = true;
                     break;
                 case 1://ARROW ONCE
                     switch(elt.facing){

@@ -175,7 +175,7 @@ function createMap(mapConstructor) {
         switch (elt.type) {
             case 0://SPIKES
                 let spikes = spikesMesh.clone();
-                spikes.position.set(elt.coord.x, elt.coord.y+1, elt.coord.z);
+                spikes.position.set(elt.coord.x+0.25, elt.coord.y+1, elt.coord.z-0.25);
                 trap.add(spikes);
                 elt.activated = true;
                 break;
