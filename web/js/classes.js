@@ -46,7 +46,7 @@ class trap {
         this.type = type; //id, see the table
         this.coord = coord; //coord of the trap
         this.activated = activated; //boolean
-        this.facing = facing; // n e s o 
+        this.facing = facing; // w n e s
         this.group = group; //MUST BE THE SAME AS TRAP GROUP
     }
 }
@@ -72,7 +72,7 @@ class logic {
         this.type = type; //id, see the table
         this.coord = coord; //coord of the elt
         this.onUse = onUse; //char containing what to do if the player is on it
-        this.activated = activated; //is on/off
+        this.activated = activated; //is on/off or contains the SPAWN coords
         this.group = group; //MUST BE THE SAME AS TRAP THAT U WANT TO ACTIVATE
         
     }
