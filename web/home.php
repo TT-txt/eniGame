@@ -14,6 +14,7 @@
 <script src="js/model.js"></script>
 <script src="js/mapConstruction.js"></script>
 <script src="js/event.js"></script>
+<script src="js/editor.js"></script>
 
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
 </head>
@@ -34,7 +35,7 @@
 					<br />
 					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/eniGame/web/maps/tutorial.json')">TUTORIAL</button>
 					<br />
-					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
+					<button id="EDITOR" type="button" class="btn btn-success" onclick="loadEditor()">EDITOR</button>
 				</div>
 				<script>
 					//NEEDED TO HAVE A WORKING SCENE
@@ -68,6 +69,7 @@
 					let wallMaterialMossy;
 					let doorMaterial;
 					let dispenserMaterial = [];
+					let dropperMaterial = [];
 					let pressurePlateMaterial;
 					let pushableBoxMaterial;
 
