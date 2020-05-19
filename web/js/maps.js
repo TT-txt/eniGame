@@ -6,6 +6,9 @@ function loadMap(url) {
     let jsonToObject = new level();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
+    xhr.setRequestHeader("Cache-Control", "no-cache");
+    xhr.setRequestHeader("Pragma", "no-cache");
+    xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
 
     xhr.onload = function () {
         jsonToObject = xhr.response;
@@ -52,17 +55,18 @@ var testLevel = new level(
         startMap0,
         startMap1
     ],
-    0
+    0,
+    5
 );
 var objToJsonFile = "textToWrite=" + JSON.stringify(testLevel);
 //console.log(objToJsonFile);
 
-// Creating a XHR object 
+// Creating a XHR object
 let xhr = new XMLHttpRequest();
 let url = "http://localhost/eniGame/web/maps/saveMap.php";
 xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
 
-// Set the request header i.e. which type of content you are sending 
+// Set the request header i.e. which type of content you are sending
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 //xhr.setRequestHeader("Content-length", objToJsonFile.length);
 //xhr.setRequestHeader("Connection", "close");

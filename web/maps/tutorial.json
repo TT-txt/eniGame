@@ -58,7 +58,8 @@
                         "z": 2
                     },
                     "onUse": 0,
-                    "activated": false
+                    "activated": false,
+                    "group": null
                 }
             ],
             "solved": false,
@@ -121,7 +122,8 @@
                         "z": 3
                     },
                     "activated": false,
-                    "facing": "e"
+                    "facing": "e",
+                    "group": null
                 }
             ],
             "logics": [
@@ -133,7 +135,8 @@
                         "z": 4
                     },
                     "onUse": 0,
-                    "activated": false
+                    "activated": false,
+                    "group": null
                 },
                 {
                     "type": 1,
@@ -147,7 +150,8 @@
                         "x": 2,
                         "y": 1,
                         "z": 1
-                    }
+                    },
+                    "group": null
                 }
             ],
             "solved": false,
@@ -216,22 +220,22 @@
                     "coord": {
                         "x": 3,
                         "y": 0,
-                        "z": 1    
+                        "z": 0
                     },
                     "activated": false,
                     "facing": "e",
-                    "group": 2
+                    "group": null
                 },
                 {
                     "type": 2,
                     "coord": {
                         "x": 1,
                         "y": 2,
-                        "z": 4  
+                        "z": 4
                     },
                     "activated": true,
                     "facing": "e",
-                    "group": 2
+                    "group": null
                 }
             ],
             "logics": [
@@ -243,7 +247,19 @@
                         "z": 4
                     },
                     "onUse": 0,
-                    "activated": false
+                    "activated": false,
+                    "group": null
+                },
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "onUse": 2,
+                    "activated": false,
+                    "group": 1
                 },
                 {
                     "type": 1,
@@ -257,18 +273,8 @@
                         "x": 2,
                         "y": 1,
                         "z": 1
-                    }
-                },
-                {
-                    "type": 0,
-                    "coord": {
-                        "x": 3,
-                        "y": 1,
-                        "z": 4
                     },
-                    "onUse": 2,
-                    "activated": false,
-                    "group": 2
+                    "group": null
                 }
             ],
             "solved": false,
@@ -290,5 +296,6 @@
             }
         }
     ],
-    "theme": 0
+    "theme": 0,
+    "size": 5
 }

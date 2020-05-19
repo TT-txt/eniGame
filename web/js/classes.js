@@ -27,9 +27,10 @@ level array :
 20 ... 24
 ************************ */
 class level {
-    constructor(maps, theme) {
+    constructor(maps, theme, size) {
         this.maps = maps; //containing array with all the maps in the level (25)
         this.theme = theme; //texture themes
+        this.size = size; //size of the level (square)
     }
 } 
 /* ************************

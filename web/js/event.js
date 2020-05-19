@@ -100,7 +100,7 @@ function checkKeyPress(key) {
             */
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[1].x && hero.position.z - 1 == currentLevel.maps[currentMap].exits[1].z) {
-                currentMap -= 5;
+                currentMap -= currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[3].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[3].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z - 1;
@@ -227,10 +227,7 @@ function checkKeyPress(key) {
             */
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x == currentLevel.maps[currentMap].exits[3].x && hero.position.z + 1 == currentLevel.maps[currentMap].exits[3].z) {
-                for (elt of currentLevel.maps[currentMap].logics) {
-                    elt.activated = false;//Resets the logics for next time
-                }
-                currentMap += 5;
+                currentMap += currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[1].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[1].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z + 1;

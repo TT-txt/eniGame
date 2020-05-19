@@ -153,7 +153,7 @@ function createMap(mapConstructor) {
             case 0: //Pressure plate
                 pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
                 pressurePlate.position.set(mapConstructor.logics[i].coord.x, mapConstructor.logics[i].coord.y - 0.49, mapConstructor.logics[i].coord.z);
-                currentLevel.maps[currentMap].logics[i].activated = false;
+                currentLevel.maps[currentMap].logics[i].activated = false;//NO PROBLEM HERE
                 logic.add(pressurePlate);
                 break;
             case 1://Pushable box
@@ -164,8 +164,9 @@ function createMap(mapConstructor) {
                 mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
                 pushableBox.scale.set(0.8, 0.8, 0.8);
                 logic.add(pushableBox);
+                break;
             default:
-                continue;
+                break;
         }
     }
 
@@ -174,7 +175,7 @@ function createMap(mapConstructor) {
         switch (elt.type) {
             case 0://SPIKES
                 let spikes = spikesMesh.clone();
-                spikes.position.set(elt.coord.x+0.25, elt.coord.y+1, elt.coord.z-0.25);
+                spikes.position.set(elt.coord.x + 0.25, elt.coord.y + 1, elt.coord.z - 0.25);
                 trap.add(spikes);
                 elt.activated = true;
                 break;
@@ -260,8 +261,8 @@ function mapReset() {
             currentLevel.maps[currentMap].solved = false;
             break;
         }
-        if(typeof(dropperArrow) != 'undifined') scene.remove(dropperArrow);
-        if(typeof(dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
+        if (typeof (dropperArrow) != 'undefined') scene.remove(dropperArrow);
+        if (typeof (dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
     }
     createMap(currentLevel.maps[currentMap]); //re creating the map
 }

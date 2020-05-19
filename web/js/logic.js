@@ -14,10 +14,10 @@ function logicTrigger(logics, heroPos, gameStarted) {
                     if (!boxOnPlate) {
                         if (logics[i].activated == false && logics[i].coord.x == heroPos.x && logics[i].coord.z == heroPos.z) {
                             pressurePlateOn(logics[i], i);
-                            console.log("PLAQUE ACTIVEE");
+                            //console.log("PLAQUE ACTIVEE");
                         } else if (logics[i].activated == true && (logics[i].coord.x != heroPos.x || logics[i].coord.z != heroPos.z)) {
                             pressurePlateOff(logics[i], i);
-                            console.log("PLAQUE DESACTIVEE");
+                            //console.log("PLAQUE DESACTIVEE");
                         }
                     }
                     break;
@@ -28,7 +28,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
                             if (logics[j].type == 0) {
                                 if (logics[j].activated == false && logics[j].coord.x == logics[i].coord.x && logics[j].coord.z == logics[i].coord.z) {
                                     pressurePlateOn(logics[j], j);// /!\ use the plate coord /!\
-                                    console.log("PLAQUE ACTIVEE");
+                                    //console.log("PLAQUE ACTIVEE");
                                     break;
                                 }
                             }
@@ -97,15 +97,15 @@ function pressurePlateOn(logicElem, toActivateIndex) {
             doorOpen();
             break;
         case 1://single arrow
-            for(let elt of currentLevel.maps[currentMap].traps){
-                if(logicElem.group == elt.group){
+            for (let elt of currentLevel.maps[currentMap].traps) {
+                if (logicElem.group == elt.group) {
                     trapTrigger(elt, hero.position, gameStarted);
                 }
             }
             break;
         case 2:
-            for(let elt of currentLevel.maps[currentMap].traps){
-                if(logicElem.group == elt.group){
+            for (let elt of currentLevel.maps[currentMap].traps) {
+                if (logicElem.group == elt.group) {
                     trapTrigger(elt, hero.position, gameStarted);
                 }
             }
@@ -124,8 +124,8 @@ function pressurePlateOff(logicElem, toActivateIndex) {
         case 1:
             break;
         case 2:
-            for(let elt of currentLevel.maps[currentMap].traps){
-                if(logicElem.group == elt.group){
+            for (let elt of currentLevel.maps[currentMap].traps) {
+                if (logicElem.group == elt.group) {
                     trapTrigger(elt, hero.position, gameStarted);
                 }
             }
@@ -133,5 +133,5 @@ function pressurePlateOff(logicElem, toActivateIndex) {
         default:
             break;
     }
-    currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
+    currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;//NO PROBLEM HERE
 }
