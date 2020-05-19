@@ -60,8 +60,8 @@ function createMap(mapConstructor) {
                     case 3:
                         let doorBottom = new THREE.Mesh(slimRectangle, doorMaterial);
                         doorB.add(doorBottom);
-                        doorBottom.rotation.set(0, -Math.PI / 2, 0);
-                        doorBottom.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
+                        doorB.rotation.set(0, -Math.PI / 2, 0);
+                        doorB.position.set(mapConstructor.exits[elt].x, 1.5, mapConstructor.exits[elt].z);
                         break;
                 }
             }

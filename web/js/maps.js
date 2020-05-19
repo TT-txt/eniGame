@@ -63,8 +63,8 @@ xhr.open("POST", url, true); //true is for async (so the client doesn't have to 
 
 // Set the request header i.e. which type of content you are sending 
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhr.setRequestHeader("Content-length", objToJsonFile.length);
-xhr.setRequestHeader("Connection", "close");
+//xhr.setRequestHeader("Content-length", objToJsonFile.length);
+//xhr.setRequestHeader("Connection", "close");
 
 xhr.onreadystatechange = function () {//Call a function when the state changes.
     if (xhr.readyState == 4 && xhr.status == 200) {
