@@ -1,25 +1,81 @@
 <?php include("include/head.php"); ?>
 <title>eniGame ~ Rules</title>
 
+<style>
+		main {
+			height: 100%;
+		}
+		table {
+			vertical-align:middle;
+		}
+</style>
+
 </head>
 
 <body>
 	<?php include("include/nav.php"); ?>
 	<main>
-	<div class="container" style="margin-top:30px">
-		<div class="row">
-			<div class="col-sm-4">
-				<img class="card-img-top" src="https://www.codeur.com/blog/wp-content/uploads/2018/12/codeur-developpeur-web-700x525.jpg" alt="Louis Ducrocq" style="height: 200px; width: 100%; display: block;" data-holder-rendered="true">
+
+		<section class="px-3 py-3  mx-auto text-center">
+			<div class="container">
+				<h1>The Rules</h1>
+				<p class="lead text-muted">eniGame, is a mystery game, so guess them no ? No ?! Okay let us tell you...</p>
 			</div>
-			<div class="col-sm-8">
-				<h2>TITLE HEADING</h2>
-				<h5>Title description, Dec 7, 2017</h5>
-				<p>Some text..</p>
-				<p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-				<br>
+		</section>
+
+		<section class="px-3 py-3  mx-auto">
+			<div class="container">
+			<h2>Purpose of the game</h2>
+			<p class="lead text-muted">Two doors, one way, take it, and you win. It's ez.</p>
 			</div>
-		</div>
-	</div>
+		</section>
+
+		<section class="px-3 py-3">
+			<div class="container">
+				<h2>Controls</h2><br/>
+					<table class="table">
+  						<tbody>
+						
+							<tr>
+								<td>
+									<img class="card-img-top" src="img/controls/r.png" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">	
+								</td>
+								<td class="align-middle">
+									<p class="lead text-muted">Reset, if you use it, obviously you're a noob</p>
+								</td>
+							</tr>
+							<!-- LIGNE -->
+							<tr>
+								<td>
+									<img class="card-img-top" src="img/controls/reset.png" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">
+								</td>
+								<td class="align-middle">
+									<p class="lead text-muted" >Reset, mouse click version, use it and even noobs will beat you ! </p>
+								</td>
+							</tr>
+							<!-- LIGNE -->
+							<tr>
+								<td>
+									<img class="card-img-top" src="img/controls/zqsd.PNG" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">
+								</td>
+								<td class="align-middle">
+									<p class="lead text-muted" > Zygomorphic Quality Starring Demythologizer... honestly you really need the utility of ZQSD ?</p>
+								</td>
+							</tr>
+							<!-- LIGNE -->
+							<tr>
+								<td>
+									<img class="card-img-top" src="img/controls/arrow.PNG" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">
+								</td>
+								<td class="align-middle">
+									<p class="lead text-muted">NOUVELLE CASE</p>
+								</td>
+							</tr>		
+  						</tbody>
+					</table>
+				
+			</div>
+		</section>
 	</main>
 	<?php include("include/footer.php"); ?>
 </body>

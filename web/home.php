@@ -1,6 +1,11 @@
 <?php include("include/head.php"); ?>
 <title>eniGame</title>
 
+<style>
+		main {
+			height: 900px;
+		}
+</style>
 <script src="include/three/three.js"></script>
 <script src="include/three/OrbitControls.js"></script>
 <script src="include/three/GLTFLoader.js"></script>

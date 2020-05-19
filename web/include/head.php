@@ -43,11 +43,7 @@ function test_input($data)
 	<!-- css -->
 	<link rel="stylesheet" href="include/bootstrap/css/bootstrap.min.css" />
 	<link href="include/fontawesome/css/all.css" rel="stylesheet" />
-	<style>
-		main {
-			height: 900px;
-		}
-		
+	<style>		
 		body {
 			height: 100%;
 			width: 100%;
