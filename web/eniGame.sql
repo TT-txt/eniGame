@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 11, 2020 at 06:43 PM
+-- Generation Time: May 19, 2020 at 10:13 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -25,6 +25,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `MAPS`
+--
+
+CREATE TABLE `MAPS` (
+  `ID` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `whoposted` int(11) NOT NULL,
+  `finished` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `SCORES`
 --
 
@@ -33,19 +46,6 @@ CREATE TABLE `SCORES` (
   `who` int(11) NOT NULL,
   `score` bigint(20) NOT NULL,
   `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `SEEDS`
---
-
-CREATE TABLE `SEEDS` (
-  `ID` int(11) NOT NULL,
-  `seed` bigint(20) NOT NULL,
-  `whoposted` int(11) NOT NULL,
-  `finished` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -80,17 +80,17 @@ INSERT INTO `USERS` (`ID`, `login`, `password`, `name`, `wins`) VALUES
 --
 
 --
+-- Indexes for table `MAPS`
+--
+ALTER TABLE `MAPS`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `SEEDtoUSERS` (`whoposted`);
+
+--
 -- Indexes for table `SCORES`
 --
 ALTER TABLE `SCORES`
   ADD PRIMARY KEY (`REF`);
-
---
--- Indexes for table `SEEDS`
---
-ALTER TABLE `SEEDS`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `SEEDtoUSERS` (`whoposted`);
 
 --
 -- Indexes for table `USERS`
@@ -103,16 +103,16 @@ ALTER TABLE `USERS`
 --
 
 --
+-- AUTO_INCREMENT for table `MAPS`
+--
+ALTER TABLE `MAPS`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `SCORES`
 --
 ALTER TABLE `SCORES`
   MODIFY `REF` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `SEEDS`
---
-ALTER TABLE `SEEDS`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `USERS`
@@ -125,16 +125,16 @@ ALTER TABLE `USERS`
 --
 
 --
+-- Constraints for table `MAPS`
+--
+ALTER TABLE `MAPS`
+  ADD CONSTRAINT `SEEDtoUSERS` FOREIGN KEY (`whoposted`) REFERENCES `USERS` (`ID`);
+
+--
 -- Constraints for table `SCORES`
 --
 ALTER TABLE `SCORES`
   ADD CONSTRAINT `SCOREStoUSERS` FOREIGN KEY (`REF`) REFERENCES `USERS` (`ID`);
-
---
--- Constraints for table `SEEDS`
---
-ALTER TABLE `SEEDS`
-  ADD CONSTRAINT `SEEDtoUSERS` FOREIGN KEY (`whoposted`) REFERENCES `USERS` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
