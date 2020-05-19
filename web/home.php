@@ -194,9 +194,8 @@
 					// perform any updates to the scene, called once per frame
 					// avoid heavy computation here
 					function update() {
-						
 						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
-
+						trapActivate(currentLevel.maps[currentMap]);
 					}
 
 					// render of the scene
