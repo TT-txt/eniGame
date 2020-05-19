@@ -162,7 +162,6 @@ function createMap(mapConstructor) {
                 mapConstructor.logics[i].coord.x = mapConstructor.logics[i].activated.x;
                 mapConstructor.logics[i].coord.y = mapConstructor.logics[i].activated.y - 0.1;
                 mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
-                
                 pushableBox.scale.set(0.8, 0.8, 0.8);
                 logic.add(pushableBox);
             default:

@@ -214,9 +214,9 @@
                 {
                     "type": 0,
                     "coord": {
-                        "x": 4,
+                        "x": 3,
                         "y": 0,
-                        "z": 3  
+                        "z": 1    
                     },
                     "activated": false,
                     "facing": "e",

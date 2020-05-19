@@ -1,5 +1,5 @@
 let trapped = false;
-let unmovableBox = false;
+unmovableBox = false;
 
 
 function trapTrigger(trap, heroPos, gameStarted) {
@@ -34,7 +34,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 }
                 break;
                     
-            case 1: //ARROW DISPENSER 1, need ANIMATION
+            case 1: //ARROW DISPENSER 1
                 //create arrow mesh
                 dispenserArrow = arrowMesh.clone();
                 scene.add(dispenserArrow);
