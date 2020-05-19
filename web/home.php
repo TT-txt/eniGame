@@ -88,7 +88,7 @@
 					<h1 style="color:white; font-family:'8bit_wondernominal'">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-outline-secondary" onclick="">PLAY</button>
 					<br />
-					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/CIR1Project/eniGame/web/maps/tutorial.json')">TUTORIAL</button>
+					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/eniGame/web/maps/tutorial.json')">TUTORIAL</button>
 					<br />
 					<button id="EDITOR" type="button" class="btn btn-outline-secondary" onclick="">EDITOR</button>
 				</div>

@@ -58,7 +58,7 @@ var objToJsonFile = "textToWrite=" + JSON.stringify(testLevel);
 
 // Creating a XHR object 
 let xhr = new XMLHttpRequest();
-let url = "http://localhost/CIR1Project/eniGame/web/maps/saveMap.php";
+let url = "http://localhost/eniGame/web/maps/saveMap.php";
 xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
 
 // Set the request header i.e. which type of content you are sending 
