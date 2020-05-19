@@ -18,6 +18,7 @@ function loadMap(url) {
 ******************* /\ loading levels *******************
 ******************* \/ writing levels *******************
 */
+/*
 const startMap0 = new map(
     [
         new THREE.Vector3(1, 1, 1), new THREE.Vector3(1, 2, 1), new THREE.Vector3(1, 3, 1),
@@ -73,5 +74,4 @@ xhr.onreadystatechange = function () {//Call a function when the state changes.
 }
 
 xhr.send(objToJsonFile);
-
-
+*/
