@@ -120,10 +120,8 @@ function pressurePlateOff(logicElem, toActivateIndex) {
             //Open the map doors
             //logicElem.coord.y+= 0.2;//Shows that the pressure plate in onUse
             doorClose();
-            currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         case 1:
-            currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         case 2:
             for(let elt of currentLevel.maps[currentMap].traps){
@@ -131,9 +129,9 @@ function pressurePlateOff(logicElem, toActivateIndex) {
                     trapTrigger(elt, hero.position, gameStarted);
                 }
             }
-            currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
             break;
         default:
             break;
     }
+    currentLevel.maps[currentMap].logics[toActivateIndex].activated = false;
 }
