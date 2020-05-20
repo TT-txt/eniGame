@@ -21,13 +21,13 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
                         trap.activated = true;
                         for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && trap.coord.y == element.coord.y){
+                            if(element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y+0.1 == trap.coord.y){
                                 boxing = true;
                                 break;
                             }
                             else boxing = false;
                         }
-                        if(!boxing && elt.coord.z == heroPos.z && elt.coord.x){
+                        if(!boxing && trap.coord.z == heroPos.z && trap.coord.x){
                             trapped = true;
                             console.log("DEAD");
                         }
@@ -36,7 +36,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && element.coord.x == trap.coord.x && element.coord.z < trap.coord.z && trap.coord.y == element.coord.y){
+                            if(element.type == 1 && element.coord.x == trap.coord.x && element.coord.z > trap.coord.z && element.coord.z < heroPos.z  && element.coord.y+0.1 == trap.coord.y){
                                 boxing = true;
                                 break;
                             }
@@ -51,7 +51,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         dispenserArrow.rotation.set(0, 0, Math.PI / 2);
                         trap.activated = true;
                         for(let element of currentLevel.maps[currentMap].logics){    
-                            if(element.type == 1 && trap.coord.z > element.coord.z && trap.coord.x == element.coord.x && trap.coord.y == element.coord.y){
+                            if(element.type == 1 && trap.coord.x > element.coord.x && trap.coord.z == element.coord.z && element.coord.x > heroPos.x && trap.coord.y == element.coord.y + 0.1){
                                 boxing = true;
                                 break;
                             }
@@ -66,7 +66,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && trap.coord.x == element.coord.x && element.coord.z < trap.coord.z && trap.coord.y == element.coord.y){
+                            if(element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1){
                                 boxing = true;
                                 break;
                             }
@@ -130,7 +130,7 @@ function trapActivate(map, heroPos) {
                         switch (elt.facing) {
                             case 'e':
                                 for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && elt.coord.y == element.coord.y){
+                                    if(element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y+0.1 == elt.coord.y){
                                         boxing = true;
                                         break;
                                     }
@@ -143,7 +143,7 @@ function trapActivate(map, heroPos) {
                                 break;
                             case 'n':
                                 for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && element.coord.x == elt.coord.x && element.coord.z < elt.coord.z && elt.coord.y == element.coord.y){
+                                    if(element.type == 1 && element.coord.x == elt.coord.x && element.coord.z > elt.coord.z && element.coord.z < heroPos.z  && element.coord.y+0.1 == elt.coord.y){
                                         boxing = true;
                                         break;
                                     }
@@ -156,7 +156,7 @@ function trapActivate(map, heroPos) {
                                 break;
                             case 'w':
                                 for(let element of currentLevel.maps[currentMap].logics){    
-                                    if(element.type == 1 && elt.coord.z > element.coord.z && elt.coord.x == element.coord.x && elt.coord.y == element.coord.y){
+                                    if(element.type == 1 && elt.coord.x > element.coord.x && elt.coord.z == element.coord.z && element.coord.x > heroPos.x && elt.coord.y == element.coord.y + 0.1){
                                         boxing = true;
                                         break;
                                     }
@@ -169,7 +169,7 @@ function trapActivate(map, heroPos) {
                                 break;
                             case 's':
                                 for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z < elt.coord.z && elt.coord.y == element.coord.y){
+                                    if(element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z < elt.coord.z && heroPos.z < element.coord.z && elt.coord.y == element.coord.y + 0.1){
                                         boxing = true;
                                         break;
                                     }
