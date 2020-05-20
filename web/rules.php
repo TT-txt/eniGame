@@ -19,7 +19,7 @@
 		<section class="px-3 py-3  mx-auto text-center">
 			<div class="container">
 				<h1>The Rules</h1>
-				<p class="lead text-muted">eniGame, is a mystery game, so guess them no ? No ?! Okay let us tell you...</p>
+				<p class="lead text-muted">eniGame, is a mystery game, so guess them no ?</p>
 			</div>
 		</section>
 
@@ -41,7 +41,7 @@
 									<img class="card-img-top" src="img/controls/r.png" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">	
 								</td>
 								<td class="align-middle">
-									<p class="lead text-muted">Reset, if you use it, obviously you're a noob</p>
+									<p class="lead text-muted">Reset, if you use it, obviously you're a noob. Use it 3 times and you're dead</p>
 								</td>
 							</tr>
 							<!-- LIGNE -->
@@ -50,7 +50,7 @@
 									<img class="card-img-top" src="img/controls/reset.png" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">
 								</td>
 								<td class="align-middle">
-									<p class="lead text-muted" >Reset, mouse click version, use it and even noobs will beat you ! </p>
+									<p class="lead text-muted" >Reset, mouse click version, use it and even noobs will beat you ! Obviously use it 3 times and you're very very dead </p>
 								</td>
 							</tr>
 							<!-- LIGNE -->

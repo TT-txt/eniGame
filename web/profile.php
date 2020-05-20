@@ -7,13 +7,21 @@ if (!isset($_SESSION["auth"])) {
 }
 ?>
 <title>eniGame ~ Profile</title>
+
+<style>
+		main {
+			height: 600px; 
+		}
+</style>
+
 </head>
 
 <body>
     <?php include("include/nav.php"); ?>
     <main>
         <br />
-        <table class="table table-hover">
+        <div class="container">
+        <table class="table table-hover mt-5">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" colspan="3">Your personal information :</th>
@@ -38,6 +46,7 @@ if (!isset($_SESSION["auth"])) {
                 </tr>
             </tbody>
         </table>
+        </div>  
     </main>
     <?php include("include/footer.php"); ?>
 </body>
