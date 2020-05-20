@@ -23,7 +23,7 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<div class="card mb-4 box-shadow">
-						<img class="card-img-top" style="background-color:white; background-size:100%" src="img/team/louisd.png" alt="Louis Ducrocq" style="height: 100%; width: 100%; display: block;" data-holder-rendered="true">
+						<img class="card-img-top" style="background-color:white;" src="img/team/louisd.png" alt="Louis Ducrocq" style="height: 200px; width: 100%; display: block;" data-holder-rendered="true">
 						<div class="card-body">
 							<p class="card-text"><center><b>Louis D</b>. EL PLANNOR. </center>Don't even think to drink or laugh IF IT'S NOT WRITTEN IN THE PLANNING! </p>
 						</div>
