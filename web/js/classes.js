@@ -53,15 +53,13 @@ class trap {
 }
 
 /*
-
 +------------------------+----+--------+
 |         trap           | id | done ? |
 +------------------------+----+--------+
 | spikes                 |  0 | yes    |
 | arrow once             |  1 | yes    |
-| arrow once grouped     |  2 | yes    |
-| arrow infinite grouped |  3 | yes    |
-| flame                  |  4 | no     |
+| arrow infinite grouped |  2 | yes    |
+| flame                  |  3 | yes    |
 +------------------------+----+--------+
 */
 
