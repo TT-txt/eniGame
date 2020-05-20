@@ -318,7 +318,7 @@ function trapActivate(map, heroPos) {
                         firecharge.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
                         fireIn = true;
                         scene.add(firecharge);
-                        firecharge.scale.set(0.11, 0.1, 0.1);
+                        firecharge.scale.set(0.2, 0.2, 0.2);
                     }
                     break;
             }
