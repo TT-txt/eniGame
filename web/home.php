@@ -75,6 +75,7 @@
 					let doorMaterial;
 					let dispenserMaterial = [];
 					let dropperMaterial = [];
+					let smokerMaterial = [];
 					let pressurePlateMaterial;
 					let pushableBoxMaterial;
 

@@ -1,4 +1,5 @@
 let trapped = false;
+let boxing = false;
 unmovableBox = false;
 
 
@@ -6,44 +7,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
     if (gameStarted && !trapped) {
         switch (trap.type) {
             case 0://SPIKES
-                if (!trap.activated) {
-                    switch (trap.facing) {
-                        case 'e':
-                            dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
-                            trap.activated = true;
-                            if (trap.coord.z == heroPos.z && trap.coord.x < heroPos.x) {
-                                trapped = true;
-                                console.log("DEAD!");
-                            }
-                            break;
-                        case 'n':
-                            dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
-                            trap.activated = true;
-                            if (trap.coord.x == heroPos.x && trap.coord.z < heroPos.z) {
-                                trapped = true;
-                                console.log("DEAD!");
-                            }
-                            break;
-                        case 'w':
-                            dispenserArrow.rotation.set(0, 0, Math.PI / 2);
-                            trap.activated = true;
-                            if (trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) {
-                                trapped = true;
-                                console.log("DEAD!");
-                            }
-                            break;
-                        case 's':
-                            dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
-                            trap.activated = true;
-                            if (trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) {
-                                trapped = true;
-                                console.log("DEAD!");
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
+               if(heroPos.x == trap.coord.x && heroPos.z == trap.coord.z) trapped = true;
                 break;
 
             case 1: //ARROW DISPENSER 1
@@ -56,15 +20,29 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     case 'e':
                         dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
                         trap.activated = true;
-                        if (trap.coord.z == heroPos.z && trap.coord.x < heroPos.x) {
+                        for(let element of currentLevel.maps[currentMap].logics){
+                            if(element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && trap.coord.y == element.coord.y){
+                                boxing = true;
+                                break;
+                            }
+                            else boxing = false;
+                        }
+                        if(!boxing && elt.coord.z == heroPos.z && elt.coord.x){
                             trapped = true;
-                            console.log("DEAD!");
+                            console.log("DEAD");
                         }
                         break;
                     case 'n':
                         dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
-                        if (trap.coord.x == heroPos.x && trap.coord.z < heroPos.z) {
+                        for(let element of currentLevel.maps[currentMap].logics){
+                            if(element.type == 1 && element.coord.x == trap.coord.x && element.coord.z < trap.coord.z && trap.coord.y == element.coord.y){
+                                boxing = true;
+                                break;
+                            }
+                            else boxing = false;
+                        }
+                        if (!boxing && trap.coord.x == heroPos.x && trap.coord.z < heroPos.z ) {
                             trapped = true;
                             console.log("DEAD!");
                         }
@@ -72,7 +50,14 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     case 'w':
                         dispenserArrow.rotation.set(0, 0, Math.PI / 2);
                         trap.activated = true;
-                        if (trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) {
+                        for(let element of currentLevel.maps[currentMap].logics){    
+                            if(element.type == 1 && trap.coord.z > element.coord.z && trap.coord.x == element.coord.x && trap.coord.y == element.coord.y){
+                                boxing = true;
+                                break;
+                            }
+                            else boxing = false;
+                        }
+                        if (!boxing && trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) {
                             trapped = true;
                             console.log("DEAD!");
                         }
@@ -80,7 +65,14 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     case 's':
                         dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
                         trap.activated = true;
-                        if (trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) {
+                        for(let element of currentLevel.maps[currentMap].logics){
+                            if(element.type == 1 && trap.coord.x == element.coord.x && element.coord.z < trap.coord.z && trap.coord.y == element.coord.y){
+                                boxing = true;
+                                break;
+                            }
+                            else boxing = false;
+                        }
+                        if (!boxing && trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) {
                             trapped = true;
                             console.log("DEAD!");
                         }
@@ -90,8 +82,9 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 }
                 break;
             case 2:
-                trap.activated = !trapActivate;
-                if (!trap.activated) scene.remove(dropperArrow);
+                if(trap.activated) trap.activated = false;
+                else if (!trap.activated) trap.activated = true;
+                scene.remove(dropperArrow);
                 break;
             default:
                 break;
@@ -136,25 +129,53 @@ function trapActivate(map, heroPos) {
                     if (!trapped) {
                         switch (elt.facing) {
                             case 'e':
-                                if (elt.coord.z == heroPos.z && elt.coord.x < heroPos.x) {
+                                for(let element of currentLevel.maps[currentMap].logics){
+                                    if(element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && elt.coord.y == element.coord.y){
+                                        boxing = true;
+                                        break;
+                                    }
+                                    else boxing = false;
+                                }
+                                if(!boxing && elt.coord.z == heroPos.z && elt.coord.x){
                                     trapped = true;
-                                    console.log("DEAD!");
+                                    console.log("DEAD");
                                 }
                                 break;
                             case 'n':
-                                if (elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
+                                for(let element of currentLevel.maps[currentMap].logics){
+                                    if(element.type == 1 && element.coord.x == elt.coord.x && element.coord.z < elt.coord.z && elt.coord.y == element.coord.y){
+                                        boxing = true;
+                                        break;
+                                    }
+                                    else boxing = false;
+                                }
+                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z ) {
                                     trapped = true;
                                     console.log("DEAD!");
                                 }
                                 break;
                             case 'w':
-                                if (elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
+                                for(let element of currentLevel.maps[currentMap].logics){    
+                                    if(element.type == 1 && elt.coord.z > element.coord.z && elt.coord.x == element.coord.x && elt.coord.y == element.coord.y){
+                                        boxing = true;
+                                        break;
+                                    }
+                                    else boxing = false;
+                                }
+                                if (!boxing && elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
                                     trapped = true;
                                     console.log("DEAD!");
                                 }
                                 break;
                             case 's':
-                                if (elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
+                                for(let element of currentLevel.maps[currentMap].logics){
+                                    if(element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z < elt.coord.z && elt.coord.y == element.coord.y){
+                                        boxing = true;
+                                        break;
+                                    }
+                                    else boxing = false;
+                                }
+                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
                                     trapped = true;
                                     console.log("DEAD!");
                                 }

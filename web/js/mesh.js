@@ -41,6 +41,9 @@ function createMesh() {
     const dropperFrontTexture = textureLoader.load('textures/trap/dropper/dropperFront.png');
     const dropperSideTexture = textureLoader.load('textures/trap/dropper/dropperSide.png');
     const dropperTopTexture = textureLoader.load('textures/trap/dropper/dropperTop.png');
+    const smokerFrontTexture = textureLoader.load('textures/trap/smoker/smokerFront.png');
+    const smokerSideTexture = textureLoader.load('textures/trap/smoker/smokerSide.png');
+    const smokerTopTexture = textureLoader.load('textures/trap/smoker/smokerTop.png');
 
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserFrontTexture}));
     dispenserMaterial.push(new THREE.MeshStandardMaterial({map : dispenserSideTexture}));
@@ -56,32 +59,52 @@ function createMesh() {
     dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
     dropperMaterial.push(new THREE.MeshStandardMaterial({map : dropperSideTexture}));
 
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerFrontTexture}));
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerSideTexture}));
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerTopTexture}));
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerSideTexture}));
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerSideTexture}));
+    smokerMaterial.push(new THREE.MeshStandardMaterial({map : smokerSideTexture}));
+
     floorTexture.encoding = THREE.sRGBEncoding;
     floorTexture.anisotropy = 16;
+    
     wallTextureCobble.encoding = THREE.sRGBEncoding;
     wallTextureCobble.anisotropy = 16;
     wallTextureCracked.encoding = THREE.sRGBEncoding;
     wallTextureCracked.anisotropy = 16;
     wallTextureMossy.encoding = THREE.sRGBEncoding;
     wallTextureMossy.anisotropy = 16;
+    
     doorTexture.encoding = THREE.sRGBEncoding;
     doorTexture.anisotropy = 16;
+    
     pressurePlateTexture.encoding = THREE.sRGBEncoding;
     pressurePlateTexture.anisotropy = 16;
+    
     pushableBoxTexture.encoding = THREE.sRGBEncoding;
     pushableBoxTexture.anisotropy = 16;
+    
     dispenserFrontTexture.encoding = THREE.sRGBEncoding;
     dispenserFrontTexture.anisotropy = 16;
     dispenserSideTexture.encoding = THREE.sRGBEncoding;
     dispenserSideTexture.anisotropy = 16;
     dispenserTopTexture.encoding = THREE.sRGBEncoding;
     dispenserTopTexture.anisotropy = 16;
+    
     dropperFrontTexture.encoding = THREE.sRGBEncoding;
     dropperFrontTexture.anisotropy = 16;
     dropperSideTexture.encoding = THREE.sRGBEncoding;
     dropperSideTexture.anisotropy = 16;
     dropperTopTexture.encoding = THREE.sRGBEncoding;
     dropperTopTexture.anisotropy = 16;
+    
+    smokerFrontTexture.encoding = THREE.sRGBEncoding;
+    smokerFrontTexture.anisotropy = 16;
+    smokerSideTexture.encoding = THREE.sRGBEncoding;
+    smokerSideTexture.anisotropy = 16;
+    smokerTopTexture.encoding = THREE.sRGBEncoding;
+    smokerTopTexture.anisotropy = 16;
 
     //creating materials
     floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });

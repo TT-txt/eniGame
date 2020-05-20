@@ -146,30 +146,6 @@ function createMap(mapConstructor) {
         }
     }
 
-    //Creating logic elements
-    for (let i = 0; i < mapConstructor.logics.length; i++) {
-        if (mapConstructor.logics[i].coord.x > mapConstructor.floor.x - 1 || mapConstructor.logics[i].coord.y > mapConstructor.y - 1 || mapConstructor.logics[i].coord.z > mapConstructor.z - 1 || mapConstructor.logics[i].coord.z < 0 || mapConstructor.logics[i].coord.y < 0 || mapConstructor.logics[i].coord.z < 0) continue;
-        switch (mapConstructor.logics[i].type) {
-            case 0: //Pressure plate
-                pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
-                pressurePlate.position.set(mapConstructor.logics[i].coord.x, mapConstructor.logics[i].coord.y - 0.49, mapConstructor.logics[i].coord.z);
-                currentLevel.maps[currentMap].logics[i].activated = false;//NO PROBLEM HERE
-                logic.add(pressurePlate);
-                break;
-            case 1://Pushable box
-                pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
-                pushableBox.position.set(mapConstructor.logics[i].activated.x, mapConstructor.logics[i].activated.y - 0.1, mapConstructor.logics[i].activated.z);
-                mapConstructor.logics[i].coord.x = mapConstructor.logics[i].activated.x;
-                mapConstructor.logics[i].coord.y = mapConstructor.logics[i].activated.y - 0.1;
-                mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
-                pushableBox.scale.set(0.8, 0.8, 0.8);
-                logic.add(pushableBox);
-                break;
-            default:
-                break;
-        }
-    }
-
     for (let elt of mapConstructor.traps) {
         if (elt.coord.x > mapConstructor.floor.x - 1 || elt.coord.y > mapConstructor.y - 1 || elt.coord.z > mapConstructor.z - 1 || elt.coord.z < 0 || elt.coord.y < 0 || elt.coord.z < 0) continue;
         switch (elt.type) {
@@ -206,7 +182,12 @@ function createMap(mapConstructor) {
             case 2: //arrow infinite
                 let dropper = new THREE.Mesh(cube, dropperMaterial);
                 dropper.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
-                elt.activated = true; //TODOOOOO
+                for(let element of mapConstructor.logics){
+                    if(element.group == elt.group && element.onUse == elt.type && element.activated && elt.activated) elt.activated = false;
+                    else if(element.group == elt.group && element.onUse == elt.type && element.activated && !elt.activated) elt.activated = true;
+                    else if(element.group == elt.group && element.onUse == elt.type && !element.activated && elt.activated) elt.activated = true;
+                    else if(element.group == elt.group && element.onUse == elt.type && !element.activated && !elt.activated) elt.activated = false;
+                }
                 switch (elt.facing) {
                     case 'e':
                         trap.add(dropper);
@@ -227,8 +208,55 @@ function createMap(mapConstructor) {
                         continue;
                 }
                 break;
+            case 3://flames
+                let smoker = new THREE.Mesh(cube, smokerMaterial);
+                smoker.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                switch (elt.facing) {
+                    case 'e':
+                        trap.add(smoker);
+                        break;
+                    case 's':
+                        smoker.rotation.y += Math.PI / 2;
+                        trap.add(smoker);
+                        break;
+                    case 'n':
+                        smoker.rotation.y -= Math.PI / 2;
+                        trap.add(smoker);
+                        break;
+                    case 'w':
+                        smoker.rotation.y += Math.PI;
+                        trap.add(smoker);
+                        break;
+                    default:
+                        continue;
+                }
+                break;
             default:
                 continue;
+        }
+    }
+
+    //Creating logic elements
+    for (let i = 0; i < mapConstructor.logics.length; i++) {
+        if (mapConstructor.logics[i].coord.x > mapConstructor.floor.x - 1 || mapConstructor.logics[i].coord.y > mapConstructor.y - 1 || mapConstructor.logics[i].coord.z > mapConstructor.z - 1 || mapConstructor.logics[i].coord.z < 0 || mapConstructor.logics[i].coord.y < 0 || mapConstructor.logics[i].coord.z < 0) continue;
+        switch (mapConstructor.logics[i].type) {
+            case 0: //Pressure plate
+                pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
+                pressurePlate.position.set(mapConstructor.logics[i].coord.x, mapConstructor.logics[i].coord.y - 0.49, mapConstructor.logics[i].coord.z);
+                currentLevel.maps[currentMap].logics[i].activated = false;//NO PROBLEM HERE
+                logic.add(pressurePlate);
+                break;
+            case 1://Pushable box
+                pushableBox = new THREE.Mesh(cube, pushableBoxMaterial);
+                pushableBox.position.set(mapConstructor.logics[i].activated.x, mapConstructor.logics[i].activated.y - 0.1, mapConstructor.logics[i].activated.z);
+                mapConstructor.logics[i].coord.x = mapConstructor.logics[i].activated.x;
+                mapConstructor.logics[i].coord.y = mapConstructor.logics[i].activated.y - 0.1;
+                mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
+                pushableBox.scale.set(0.8, 0.8, 0.8);
+                logic.add(pushableBox);
+                break;
+            default:
+                break;
         }
     }
 
@@ -237,6 +265,7 @@ function createMap(mapConstructor) {
 
     gameStarted = true;
     trapped = false;
+    blocked = false;
 
     mapBuild.add(backWalls);
     mapBuild.add(floor);

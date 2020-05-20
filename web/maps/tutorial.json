@@ -213,7 +213,7 @@
                     },
                     "activated": false,
                     "facing": "e",
-                    "group": 1
+                    "group": null
                 },
                 {
                     "type": 0,
@@ -235,7 +235,7 @@
                     },
                     "activated": true,
                     "facing": "e",
-                    "group": null
+                    "group": 2
                 }
             ],
             "logics": [
@@ -253,13 +253,13 @@
                 {
                     "type": 0,
                     "coord": {
-                        "x": 3,
+                        "x": 1,
                         "y": 1,
-                        "z": 4
+                        "z": 1
                     },
                     "onUse": 2,
                     "activated": false,
-                    "group": 1
+                    "group": 2
                 },
                 {
                     "type": 1,
@@ -286,8 +286,108 @@
                     "y": 0,
                     "z": -1
                 },
-                false,
+                {
+                    "x": 5,
+                    "y": 0,
+                    "z": 2
+                },
                 false
+            ],
+            "spawnPoint": {
+                "x": 2,
+                "y": 1,
+                "z": 2
+            }
+        },
+        {
+            "walls": [
+                {
+                    "x": -5,
+                    "y": 5,
+                    "z": -5
+                },
+                {
+                    "x": 1,
+                    "y": 1,
+                    "z": 3
+                },
+                {
+                    "x": 1,
+                    "y": 1,
+                    "z": 4
+                },
+                {
+                    "x": 3,
+                    "y": 2,
+                    "z": 2
+                },
+                {
+                    "x": 3,
+                    "y": 1,
+                    "z": 2
+                }
+            ],
+            "floor": {
+                "x": 5,
+                "y": 0,
+                "z": 5
+            },
+            "traps": [
+                {
+                    "type": 3,
+                    "coord": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 3
+                    },
+                    "activated": false,
+                    "facing": "e",
+                    "group": 1
+                }
+            ],
+            "logics": [
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "onUse": 0,
+                    "activated": false,
+                    "group": null
+                },
+                {
+                    "type": 1,
+                    "coord": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "onUse": 0,
+                    "activated": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "group": null
+                }
+            ],
+            "solved": false,
+            "type": null,
+            "exits": [
+                {
+                    "x": -1,
+                    "y": 0,
+                    "z": 1
+                },
+                false,
+                false,
+                {
+                    "x": 2,
+                    "y": 0,
+                    "z": 5
+                }
             ],
             "spawnPoint": {
                 "x": 2,
