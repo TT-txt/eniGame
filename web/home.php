@@ -94,8 +94,10 @@
 
 					//random variables, finding uses somewhere
 					let arrowIn = false;
+					let fireIn = false;
 					let dispenserArrow;
 					let dropperArrow;
+					let fireMesh;
 
 					//Animation
 					const mixers = [];

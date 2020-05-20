@@ -290,8 +290,9 @@ function mapReset() {
             currentLevel.maps[currentMap].solved = false;
             break;
         }
-        if (typeof (dropperArrow) != 'undefined') scene.remove(dropperArrow);
-        if (typeof (dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
+        if (typeof(dropperArrow) != 'undefined') scene.remove(dropperArrow);
+        if (typeof(dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
+        if(typeof(firecharge) != 'undefined') scene.remove(firecharge);
     }
     createMap(currentLevel.maps[currentMap]); //re creating the map
 }

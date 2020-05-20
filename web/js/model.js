@@ -22,6 +22,7 @@ function loadModels() {
 
     loader.load("models/arrow.glb", handleBasicc_load);
     loader.load("models/spikes.glb", handleBasic_load);
+    loader.load("models/firecharge.glb", handleBasiccc_load);
 
     function handleBasic_load(gltf) {
         //Model without animation
@@ -30,5 +31,9 @@ function loadModels() {
 
     function handleBasicc_load(gltf){
         arrowMesh = gltf.scene.children[0];
+    }
+
+    function handleBasiccc_load(gltf){
+        fireMesh = gltf.scene;
     }
 }

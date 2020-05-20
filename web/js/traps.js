@@ -86,6 +86,10 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 else if (!trap.activated) trap.activated = true;
                 scene.remove(dropperArrow);
                 break;
+            case 3:
+                if(trap.activated) trap.activated = false;
+                else if (!trap.activated) trap.activated = true;
+                scene.remove(firecharge);
             default:
                 break;
         }
@@ -93,7 +97,6 @@ function trapTrigger(trap, heroPos, gameStarted) {
 }
 
 function trapActivate(map, heroPos) {
-
     for (let elt of map.traps) {
         if (elt.activated) {
             switch (elt.type) {
@@ -227,7 +230,7 @@ function trapActivate(map, heroPos) {
                         switch (elt.facing) {
                             case 'e':
                                 dropperArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
-                                trap.activated = true;
+                                elt.activated = true;
                                 break;
                             case 'n':
                                 dropperArrow.rotation.set(Math.PI / 2, 0, 0);
@@ -235,7 +238,7 @@ function trapActivate(map, heroPos) {
                                 break;
                             case 'w':
                                 dropperArrow.rotation.set(0, 0, Math.PI / 2);
-                                trap.activated = true;
+                                elt.activated = true;
                                 break;
                             case 's':
                                 dropperArrow.rotation.set(-Math.PI / 2, 0, 0);
@@ -244,6 +247,78 @@ function trapActivate(map, heroPos) {
                             default:
                                 break;
                         }
+                    }
+                    break;
+
+                case 3:
+                    if (!trapped) {
+                        switch (elt.facing) {
+                            case 'e':
+                                if (elt.coord.z == heroPos.z && elt.coord.x < heroPos.x) {
+                                    trapped = true;
+                                    console.log("DEAD!");
+                                }
+                                break;
+                            case 'n':
+                                if (elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
+                                    trapped = true;
+                                    console.log("DEAD!");
+                                }
+                                break;
+                            case 'w':
+                                if (elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
+                                    trapped = true;
+                                    console.log("DEAD!");
+                                }
+                                break;
+                            case 's':
+                                if (elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
+                                    trapped = true;
+                                    console.log("DEAD!");
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if(fireIn){
+                        switch (elt.facing) {
+                            case 'e':
+                                if (firecharge.position.x <= map.floor.x) firecharge.position.x += 0.2;
+                                else {
+                                    scene.remove(firecharge);
+                                    fireIn = false;
+                                }
+                                break;
+                            case 'w':
+                                if (firecharge.position.x >= 0) firecharge.position.x -= 0.2;
+                                else {
+                                    scene.remove(firecharge);
+                                    fireIn = false;
+                                }
+                                break;
+                            case 'n':
+                                if (firecharge.position.z <= map.floor.z) firecharge.position.z += 0.2;
+                                else {
+                                    scene.remove(firecharge);
+                                    fireIn = false;
+                                }
+                                break;
+                            case 's':
+                                if (firecharge.position.z >= 0) firecharge.position.z -= 0.2;
+                                else {
+                                    scene.remove(firecharge);
+                                    fireIn = false;
+                                }
+                                break;
+                        }
+                    }
+                    else{
+                        firecharge = fireMesh.clone();
+                        firecharge.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                        fireIn = true;
+                        scene.add(firecharge);
+                        firecharge.scale.set(0.11, 0.1, 0.1);
                     }
                     break;
             }

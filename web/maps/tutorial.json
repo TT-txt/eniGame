@@ -340,7 +340,7 @@
                         "y": 2,
                         "z": 3
                     },
-                    "activated": false,
+                    "activated": true,
                     "facing": "e",
                     "group": 1
                 }
