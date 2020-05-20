@@ -68,7 +68,7 @@
 									<img class="card-img-top" src="img/controls/arrow.PNG" alt="control" style="height: 100px; width: 100px; display: block;" data-holder-rendered="true">
 								</td>
 								<td class="align-middle">
-									<p class="lead text-muted">NOUVELLE CASE</p>
+									<p class="lead text-muted">ZQSD but not ZQSD</p>
 								</td>
 							</tr>		
   						</tbody>
