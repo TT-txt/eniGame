@@ -321,9 +321,6 @@ function gameOver(state) {
     //state == false => You've lost
     document.getElementById("scene-container").childNodes[5].remove();
 
-    //const parent = document.querySelector("#scene-container");
-    //if (parent != null) parent.parentNode.removeChild(parent);
-
     if (state) {
 
     }
