@@ -1,4 +1,4 @@
-typedef struct Coord { int x; int y; int z} COORD;
+typedef struct Coord { int x; int y; int z; } COORD;
 typedef struct Node { int x; int z; int GCost; int HCost; } NODE;
 //struct Map todo
 typedef struct Map { int XSize; int YSize; } MAP;
@@ -24,5 +24,5 @@ LiChNod* SetLiNodElt(LiChNod* li, NODE Value, int pos);
 LiChNod* SupprLiNodElt(LiChNod* li, int pos);
 
 //IsWalkable todo
-bool IsWalkable(COORD* test, MAP* Level);
+bool IsWalkable(int x, int z, MAP* Level);
 COORD* Pathfind(COORD* start, COORD* end, MAP* Level);
