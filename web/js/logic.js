@@ -91,6 +91,9 @@ function doorClose() {
 
 function pressurePlateOn(logicElem, toActivateIndex) {
     switch (logicElem.onUse) {
+        case -1:
+            gameOver(true);
+            break;
         case 0:
             //Open the map doors
             //logicElem.coord.y-= 0.2;//Shows that the pressure plate in onUse

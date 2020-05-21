@@ -56,4 +56,5 @@ typedef struct Map {
     MAP *maps;
     int theme;
     int size;
+    int endMap;
 } LEVEL;

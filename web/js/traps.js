@@ -7,7 +7,8 @@ function trapTrigger(trap, heroPos, gameStarted) {
     if (gameStarted && !trapped) {
         switch (trap.type) {
             case 0://SPIKES
-               if(heroPos.x == trap.coord.x && heroPos.z == trap.coord.z) trapped = true;
+                if (heroPos.x == trap.coord.x && heroPos.z == trap.coord.z) trapped = true;
+                deathNotif.error('You died, press R to <strong>restart</strong>');
                 break;
 
             case 1: //ARROW DISPENSER 1
@@ -20,38 +21,40 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     case 'e':
                         dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
                         trap.activated = true;
-                        for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y+0.1 == trap.coord.y){
+                        for (let element of currentLevel.maps[currentMap].logics) {
+                            if (element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == trap.coord.y) {
                                 boxing = true;
                                 break;
                             }
                             else boxing = false;
                         }
-                        if(!boxing && trap.coord.z == heroPos.z && trap.coord.x){
+                        if (!boxing && trap.coord.z == heroPos.z && trap.coord.x) {
                             trapped = true;
                             console.log("DEAD");
+                            deathNotif.error('You died, press R to <strong>restart</strong>');
                         }
                         break;
                     case 'n':
                         dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
-                        for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && element.coord.x == trap.coord.x && element.coord.z > trap.coord.z && element.coord.z < heroPos.z  && element.coord.y+0.1 == trap.coord.y){
+                        for (let element of currentLevel.maps[currentMap].logics) {
+                            if (element.type == 1 && element.coord.x == trap.coord.x && element.coord.z > trap.coord.z && element.coord.z < heroPos.z && element.coord.y + 0.1 == trap.coord.y) {
                                 boxing = true;
                                 break;
                             }
                             else boxing = false;
                         }
-                        if (!boxing && trap.coord.x == heroPos.x && trap.coord.z < heroPos.z ) {
+                        if (!boxing && trap.coord.x == heroPos.x && trap.coord.z < heroPos.z) {
                             trapped = true;
                             console.log("DEAD!");
+                            deathNotif.error('You died, press R to <strong>restart</strong>');
                         }
                         break;
                     case 'w':
                         dispenserArrow.rotation.set(0, 0, Math.PI / 2);
                         trap.activated = true;
-                        for(let element of currentLevel.maps[currentMap].logics){    
-                            if(element.type == 1 && trap.coord.x > element.coord.x && trap.coord.z == element.coord.z && element.coord.x > heroPos.x && trap.coord.y == element.coord.y + 0.1){
+                        for (let element of currentLevel.maps[currentMap].logics) {
+                            if (element.type == 1 && trap.coord.x > element.coord.x && trap.coord.z == element.coord.z && element.coord.x > heroPos.x && trap.coord.y == element.coord.y + 0.1) {
                                 boxing = true;
                                 break;
                             }
@@ -60,13 +63,14 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         if (!boxing && trap.coord.z == heroPos.z && trap.coord.x > heroPos.x) {
                             trapped = true;
                             console.log("DEAD!");
+                            deathNotif.error('You died, press R to <strong>restart</strong>');
                         }
                         break;
                     case 's':
                         dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
                         trap.activated = true;
-                        for(let element of currentLevel.maps[currentMap].logics){
-                            if(element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1){
+                        for (let element of currentLevel.maps[currentMap].logics) {
+                            if (element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1) {
                                 boxing = true;
                                 break;
                             }
@@ -75,6 +79,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         if (!boxing && trap.coord.x == heroPos.x && trap.coord.z > heroPos.z) {
                             trapped = true;
                             console.log("DEAD!");
+                            deathNotif.error('You died, press R to <strong>restart</strong>');
                         }
                         break;
                     default:
@@ -82,12 +87,12 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 }
                 break;
             case 2:
-                if(trap.activated) trap.activated = false;
+                if (trap.activated) trap.activated = false;
                 else if (!trap.activated) trap.activated = true;
                 scene.remove(dropperArrow);
                 break;
             case 3:
-                if(trap.activated) trap.activated = false;
+                if (trap.activated) trap.activated = false;
                 else if (!trap.activated) trap.activated = true;
                 scene.remove(firecharge);
             default:
@@ -105,6 +110,7 @@ function trapActivate(map, heroPos) {
                     if (!trapped && heroPos.x == elt.coord.x && elt.coord.z == heroPos.z) {
                         trapped = true;
                         console.log("DEAD!");
+                        deathNotif.error('You died, press R to <strong>restart</strong>');
                     }
                     break;
                 case 1://ARROW ONCE
@@ -132,34 +138,36 @@ function trapActivate(map, heroPos) {
                     if (!trapped) {
                         switch (elt.facing) {
                             case 'e':
-                                for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y+0.1 == elt.coord.y){
+                                for (let element of currentLevel.maps[currentMap].logics) {
+                                    if (element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == elt.coord.y) {
                                         boxing = true;
                                         break;
                                     }
                                     else boxing = false;
                                 }
-                                if(!boxing && elt.coord.z == heroPos.z && elt.coord.x){
+                                if (!boxing && elt.coord.z == heroPos.z && elt.coord.x) {
                                     trapped = true;
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                     console.log("DEAD");
                                 }
                                 break;
                             case 'n':
-                                for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && element.coord.x == elt.coord.x && element.coord.z > elt.coord.z && element.coord.z < heroPos.z  && element.coord.y+0.1 == elt.coord.y){
+                                for (let element of currentLevel.maps[currentMap].logics) {
+                                    if (element.type == 1 && element.coord.x == elt.coord.x && element.coord.z > elt.coord.z && element.coord.z < heroPos.z && element.coord.y + 0.1 == elt.coord.y) {
                                         boxing = true;
                                         break;
                                     }
                                     else boxing = false;
                                 }
-                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z ) {
+                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
                                     trapped = true;
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                     console.log("DEAD!");
                                 }
                                 break;
                             case 'w':
-                                for(let element of currentLevel.maps[currentMap].logics){    
-                                    if(element.type == 1 && elt.coord.x > element.coord.x && elt.coord.z == element.coord.z && element.coord.x > heroPos.x && elt.coord.y == element.coord.y + 0.1){
+                                for (let element of currentLevel.maps[currentMap].logics) {
+                                    if (element.type == 1 && elt.coord.x > element.coord.x && elt.coord.z == element.coord.z && element.coord.x > heroPos.x && elt.coord.y == element.coord.y + 0.1) {
                                         boxing = true;
                                         break;
                                     }
@@ -167,12 +175,13 @@ function trapActivate(map, heroPos) {
                                 }
                                 if (!boxing && elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
                                     trapped = true;
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                     console.log("DEAD!");
                                 }
                                 break;
                             case 's':
-                                for(let element of currentLevel.maps[currentMap].logics){
-                                    if(element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z < elt.coord.z && heroPos.z < element.coord.z && elt.coord.y == element.coord.y + 0.1){
+                                for (let element of currentLevel.maps[currentMap].logics) {
+                                    if (element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z < elt.coord.z && heroPos.z < element.coord.z && elt.coord.y == element.coord.y + 0.1) {
                                         boxing = true;
                                         break;
                                     }
@@ -181,6 +190,7 @@ function trapActivate(map, heroPos) {
                                 if (!boxing && elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
                                     trapped = true;
                                     console.log("DEAD!");
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
                             default:
@@ -257,55 +267,79 @@ function trapActivate(map, heroPos) {
                                 if (elt.coord.z == heroPos.z && elt.coord.x < heroPos.x) {
                                     trapped = true;
                                     console.log("DEAD!");
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
                             case 'n':
                                 if (elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
                                     trapped = true;
                                     console.log("DEAD!");
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
                             case 'w':
                                 if (elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
                                     trapped = true;
                                     console.log("DEAD!");
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
                             case 's':
                                 if (elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
                                     trapped = true;
                                     console.log("DEAD!");
+                                    deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
                             default:
                                 break;
                         }
                     }
-                    if(fireIn){
+                    if (fireIn) {
                         switch (elt.facing) {
                             case 'e':
-                                if (firecharge.position.x <= map.floor.x) firecharge.position.x += 0.2;
+                                if (firecharge.position.x <= map.floor.x){
+                                    firecharge.position.x += 0.2;
+                                    firecharge.rotation.x+=0.2;
+                                    firecharge.rotation.y+=0.2;
+                                    firecharge.rotation.z+=0.2;
+                                }
                                 else {
                                     scene.remove(firecharge);
                                     fireIn = false;
                                 }
                                 break;
                             case 'w':
-                                if (firecharge.position.x >= 0) firecharge.position.x -= 0.2;
+                                if (firecharge.position.x >= 0){ 
+                                    firecharge.position.x -= 0.2;
+                                    firecharge.rotation.x+=0.2;
+                                    firecharge.rotation.y+=0.2;
+                                    firecharge.rotation.z+=0.2;
+                                }
                                 else {
                                     scene.remove(firecharge);
                                     fireIn = false;
                                 }
                                 break;
                             case 'n':
-                                if (firecharge.position.z <= map.floor.z) firecharge.position.z += 0.2;
+                                if (firecharge.position.z <= map.floor.z){
+                                     firecharge.position.z += 0.2;
+                                     firecharge.rotation.x+=0.2;
+                                     firecharge.rotation.y+=0.2;
+                                     firecharge.rotation.z+=0.2;
+                                }
                                 else {
                                     scene.remove(firecharge);
                                     fireIn = false;
                                 }
                                 break;
                             case 's':
-                                if (firecharge.position.z >= 0) firecharge.position.z -= 0.2;
+                                if (firecharge.position.z >= 0){ 
+                                    firecharge.position.z -= 0.2;
+                                    firecharge.rotation.x+=0.2;
+                                    firecharge.rotation.y+=0.2;
+                                    firecharge.rotation.z+=0.2;
+                                }
                                 else {
                                     scene.remove(firecharge);
                                     fireIn = false;
@@ -313,7 +347,7 @@ function trapActivate(map, heroPos) {
                                 break;
                         }
                     }
-                    else{
+                    else {
                         firecharge = fireMesh.clone();
                         firecharge.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
                         fireIn = true;

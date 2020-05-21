@@ -182,11 +182,11 @@ function createMap(mapConstructor) {
             case 2: //arrow infinite
                 let dropper = new THREE.Mesh(cube, dropperMaterial);
                 dropper.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
-                for(let element of mapConstructor.logics){
-                    if(element.group == elt.group && element.onUse == elt.type && element.activated && elt.activated) elt.activated = false;
-                    else if(element.group == elt.group && element.onUse == elt.type && element.activated && !elt.activated) elt.activated = true;
-                    else if(element.group == elt.group && element.onUse == elt.type && !element.activated && elt.activated) elt.activated = true;
-                    else if(element.group == elt.group && element.onUse == elt.type && !element.activated && !elt.activated) elt.activated = false;
+                for (let element of mapConstructor.logics) {
+                    if (element.group == elt.group && element.onUse == elt.type && element.activated && elt.activated) elt.activated = false;
+                    else if (element.group == elt.group && element.onUse == elt.type && element.activated && !elt.activated) elt.activated = true;
+                    else if (element.group == elt.group && element.onUse == elt.type && !element.activated && elt.activated) elt.activated = true;
+                    else if (element.group == elt.group && element.onUse == elt.type && !element.activated && !elt.activated) elt.activated = false;
                 }
                 switch (elt.facing) {
                     case 'e':
@@ -281,18 +281,55 @@ function createMap(mapConstructor) {
 }
 
 //Map Reset
-function mapReset() {
-    doorClose();
-    for (child of scene.children) {
-        if (child.name == "Map") { //getting the array position of the map group in order to reset it
-            scene.remove(child); //removing it
-            gameStarted = false;
-            currentLevel.maps[currentMap].solved = false;
-            break;
+function mapReset(stuck) {
+    if (stuck) {
+        death += 1;
+        deathNotif.dismissAll();
+        resetNotif.dismissAll();
+        if(3-death > 0){
+            lifeCounterStr = 'Successfuly reseted, you have '+ (3-death) + ' lives left';
+            resetNotif.success(lifeCounterStr);
         }
-        if (typeof(dropperArrow) != 'undefined') scene.remove(dropperArrow);
-        if (typeof(dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
-        if(typeof(firecharge) != 'undefined') scene.remove(firecharge);
+        else deathNotif.error('No lives left, game over...');
     }
-    createMap(currentLevel.maps[currentMap]); //re creating the map
+    if (death < 3) {
+        doorClose();
+        for (child of scene.children) {
+            if (child.name == "Map") { //getting the array position of the map group in order to reset it
+                scene.remove(child); //removing it
+                gameStarted = false;
+                currentLevel.maps[currentMap].solved = false;
+                break;
+            }
+            if (typeof (dropperArrow) != 'undefined') scene.remove(dropperArrow);
+            if (typeof (dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
+            if (typeof (firecharge) != 'undefined') scene.remove(firecharge);
+        }
+        createMap(currentLevel.maps[currentMap]); //re creating the map
+    } else if (death == 3) {
+        gameOver(false);
+        console.log("ZOUF");
+    } else {
+        //location.reload();
+        console.log("Are you sure that you died that many times");
+    }
+}
+
+//Game Over 
+function gameOver(state){
+    //state == true => You've beaten the level !
+    //state == false => You've lost
+    document.getElementById("scene-container").childNodes[5].remove();
+    let mainToRebuild = document.getElementById("scene-container");
+    mainToRebuild.innerHTML += '<div>DEATH SCREEN</div>';
+    //const parent = document.querySelector("#scene-container");
+    //if (parent != null) parent.parentNode.removeChild(parent);
+    
+    if(state){
+            
+    }
+    
+    else{
+
+    }
 }

@@ -43,7 +43,7 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[2].z;
                 blocked = true;
                 hero.rotation.y = Math.PI / 2;
-                mapReset();
+                mapReset(false);
             }
             if (0 == hero.position.x) {// Default Wall
                 blocked = true;
@@ -106,7 +106,7 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z - 1;
                 blocked = true;
                 hero.rotation.y = 0;
-                mapReset();
+                mapReset(false);
             }
 
             if (0 == hero.position.z) {// Default Wall
@@ -170,7 +170,7 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[0].z;
                 blocked = true;
                 hero.rotation.y = Math.PI * 3 / 2;
-                mapReset();
+                mapReset(false);
             }
             if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
                 blocked = true;
@@ -233,7 +233,7 @@ function checkKeyPress(key) {
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z + 1;
                 blocked = true;
                 hero.rotation.y = Math.PI;
-                mapReset();
+                mapReset(false);
             }
 
             if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {// Default Wall
@@ -285,7 +285,7 @@ function checkKeyPress(key) {
                 hero.position.z += 1;
             hero.rotation.y = Math.PI;
         } else if (key.keyCode == "82") { //checking if key pressed is r
-            mapReset();
+            mapReset(true);
         }
     }
 }
