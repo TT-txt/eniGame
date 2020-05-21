@@ -286,8 +286,8 @@ function mapReset(stuck) {
         death += 1;
         deathNotif.dismissAll();
         resetNotif.dismissAll();
-        if(3-death > 0){
-            lifeCounterStr = 'Successfuly reseted, you have '+ (3-death) + ' lives left';
+        if (3 - death > 0) {
+            lifeCounterStr = 'Successfuly reseted, you have ' + (3 - death) + ' lives left';
             resetNotif.success(lifeCounterStr);
         }
         else deathNotif.error('No lives left, game over...');
@@ -316,20 +316,20 @@ function mapReset(stuck) {
 }
 
 //Game Over 
-function gameOver(state){
+function gameOver(state) {
     //state == true => You've beaten the level !
     //state == false => You've lost
     document.getElementById("scene-container").childNodes[5].remove();
-    let mainToRebuild = document.getElementById("scene-container");
-    mainToRebuild.innerHTML += '<div>DEATH SCREEN</div>';
+
     //const parent = document.querySelector("#scene-container");
     //if (parent != null) parent.parentNode.removeChild(parent);
-    
-    if(state){
-            
-    }
-    
-    else{
 
+    if (state) {
+
+    }
+
+    else {
+        let mainToRebuild = document.getElementById("scene-container");
+        mainToRebuild.innerHTML += '<div>DEATH SCREEN</div>';
     }
 }
