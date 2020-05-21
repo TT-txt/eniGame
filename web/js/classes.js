@@ -74,7 +74,6 @@ class logic {
         this.onUse = onUse; //char containing what to do if the player is on it
         this.activated = activated; //is on/off or contains the SPAWN coords
         this.group = group; //MUST BE THE SAME AS TRAP THAT U WANT TO ACTIVATE
-        
     }
 }
 /*

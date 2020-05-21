@@ -55,6 +55,9 @@
 					let currentMap;
 					let death = 0;
 
+					let pushableBoxes = { meshes: [], movable: [] };
+
+
 					const deathNotif = new Notyf({
             			duration: 40000,
            				position: {

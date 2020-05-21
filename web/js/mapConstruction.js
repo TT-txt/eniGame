@@ -31,6 +31,10 @@ function createMap(mapConstructor) {
     for (child of doorT.children) doorT.children.pop();
     for (child of doorR.children) doorR.children.pop();
     for (child of doorB.children) doorB.children.pop();
+    pushableBoxes.meshes.length = 0; //FUNNY HAHA STACK OVERFLOW SOLUTION
+    /*while(pushableBoxes.meshes.length > 0){
+        pushableBoxes.meshes.pop();
+    }*/
 
     for (let elt = 0; elt < mapConstructor.exits.length; elt += 1) {
         if (mapConstructor.exits[elt]) {//in order to not have 
@@ -237,6 +241,9 @@ function createMap(mapConstructor) {
     }
 
     //Creating logic elements
+
+    //Creates an object that contains every pushableBox of the current Map
+
     for (let i = 0; i < mapConstructor.logics.length; i++) {
         if (mapConstructor.logics[i].coord.x > mapConstructor.floor.x - 1 || mapConstructor.logics[i].coord.y > mapConstructor.y - 1 || mapConstructor.logics[i].coord.z > mapConstructor.z - 1 || mapConstructor.logics[i].coord.z < 0 || mapConstructor.logics[i].coord.y < 0 || mapConstructor.logics[i].coord.z < 0) continue;
         switch (mapConstructor.logics[i].type) {
@@ -253,13 +260,15 @@ function createMap(mapConstructor) {
                 mapConstructor.logics[i].coord.y = mapConstructor.logics[i].activated.y - 0.1;
                 mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
                 pushableBox.scale.set(0.8, 0.8, 0.8);
+                pushableBoxes.meshes.push(pushableBox);
                 logic.add(pushableBox);
                 break;
             default:
                 break;
         }
     }
-
+    for(let i = 0; i < pushableBoxes.meshes.length; i++) pushableBoxes.movable.push(true);
+    
     //spawning the hero
     hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
 

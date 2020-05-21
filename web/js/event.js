@@ -38,7 +38,7 @@ function checkKeyPress(key) {
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x - 1 == currentLevel.maps[currentMap].exits[0].x && hero.position.z == currentLevel.maps[currentMap].exits[0].z) {
                 currentMap--;
-                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[2].x - 1;
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[2].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[2].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[2].z;
                 blocked = true;
@@ -57,34 +57,46 @@ function checkKeyPress(key) {
                 }
 
                 // PushableBox special case
-                for (let element of currentLevel.maps[currentMap].logics) {
+                for (let element of currentLevel.maps[currentMap].logics) { //looking through logic, in order to check if there is a box behind this one
                     if (element.type == 1) {
-                        for(let elt of currentLevel.maps[currentMap].traps){
-                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
-                                unmovableBox = true;
-                                element.coord.y = 0;
-                                pushableBox.position.y = 0;
-                                break;
+                        for(let i = 0; i <  pushableBoxes.meshes.length; i++){ 
+                            if(pushableBoxes.meshes[i].position.x-1 == element.coord.x && pushableBoxes.meshes[i].position.z == element.coord.z){ 
+                                pushableBoxes.movable[i] = false;
+                                if(pushableBoxes.meshes[i].position.x == hero.position.x-1 && pushableBoxes.meshes[i].position.z == hero.position.z) blocked = true;
                             }
+                            else pushableBoxes.movable[i] = true;
                         }
-                        if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x && !unmovableBox) {
-                            unmovableBox = true;//If a box is between the player and the default wall
-                            blocked = true;
-                            break;
-                        }
-
-                        if (element.coord.x == hero.position.x - 1 && element.coord.z == hero.position.z && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
-                            for (let element2 of currentLevel.maps[currentMap].walls) {
-                                if (element2.x == hero.position.x - 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
-                                    unmovableBox = true;
-                                    blocked = true;
+                    }
+                }
+                for (let element of currentLevel.maps[currentMap].logics) {//doing the other basic stuff imo
+                    if (element.type == 1) {
+                        for(let i = 0; i < pushableBoxes.meshes.length; i++){
+                            for(let elt of currentLevel.maps[currentMap].traps){ //checking for the spikes
+                                if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && pushableBoxes.movable[i] && elt.activated){
+                                    pushableBoxes.movable[i] = false;
+                                    element.coord.y = 0;
+                                    pushableBoxes.meshes[i].position.y = 0;
                                     break;
                                 }
                             }
-                            if (!unmovableBox) {//If the pushableBox is movable
-                                pushableBox.position.x -= 1;//Updating the render
-                                element.coord.x -= 1;//Updating the map
+                            if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x && pushableBoxes.movable[i]) {
+                                pushableBoxes.movable[i] = false;//If a box is between the player and the default wall
+                                blocked = true;
                                 break;
+                            }
+                            if (element.coord.x == hero.position.x - 1 && element.coord.z == hero.position.z && pushableBoxes.movable[i]) {//Case of a pushableBox in the direction of the player's movement
+                                for (let element2 of currentLevel.maps[currentMap].walls) {
+                                    if (element2.x == hero.position.x - 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
+                                        pushableBoxes.movable[i] = false;
+                                        blocked = true;
+                                        break;
+                                    }
+                                }
+                                if (pushableBoxes.movable[i] && pushableBoxes.meshes[i].position.x == element.coord.x && pushableBoxes.meshes[i].position.z == element.coord.z){//If the pushableBox is movable
+                                    pushableBoxes.meshes[i].position.x -= 1;//Updating the render
+                                    element.coord.x -= 1;//Updating the map
+                                    break;
+                                }
                             }
                         }
                     }
@@ -103,7 +115,7 @@ function checkKeyPress(key) {
                 currentMap -= currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[3].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[3].y + 1;
-                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z - 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z;
                 blocked = true;
                 hero.rotation.y = 0;
                 mapReset(false);
@@ -146,9 +158,13 @@ function checkKeyPress(key) {
                                 }
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
-                                pushableBox.position.z -= 1;//Updating the render
-                                element.coord.z -= 1; //Updating the map
-                                break;
+                                for(let tmp of pushableBoxes.meshes){
+                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
+                                        tmp.position.z -= 1;//Updating the render
+                                        element.coord.z -= 1; //Updating the map
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -165,7 +181,7 @@ function checkKeyPress(key) {
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x + 1 == currentLevel.maps[currentMap].exits[2].x && hero.position.z == currentLevel.maps[currentMap].exits[2].z) {
                 currentMap++;
-                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[0].x + 1;
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[0].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[0].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[0].z;
                 blocked = true;
@@ -209,9 +225,13 @@ function checkKeyPress(key) {
                                 }
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
-                                pushableBox.position.x += 1;
-                                element.coord.x += 1;
-                                break;
+                                for(let tmp of pushableBoxes.meshes){
+                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
+                                        tmp.position.x += 1;
+                                        element.coord.x += 1;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -230,7 +250,7 @@ function checkKeyPress(key) {
                 currentMap += currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[1].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[1].y + 1;
-                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z + 1;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z;
                 blocked = true;
                 hero.rotation.y = Math.PI;
                 mapReset(false);
@@ -273,9 +293,13 @@ function checkKeyPress(key) {
                                 }
                             }
                             if (!unmovableBox) {//If the pushableBox is movable
-                                pushableBox.position.z += 1;//Updating the render
-                                element.coord.z += 1;//Updating the map.
-                                break;
+                                for(let tmp of pushableBoxes.meshes){
+                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
+                                        tmp.position.z += 1;//Updating the render
+                                        element.coord.z += 1;//Updating the map.
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
