@@ -339,7 +339,7 @@ function gameOver(state) {
         let message = '<div style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span style="font-size:200%">Game Over</span><br/>';
         let rand = Math.random()*10 % 10;
         if (rand < 0.625) {
-            message += 'Good day to die don\'t you think?';
+            message += 'Good day to die don\'t you think...';
         } else if (rand >= 0.625 && rand < 1.25) {
             message += 'Devil will forgive you :)';
         }else if (rand >= 1.25 && rand < 1.875) {
@@ -347,27 +347,27 @@ function gameOver(state) {
         }else if (rand >= 1.875 && rand < 2.5) {
             message += 'Are you drunk?';
         }else if (rand >= 2.5 && rand < 3.125) {
-            message += 'Oh no... you\'re bad... try again';
+            message += 'Oh no... you\'re bad... try again...';
         }else if (rand >= 3.125 && rand < 3.75) {
-            message += 'Not cool to be blind hum?';
+            message += 'Not cool to be blind hum...';
         }else if (rand >= 3.75 && rand < 4.375) {
-            message += 'No brain no gain';
+            message += 'No brain no gain...';
         }else if (rand >= 4.375 && rand < 5) {
-            message += 'I didn\'t know you could die with that';
+            message += 'I didn\'t know you could die with that...';
         }else if (rand >= 5 && rand < 5.625) {
-            message += 'It\'s not even made to kill you Oo';
+            message += 'It\'s not even made to kill you Oo...';
         }else if (rand >= 5.625 && rand < 6.25) {
-            message += 'Estimated time to finish this level: 3 years';
+            message += 'Estimated time to finish this level: 3 years...';
         }else if (rand >= 6.25 && rand < 6.875) {
-            message += 'Even our bot didn\'t die on that';
+            message += 'Even our bot didn\'t die on that...';
         }else if (rand >= 6.875 && rand < 7.5) {
-            message += 'This is life<br/>No ore respawn';
+            message += 'This is life<br/>No more respawn...';
         }else if (rand >= 7.5 && rand < 8.125) {
-            message += 'Well...did you read our detailed rules?';
+            message += 'Well... I guess you didn\'t read our detailed rules...';
         }else if (rand >= 8.125 && rand < 8.75) {
-            message += 'True, but what to do with this death';
+            message += 'True, but what should we do with this death';
         }else if (rand >= 8.75 && rand < 9.375) {
-            message += 'Go commit tortilla chip';
+            message += 'Go commit tortilla chip...';
         }else {
             message += 'Ask TT for some help ...';
         }
