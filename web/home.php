@@ -46,7 +46,7 @@
 				<script>
 					//NEEDED TO HAVE A WORKING SCENE
 					let container;
-					let camera;
+					let camera = null;
 					let controls;
 					let renderer;
 					let scene;
@@ -141,10 +141,8 @@
 
 						createSkybox();
 						createMesh();
-						createMap(currentLevel.maps[currentMap]);
-						createCamera();
-						createControls();
 						createLights();
+						createMap(currentLevel.maps[currentMap]);
 						loadModels();
 						createRenderer();
 

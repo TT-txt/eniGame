@@ -1,4 +1,8 @@
 function createMap(mapConstructor) {
+    //removing the camera, controls and skybox to generate the scene
+    scene.remove(camera);
+    scene.remove(controls);
+
     currentLevel.maps[currentMap].solved = false;
     //generating the groups
     const mapBuild = new THREE.Group();
@@ -24,6 +28,7 @@ function createMap(mapConstructor) {
             floor.add(floorPart);
         }
     }
+
 
     //Exits
     //Doors groups reset
@@ -197,11 +202,11 @@ function createMap(mapConstructor) {
                         trap.add(dropper);
                         break;
                     case 's':
-                        dropper.rotation.y += Math.PI / 2;
+                        dropper.rotation.y -= Math.PI / 2;
                         trap.add(dropper);
                         break;
                     case 'n':
-                        dropper.rotation.y -= Math.PI / 2;
+                        dropper.rotation.y += Math.PI / 2;
                         trap.add(dropper);
                         break;
                     case 'w':
@@ -220,11 +225,11 @@ function createMap(mapConstructor) {
                         trap.add(smoker);
                         break;
                     case 's':
-                        smoker.rotation.y += Math.PI / 2;
+                        smoker.rotation.y -= Math.PI / 2;
                         trap.add(smoker);
                         break;
                     case 'n':
-                        smoker.rotation.y -= Math.PI / 2;
+                        smoker.rotation.y += Math.PI / 2;
                         trap.add(smoker);
                         break;
                     case 'w':
@@ -271,6 +276,10 @@ function createMap(mapConstructor) {
     
     //spawning the hero
     hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
+
+    //creating the camera + controls + skybox
+    createCamera();
+    createControls();
 
     gameStarted = true;
     trapped = false;
@@ -329,13 +338,13 @@ function gameOver(state) {
     //state == true => You've beaten the level !
     //state == false => You've lost
     document.getElementById("scene-container").childNodes[5].remove();
+    let mainToRebuild = document.getElementById("scene-container");
 
     if (state) {
-
+        //TODO WINNING SCREEN
     }
 
     else {
-        let mainToRebuild = document.getElementById("scene-container");
         let message = '<div style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span style="font-size:200%">Game Over</span><br/>';
         let rand = Math.random()*10 % 10;
         if (rand < 0.625) {
