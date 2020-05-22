@@ -2,9 +2,9 @@
 <title>eniGame</title>
 
 <style>
-		main {
-			height: 900px;
-		}
+	main {
+		height: 900px;
+	}
 </style>
 <script src="include/three/three.js"></script>
 <script src="include/three/OrbitControls.js"></script>
@@ -55,26 +55,28 @@
 					let currentMap;
 					let death = 0;
 
-					let pushableBoxes = { meshes: [], movable: [] };
+					let pushableBoxes = {
+						meshes: []
+					};
 
 
 					const deathNotif = new Notyf({
-            			duration: 40000,
-           				position: {
-                			x: 'center',
-                			y: 'top'
-            			},
-            			dismissible: true,
-					});
-					const resetNotif = new Notyf({
-						duration: 1500,
-						position:{
+						duration: 40000,
+						position: {
 							x: 'center',
 							y: 'top'
 						},
 						dismissible: true,
-					})   
-					
+					});
+					const resetNotif = new Notyf({
+						duration: 1500,
+						position: {
+							x: 'center',
+							y: 'center'
+						},
+						dismissible: true,
+					})
+
 
 					//Groups
 					let mapBuild = new THREE.Group();
@@ -133,7 +135,7 @@
 						container = document.querySelector('#scene-container');
 
 						scene = new THREE.Scene();
-						scene.background = new THREE.Color(0x8FBCD4);//Default blue for debug
+						scene.background = new THREE.Color(0x8FBCD4); //Default blue for debug
 
 						currentLevel = levelToPlay;
 
@@ -149,7 +151,7 @@
 						renderer.setAnimationLoop(() => {
 							update();
 							render();
-							if(death >= 3) return;
+							if (death >= 3) return;
 						});
 
 					}
@@ -177,19 +179,19 @@
 					function update() {
 						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 						trapActivate(currentLevel.maps[currentMap], hero.position);
-						if(death >= 3) return;
+						if (death >= 3) return;
 					}
 
 					// render of the scene
 					function render() {
-						
+
 						const delta = clock.getDelta();
 						for (const mixer of mixers) {
 
 							mixer.update(delta);
 
 						}
-						if(death >= 3) return;
+						if (death >= 3) return;
 						renderer.render(scene, camera);
 
 					}

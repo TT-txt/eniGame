@@ -3,11 +3,11 @@ var createdLevel = new level(null, null, null);
 function loadEditor() {
     const container = document.querySelector('#scene-container');
     //Fills the container with a level size selctor
-    let toInsert = '<div id="levelScaler" style="background-color:white;width:100%;padding:15%;"><div style="justify-content:center;" class="form-inline"><label style="font-size:20px;" for="levelSize">Choose your level&#39;s difficulty : &nbsp; </label><select class="form-control" id="levelSize" name="size"><option value="3" selected>DEFAULT : 3</option>'
+    let toInsert = '<div id="levelScaler" class="align-items-center" style="display: flex;justify-content: center;flex-direction:column;background-color:white;width:100%;"><div style="width:100%"><div style="justify-content: center;" class="form-inline"><label style="font-size:20px;" for="levelSize">Choose your level&#39;s difficulty : &nbsp; </label><select class="form-control" id="levelSize" name="size"><option value="3" selected>DEFAULT : 3</option>'
     for (let i = 1; i <= 5; i += 1) {
         toInsert += '<option value="' + i + '">' + i + '</option>';
     }
-    toInsert += '</select></div><br/><button class="btn btn-success" onClick="startEditing()">Create</button><br/><legend class="text-secondary">Preview of the level :</legend><table id="levelPreview" style="margin:auto;border:solid black 2px"><td style="color:#6351ce;">Select a difficulty to update</td></table></div>';
+    toInsert += '</select></div><br/><button class="btn btn-success" onClick="startEditing()">Create</button></div><legend class="text-secondary">Preview of the level :</legend><table id="levelPreview" style="border:solid black 2px"><td style="color:#6351ce;">Select a difficulty to update</td></table></div>';
 
     container.innerHTML = toInsert;
 

@@ -1,7 +1,7 @@
 
 //Auto windows size
 function onWindowResize() {
-    if (typeof(container) != 'undefined') {
+    if (typeof (container) != 'undefined') {
         // set the aspect ratio to match the new browser window aspect ratio
         camera.aspect = container.clientWidth / container.clientHeight;
 
@@ -31,19 +31,19 @@ function checkKeyPress(key) {
     if (gameStarted) {
         blocked = false;
         unmovableBox = false;
-        if (key.keyCode == "37" || key.keyCode == "81") {
+        if ((key.keyCode == "37" || key.keyCode == "81") && !trapped) {
             /*
             **************Left arrow key or q**************
             */
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x - 1 == currentLevel.maps[currentMap].exits[0].x && hero.position.z == currentLevel.maps[currentMap].exits[0].z) {
                 currentMap--;
-                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[2].x;
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[2].x - 1;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[2].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[2].z;
-                blocked = true;
                 hero.rotation.y = Math.PI / 2;
                 mapReset(false);
+                blocked = true;
             }
             if (0 == hero.position.x) {// Default Wall
                 blocked = true;
@@ -57,56 +57,58 @@ function checkKeyPress(key) {
                 }
 
                 // PushableBox special case
-                for (let element of currentLevel.maps[currentMap].logics) { //looking through logic, in order to check if there is a box behind this one
-                    if (element.type == 1) {
-                        for(let i = 0; i <  pushableBoxes.meshes.length; i++){ 
-                            if(pushableBoxes.meshes[i].position.x-1 == element.coord.x && pushableBoxes.meshes[i].position.z == element.coord.z){ 
-                                pushableBoxes.movable[i] = false;
-                                if(pushableBoxes.meshes[i].position.x == hero.position.x-1 && pushableBoxes.meshes[i].position.z == hero.position.z) blocked = true;
-                            }
-                            else pushableBoxes.movable[i] = true;
-                        }
-                    }
-                }
-                for (let element of currentLevel.maps[currentMap].logics) {//doing the other basic stuff imo
-                    if (element.type == 1) {
-                        for(let i = 0; i < pushableBoxes.meshes.length; i++){
-                            for(let elt of currentLevel.maps[currentMap].traps){ //checking for the spikes
-                                if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && pushableBoxes.movable[i] && elt.activated){
-                                    pushableBoxes.movable[i] = false;
-                                    element.coord.y = 0;
-                                    pushableBoxes.meshes[i].position.y = 0;
-                                    break;
+                for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
+                    //Check if the logic element is a box
+                    if (currentLevel.maps[currentMap].logics[k].type == 1) {
+                        // Check if the hero is going try to push the box
+                        if (currentLevel.maps[currentMap].logics[k].coord.x == hero.position.x - 1 && currentLevel.maps[currentMap].logics[k].coord.z == hero.position.z) {
+                            // Check if there is another box behind our first one
+                            for (element2 of currentLevel.maps[currentMap].logics) {
+                                if (element2.type == 1) {
+                                    //Check if element is behind the other box
+                                    if (hero.position.x - 2 == element2.coord.x && hero.position.z == element2.coord.z) {
+                                        blocked = true;
+                                    }
                                 }
                             }
-                            if (hero.position.x - 2 == -1 && hero.position.z == element.coord.z && 0 == element.coord.x && pushableBoxes.movable[i]) {
-                                pushableBoxes.movable[i] = false;//If a box is between the player and the default wall
-                                blocked = true;
-                                break;
-                            }
-                            if (element.coord.x == hero.position.x - 1 && element.coord.z == hero.position.z && pushableBoxes.movable[i]) {//Case of a pushableBox in the direction of the player's movement
-                                for (let element2 of currentLevel.maps[currentMap].walls) {
-                                    if (element2.x == hero.position.x - 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
-                                        pushableBoxes.movable[i] = false;
-                                        blocked = true;
+
+                            //Checking if the box is currently in spikes
+                            for (let elt of currentLevel.maps[currentMap].traps) { //Looking for the spikes
+                                if (elt.type == 0) {
+                                    if (elt.coord.x == currentLevel.maps[currentMap].logics[k].coord.x && elt.coord.z == currentLevel.maps[currentMap].logics[k].coord.z) {
+                                        currentLevel.maps[currentMap].logics[k].coord.y = 0;
+                                        pushableBoxes.meshes[k].position.y = 0;
                                         break;
                                     }
                                 }
-                                if (pushableBoxes.movable[i] && pushableBoxes.meshes[i].position.x == element.coord.x && pushableBoxes.meshes[i].position.z == element.coord.z){//If the pushableBox is movable
-                                    pushableBoxes.meshes[i].position.x -= 1;//Updating the render
-                                    element.coord.x -= 1;//Updating the map
+                            }
+                            if (hero.position.x - 2 == -1 && hero.position.z == currentLevel.maps[currentMap].logics[k].coord.z && 0 == currentLevel.maps[currentMap].logics[k].coord.x && !blocked) {
+                                //If a box is between the player and the default wall
+                                blocked = true;
+                                break;
+                            }
+                            //Case of a solid wall behind the pushableBox
+                            for (let element2 of currentLevel.maps[currentMap].walls) {
+                                if (element2.x == hero.position.x - 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
+                                    blocked = true;
                                     break;
                                 }
+                            }
+                            if (!blocked) {//If the pushableBox is movable
+                                pushableBoxes.meshes[k].position.x -= 1;//Updating the render
+                                currentLevel.maps[currentMap].logics[k].coord.x -= 1;//Updating the map
+                                break;
                             }
                         }
                     }
                 }
             }
-            if (!blocked && !trapped)
-                hero.position.x -= 1;
-            hero.rotation.y = Math.PI / 2;
-
-        } else if (key.keyCode == "38" || key.keyCode == "90") {
+            if (!trapped) {
+                if (!blocked)
+                    hero.position.x -= 1;
+                hero.rotation.y = Math.PI / 2;
+            }
+        } else if ((key.keyCode == "38" || key.keyCode == "90") && !trapped) {
             /*
             **************Up arrow key or z**************
             */
@@ -115,10 +117,10 @@ function checkKeyPress(key) {
                 currentMap -= currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[3].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[3].y + 1;
-                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z;
-                blocked = true;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[3].z - 1;
                 hero.rotation.y = 0;
                 mapReset(false);
+                blocked = true;
             }
 
             if (0 == hero.position.z) {// Default Wall
@@ -133,60 +135,71 @@ function checkKeyPress(key) {
                 }
 
                 // PushableBox special case
-                for (let element of currentLevel.maps[currentMap].logics) {
-                    if (element.type == 1) {
-                        for(let elt of currentLevel.maps[currentMap].traps){
-                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
-                                unmovableBox = true;
-                                element.coord.y = 0;
-                                pushableBox.position.y = 0;
+                for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
+                    //Check if the logic element is a box
+                    if (currentLevel.maps[currentMap].logics[k].type == 1) {
+                        // Check if the hero is going try to push the box
+                        if (currentLevel.maps[currentMap].logics[k].coord.x == hero.position.x && currentLevel.maps[currentMap].logics[k].coord.z == hero.position.z - 1) {
+                            // Check if there is another box behind our first one
+                            for (element2 of currentLevel.maps[currentMap].logics) {
+                                if (element2.type == 1) {
+                                    //Check if element is behind the other box
+                                    if (hero.position.x == element2.coord.x && hero.position.z - 2 == element2.coord.z) {
+                                        blocked = true;
+                                    }
+                                }
+                            }
+
+                            //Checking if the box is currently in spikes
+                            for (let elt of currentLevel.maps[currentMap].traps) { //Looking for the spikes
+                                if (elt.type == 0) {
+                                    if (elt.coord.x == currentLevel.maps[currentMap].logics[k].coord.x && elt.coord.z == currentLevel.maps[currentMap].logics[k].coord.z) {
+                                        currentLevel.maps[currentMap].logics[k].coord.y = 0;
+                                        pushableBoxes.meshes[k].position.y = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (hero.position.z - 2 == -1 && hero.position.x == currentLevel.maps[currentMap].logics[k].coord.x && 0 == currentLevel.maps[currentMap].logics[k].coord.z && !blocked) {
+                                //If a box is between the player and the default wall
+                                blocked = true;
                                 break;
                             }
-                        }
-                        if (hero.position.z - 2 == -1 && hero.position.x == element.coord.x && 0 == element.coord.z && !unmovableBox) {
-                            unmovableBox = true;//If a box is between the player and the default wall
-                            blocked = true;
-                            break;
-                        }
-
-                        if (element.coord.x == hero.position.x && element.coord.z == hero.position.z - 1 && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            //Case of a solid wall behind the pushableBox
                             for (let element2 of currentLevel.maps[currentMap].walls) {
-                                if (element2.x == hero.position.x && element2.z == hero.position.z - 2) {//Case of a solid wall behind the pushableBox
-                                    unmovableBox = true;
+                                if (element2.z == hero.position.z - 2 && element2.x == hero.position.x) {//Case of a solid wall behind the pushableBox
                                     blocked = true;
                                     break;
                                 }
                             }
-                            if (!unmovableBox) {//If the pushableBox is movable
-                                for(let tmp of pushableBoxes.meshes){
-                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
-                                        tmp.position.z -= 1;//Updating the render
-                                        element.coord.z -= 1; //Updating the map
-                                        break;
-                                    }
-                                }
+                            if (!blocked) {//If the pushableBox is movable
+                                pushableBoxes.meshes[k].position.z -= 1;//Updating the render
+                                currentLevel.maps[currentMap].logics[k].coord.z -= 1;//Updating the map
+                                break;
                             }
                         }
                     }
                 }
             }
-            if (!blocked && !trapped)
-                hero.position.z -= 1;
-            hero.rotation.y = 0;
+            if (!trapped) {
+                if (!blocked)
+                    hero.position.z -= 1;
+                hero.rotation.y = 0;
+            }
 
-        } else if (key.keyCode == "39" || key.keyCode == "68") {
+        } else if ((key.keyCode == "39" || key.keyCode == "68") && !trapped) {
             /*
             **************Right arrow key or d**************
             */
             //Change Map
             if (currentLevel.maps[currentMap].solved && hero.position.x + 1 == currentLevel.maps[currentMap].exits[2].x && hero.position.z == currentLevel.maps[currentMap].exits[2].z) {
                 currentMap++;
-                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[0].x;
+                currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[0].x + 1;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[0].y + 1;
                 currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[0].z;
-                blocked = true;
                 hero.rotation.y = Math.PI * 3 / 2;
                 mapReset(false);
+                blocked = true;
             }
             if (currentLevel.maps[currentMap].floor.x == hero.position.x + 1) {// Default Wall
                 blocked = true;
@@ -200,48 +213,59 @@ function checkKeyPress(key) {
                 }
 
                 // PushableBox special case
-                for (let element of currentLevel.maps[currentMap].logics) {
-                    if (element.type == 1) {
-                        for(let elt of currentLevel.maps[currentMap].traps){
-                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
-                                unmovableBox = true;
-                                element.coord.y = 0;
-                                pushableBox.position.y = 0;                                
+                for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
+                    //Check if the logic element is a box
+                    if (currentLevel.maps[currentMap].logics[k].type == 1) {
+                        // Check if the hero is going try to push the box
+                        if (currentLevel.maps[currentMap].logics[k].coord.x == hero.position.x + 1 && currentLevel.maps[currentMap].logics[k].coord.z == hero.position.z) {
+                            // Check if there is another box behind our first one
+                            for (element2 of currentLevel.maps[currentMap].logics) {
+                                if (element2.type == 1) {
+                                    //Check if element is behind the other box
+                                    if (hero.position.x + 2 == element2.coord.x && hero.position.z == element2.coord.z) {
+                                        blocked = true;
+                                    }
+                                }
+                            }
+
+                            //Checking if the box is currently in spikes
+                            for (let elt of currentLevel.maps[currentMap].traps) { //Looking for the spikes
+                                if (elt.type == 0) {
+                                    if (elt.coord.x == currentLevel.maps[currentMap].logics[k].coord.x && elt.coord.z == currentLevel.maps[currentMap].logics[k].coord.z) {
+                                        currentLevel.maps[currentMap].logics[k].coord.y = 0;
+                                        pushableBoxes.meshes[k].position.y = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == currentLevel.maps[currentMap].logics[k].coord.z && currentLevel.maps[currentMap].floor.x - 1 == currentLevel.maps[currentMap].logics[k].coord.x && !blocked) {
+                                //If a box is between the player and the default wall
+                                blocked = true;
                                 break;
                             }
-                        }
-                        if (hero.position.x + 2 == currentLevel.maps[currentMap].floor.x && hero.position.z == element.coord.z && currentLevel.maps[currentMap].floor.x - 1 == element.coord.x && !unmovableBox) {
-                            unmovableBox = true;//If a box is between the player and the default wall
-                            blocked = true;
-                            break;
-                        }
-
-                        if (element.coord.x == hero.position.x + 1 && element.coord.z == hero.position.z && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            //Case of a solid wall behind the pushableBox
                             for (let element2 of currentLevel.maps[currentMap].walls) {
-                                if (element2.x == hero.position.x + 2 && element2.z == hero.position.z) {//Case of a solid wall behind the pushableBox
-                                    unmovableBox = true;
+                                if (element2.x == hero.position.x + 2 && element2.z == hero.position.z) {
                                     blocked = true;
                                     break;
                                 }
                             }
-                            if (!unmovableBox) {//If the pushableBox is movable
-                                for(let tmp of pushableBoxes.meshes){
-                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
-                                        tmp.position.x += 1;
-                                        element.coord.x += 1;
-                                        break;
-                                    }
-                                }
+                            if (!blocked) {//If the pushableBox is movable
+                                pushableBoxes.meshes[k].position.x += 1;//Updating the render
+                                currentLevel.maps[currentMap].logics[k].coord.x += 1;//Updating the map
+                                break;
                             }
                         }
                     }
                 }
             }
-            if (!blocked && !trapped)
-                hero.position.x += 1;
-            hero.rotation.y = Math.PI * 3 / 2;
+            if (!trapped) {
+                if (!blocked)
+                    hero.position.x += 1;
+                hero.rotation.y = Math.PI * 3 / 2;
+            }
 
-        } else if (key.keyCode == "40" || key.keyCode == "83") {
+        } else if ((key.keyCode == "40" || key.keyCode == "83") && !trapped) {
             /*
             **************Down arrow key or s**************
             */
@@ -250,10 +274,10 @@ function checkKeyPress(key) {
                 currentMap += currentLevel.size;
                 currentLevel.maps[currentMap].spawnPoint.x = currentLevel.maps[currentMap].exits[1].x;
                 currentLevel.maps[currentMap].spawnPoint.y = currentLevel.maps[currentMap].exits[1].y + 1;
-                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z;
-                blocked = true;
+                currentLevel.maps[currentMap].spawnPoint.z = currentLevel.maps[currentMap].exits[1].z + 1;
                 hero.rotation.y = Math.PI;
                 mapReset(false);
+                blocked = true;
             }
 
             if (currentLevel.maps[currentMap].floor.z == hero.position.z + 1) {// Default Wall
@@ -268,46 +292,57 @@ function checkKeyPress(key) {
                 }
 
                 // PushableBox special case
-                for (let element of currentLevel.maps[currentMap].logics) {
-                    if (element.type == 1) {
-                        for(let elt of currentLevel.maps[currentMap].traps){
-                            if(elt.type == 0 && elt.coord.x == element.coord.x && elt.coord.z == element.coord.z && !unmovableBox && elt.activated){
-                                unmovableBox = true;
-                                element.coord.y = 0;
-                                pushableBox.position.y =0;
+                for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
+                    //Check if the logic element is a box
+                    if (currentLevel.maps[currentMap].logics[k].type == 1) {
+                        // Check if the hero is going try to push the box
+                        if (currentLevel.maps[currentMap].logics[k].coord.x == hero.position.x && currentLevel.maps[currentMap].logics[k].coord.z == hero.position.z + 1) {
+                            // Check if there is another box behind our first one
+                            for (element2 of currentLevel.maps[currentMap].logics) {
+                                if (element2.type == 1) {
+                                    //Check if element is behind the other box
+                                    if (hero.position.x == element2.coord.x && hero.position.z + 2 == element2.coord.z) {
+                                        blocked = true;
+                                    }
+                                }
+                            }
+
+                            //Checking if the box is currently in spikes
+                            for (let elt of currentLevel.maps[currentMap].traps) { //Looking for the spikes
+                                if (elt.type == 0) {
+                                    if (elt.coord.x == currentLevel.maps[currentMap].logics[k].coord.x && elt.coord.z == currentLevel.maps[currentMap].logics[k].coord.z) {
+                                        currentLevel.maps[currentMap].logics[k].coord.y = 0;
+                                        pushableBoxes.meshes[k].position.y = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == currentLevel.maps[currentMap].logics[k].coord.x && !blocked) {
+                                //If a box is between the player and the default wall
+                                blocked = true;
                                 break;
                             }
-                        }
-                        if (hero.position.z + 2 == currentLevel.maps[currentMap].floor.z && hero.position.x == element.coord.x && currentLevel.maps[currentMap].floor.z - 1 == element.coord.z && !unmovableBox) {
-                            unmovableBox = true;//If a box is between the player and the default wall
-                            blocked = true;
-                            break;
-                        }
-
-                        if (element.coord.x == hero.position.x && element.coord.z == hero.position.z + 1 && !unmovableBox) {//Case of a pushableBox in the direction of the player's movement
+                            //Case of a solid wall behind the box
                             for (let element2 of currentLevel.maps[currentMap].walls) {
-                                if (element2.x == hero.position.x && element2.z == hero.position.z + 2) {//Case of a solid wall behind the pushableBox
-                                    unmovableBox = true;
+                                if (element2.z == hero.position.z + 2 && element2.x == hero.position.x) {//Case of a solid wall behind the pushableBox
                                     blocked = true;
                                     break;
                                 }
                             }
-                            if (!unmovableBox) {//If the pushableBox is movable
-                                for(let tmp of pushableBoxes.meshes){
-                                    if(element.coord.x == tmp.position.x && element.coord.z == tmp.position.z){
-                                        tmp.position.z += 1;//Updating the render
-                                        element.coord.z += 1;//Updating the map.
-                                        break;
-                                    }
-                                }
+                            if (!blocked) {//If the pushableBox is movable
+                                pushableBoxes.meshes[k].position.z += 1;//Updating the render
+                                currentLevel.maps[currentMap].logics[k].coord.z += 1;//Updating the map
+                                break;
                             }
                         }
                     }
                 }
             }
-            if (!blocked && !trapped)
-                hero.position.z += 1;
-            hero.rotation.y = Math.PI;
+            if (!trapped) {
+                if (!blocked)
+                    hero.position.z += 1;
+                hero.rotation.y = Math.PI;
+            }
         } else if (key.keyCode == "82") { //checking if key pressed is r
             mapReset(true);
         }

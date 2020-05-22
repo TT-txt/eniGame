@@ -37,9 +37,9 @@ function createMap(mapConstructor) {
     for (child of doorR.children) doorR.children.pop();
     for (child of doorB.children) doorB.children.pop();
     pushableBoxes.meshes.length = 0; //FUNNY HAHA STACK OVERFLOW SOLUTION
-    /*while(pushableBoxes.meshes.length > 0){
+    while(pushableBoxes.meshes.length > 0){
         pushableBoxes.meshes.pop();
-    }*/
+    }
 
     for (let elt = 0; elt < mapConstructor.exits.length; elt += 1) {
         if (mapConstructor.exits[elt]) {//in order to not have 
@@ -250,12 +250,14 @@ function createMap(mapConstructor) {
     //Creates an object that contains every pushableBox of the current Map
 
     for (let i = 0; i < mapConstructor.logics.length; i++) {
+
         if (mapConstructor.logics[i].coord.x > mapConstructor.floor.x - 1 || mapConstructor.logics[i].coord.y > mapConstructor.y - 1 || mapConstructor.logics[i].coord.z > mapConstructor.z - 1 || mapConstructor.logics[i].coord.z < 0 || mapConstructor.logics[i].coord.y < 0 || mapConstructor.logics[i].coord.z < 0) continue;
         switch (mapConstructor.logics[i].type) {
             case 0: //Pressure plate
                 pressurePlate = new THREE.Mesh(flatRectangle, pressurePlateMaterial);
                 pressurePlate.position.set(mapConstructor.logics[i].coord.x, mapConstructor.logics[i].coord.y - 0.49, mapConstructor.logics[i].coord.z);
                 currentLevel.maps[currentMap].logics[i].activated = false;//NO PROBLEM HERE
+                pushableBoxes.meshes[i] = null;
                 logic.add(pressurePlate);
                 break;
             case 1://Pushable box
@@ -265,14 +267,13 @@ function createMap(mapConstructor) {
                 mapConstructor.logics[i].coord.y = mapConstructor.logics[i].activated.y - 0.1;
                 mapConstructor.logics[i].coord.z = mapConstructor.logics[i].activated.z;
                 pushableBox.scale.set(0.8, 0.8, 0.8);
-                pushableBoxes.meshes.push(pushableBox);
+                pushableBoxes.meshes[i] = pushableBox;
                 logic.add(pushableBox);
                 break;
             default:
                 break;
         }
     }
-    for(let i = 0; i < pushableBoxes.meshes.length; i++) pushableBoxes.movable.push(true);
     
     //spawning the hero
     hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
@@ -326,7 +327,7 @@ function mapReset(stuck) {
         createMap(currentLevel.maps[currentMap]); //re creating the map
     } else if (death == 3) {
         gameOver(false);
-        console.log("ZOUF");
+        console.log("Permanent death");
     } else {
         //location.reload();
         console.log("Are you sure that you died that many times");
@@ -341,44 +342,99 @@ function gameOver(state) {
     let mainToRebuild = document.getElementById("scene-container");
 
     if (state) {
-        //TODO WINNING SCREEN
-    }
+        /********* 10 MESSAGES *********
+        - Tututututu tutuuuuuuuu VICTORY
+        - Well, you’re not that bad after all
+        - Don’t show off, that was the easiest level
+        - All this time to complete one level ? Guess you had a hard time
+        - You were lucky, believe us...
+        - You won! Finally...
+        - You deserve an oscar!
+        - What a triumph!
+        - What you did here was almost impressive
+        - I'll find your cheats you little sly dog!
+        *******************************/
 
+        let message = '<div id="winScreen" style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span class="text-success" style="font-size:200%">Victory</span><br/>';
+        let rand = Math.random();
+        if (rand < 0.1) {
+            message += 'Tututututu tutuuuuuuuu VICTORY';
+        } else if(rand >= 0.1 && rand < 0.2) {
+            message += 'Well, you\’re not that bad after all';
+        } else if(rand >= 0.2 && rand < 0.3) {
+            message += 'Don\'t show off, that was the easiest level';
+        } else if(rand >= 0.3 && rand < 0.4) {
+            message += 'All this time to complete one level...<br/> Guess you had a hard time';
+        } else if(rand >= 0.4 && rand < 0.5) {
+            message += 'You were lucky, believe us..';
+        } else if(rand >= 0.5 && rand < 0.6) {
+            message += 'You won! Finally...';
+        } else if(rand >= 0.6 && rand < 0.7) {
+            message += 'You deserve an oscar!';
+        } else if(rand >= 0.7 && rand < 0.8) {
+            message += 'What a triumph!';
+        } else if(rand >= 0.8 && rand < 0.9) {
+            message += 'What you did here was almost impressive.';
+        } else {
+            message += 'I\'ll find your cheats you little sly dog!';
+    }
+        message += '</p><button id="CONTINUE" type="button" class="btn btn-outline-secondary" onclick="">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button></div>';
+        mainToRebuild.innerHTML += message;
+    }
     else {
-        let message = '<div style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span style="font-size:200%">Game Over</span><br/>';
-        let rand = Math.random()*10 % 10;
+        /********* 16 MESSAGES *********
+        - Good day to die don't you think...
+        - The Devil will forgive you :)
+        - Even Grandma would perform better...
+        - You must be drunk...
+        - Oh no... you're bad... try again...
+        - Not cool to be blind hum...
+        - No brain no gain...
+        - I didn't know you could die with this...
+        - It's not even made to kill you O_o...
+        - Estimated time to finish this level: 3 years...
+        - Even our bot didn't die on that...
+        - This is like real life<br/>No more respawns...
+        - Well... I guess you didn't read our detailed rules...
+        - True, but what should we do with this death...
+        - Go commit tortilla chip...
+        - Ask TT for some help...
+        *******************************/
+
+        let message = '<div id="deathScreen" style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span class="text-danger" style="font-size:200%">Game Over</span><br/>';
+        let rand = Math.random() * 10 % 10;
         if (rand < 0.625) {
             message += 'Good day to die don\'t you think...';
         } else if (rand >= 0.625 && rand < 1.25) {
-            message += 'Devil will forgive you :)';
-        }else if (rand >= 1.25 && rand < 1.875) {
-            message += 'Even Grandma would do better...';
-        }else if (rand >= 1.875 && rand < 2.5) {
-            message += 'Are you drunk?';
-        }else if (rand >= 2.5 && rand < 3.125) {
+            message += 'The Devil will forgive you :)';
+        } else if (rand >= 1.25 && rand < 1.875) {
+            message += 'Even Grandma would perform better...';
+        } else if (rand >= 1.875 && rand < 2.5) {
+            message += 'You must be drunk...';
+        } else if (rand >= 2.5 && rand < 3.125) {
             message += 'Oh no... you\'re bad... try again...';
-        }else if (rand >= 3.125 && rand < 3.75) {
+        } else if (rand >= 3.125 && rand < 3.75) {
             message += 'Not cool to be blind hum...';
-        }else if (rand >= 3.75 && rand < 4.375) {
+        } else if (rand >= 3.75 && rand < 4.375) {
             message += 'No brain no gain...';
-        }else if (rand >= 4.375 && rand < 5) {
-            message += 'I didn\'t know you could die with that...';
-        }else if (rand >= 5 && rand < 5.625) {
-            message += 'It\'s not even made to kill you Oo...';
-        }else if (rand >= 5.625 && rand < 6.25) {
+        } else if (rand >= 4.375 && rand < 5) {
+            message += 'I didn\'t know you could die with this...';
+        } else if (rand >= 5 && rand < 5.625) {
+            message += 'It\'s not even made to kill you O_o...';
+        } else if (rand >= 5.625 && rand < 6.25) {
             message += 'Estimated time to finish this level: 3 years...';
-        }else if (rand >= 6.25 && rand < 6.875) {
+        } else if (rand >= 6.25 && rand < 6.875) {
             message += 'Even our bot didn\'t die on that...';
-        }else if (rand >= 6.875 && rand < 7.5) {
-            message += 'This is life<br/>No more respawn...';
-        }else if (rand >= 7.5 && rand < 8.125) {
+        } else if (rand >= 6.875 && rand < 7.5) {
+            message += 'This is like real life<br/>No more respawns...';
+        } else if (rand >= 7.5 && rand < 8.125) {
             message += 'Well... I guess you didn\'t read our detailed rules...';
-        }else if (rand >= 8.125 && rand < 8.75) {
-            message += 'True, but what should we do with this death';
-        }else if (rand >= 8.75 && rand < 9.375) {
+        } else if (rand >= 8.125 && rand < 8.75) {
+            message += 'True, but what should we do with this death...';
+        } else if (rand >= 8.75 && rand < 9.375) {
             message += 'Go commit tortilla chip...';
-        }else {
-            message += 'Ask TT for some help ...';
+        } else {
+            message += 'Ask TT for some help...';
         }
 
         message += '</p><button id="REPLAY" type="button" class="btn btn-outline-secondary" onclick="">REPLAY</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'score.php\'">Score</button></div>';
