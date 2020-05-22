@@ -159,7 +159,7 @@ function trapActivate(map, heroPos) {
                                     }
                                     else boxing = false;
                                 }
-                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
+                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
                                     trapped = true;
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                     console.log("DEAD!");
@@ -187,7 +187,7 @@ function trapActivate(map, heroPos) {
                                     }
                                     else boxing = false;
                                 }
-                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
+                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
                                     trapped = true;
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
