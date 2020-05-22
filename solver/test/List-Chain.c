@@ -158,3 +158,17 @@ LiChNod* SupprLiNodElt(LiChNod* li, int pos) {
 		exit(EXIT_FAILURE);
 	}
 }
+
+bool nodeIsIn(LiChNod* li, NODE Value) {
+	bool isIn = false;
+	LiNodElt* tmp = li->start;
+	for (int c = 0; c < li->size; c++)
+	{
+		if (Value.x == tmp->val.x && Value.z == tmp->val.z)
+		{
+			isIn = true;
+		}
+		tmp = tmp->suiv;
+	}
+	return(isIn);
+}

@@ -33,6 +33,7 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 	NODE StartN;
 	StartN.x = start->x;
 	StartN.z = start->z;
+	StartN.parentNode = NULL;
 	InsertLiNodElt(open, StartN, 0);
 	while (open->size > 0) {
 		NODE currentNode = open->start->val;
@@ -42,7 +43,7 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 		{
 			tmp = tmp->suiv;
 			
-			if ((tmp->val.GCost + tmp->val.HCost) < (currentNode.GCost + currentNode.HCost) || ((tmp->val.GCost + tmp->val.HCost) == (currentNode.GCost + currentNode.HCost) && tmp->val.HCost < currentNode.HCost)) {
+			if ((tmp->val.SCost + tmp->val.ECost) < (currentNode.SCost + currentNode.ECost) || ((tmp->val.SCost + tmp->val.ECost) == (currentNode.SCost + currentNode.ECost) && tmp->val.ECost < currentNode.ECost)) {
 				currentNode = tmp->val;
 				tmpLiPos = i;
 			}
@@ -56,6 +57,7 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 		}
 
 		NODE NeighbourNode;
+		NeighbourNode.parentNode = NULL;
 		for (int j = 0; j < 2; j++)
 		{
 			for (int i = -1; i < 2; i += 2)
@@ -70,27 +72,24 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 					NeighbourNode.x = currentNode.x;
 					NeighbourNode.z = currentNode.z + i;
 				}
-				//Might not be necessary, still need to check if the algo behave normaly without it.
-				//here to ...
-				bool isInClose = false;
-				tmp = close->start;
-				for (int c = 0; c < close->size; c++)
-				{
-					if (NeighbourNode.x == tmp->val.x && NeighbourNode.z == tmp->val.z)
-					{
-						isInClose = true;
-					}
-					tmp = tmp->suiv;
-				}
-				//here
 				//IsWalkable todo
-				if (!isInClose && IsWalkable(NeighbourNode.x, NeighbourNode.z, Level))
+				//!nodeIsIn() here, might not be necessary, still need to check if the algo behave normaly without it.
+				if (!nodeIsIn(close, NeighbourNode) && IsWalkable(NeighbourNode.x, NeighbourNode.z, Level))
 				{
-					NeighbourNode.GCost = GetDist(NeighbourNode.x, NeighbourNode.z, end->x, end->z);
-					NeighbourNode.HCost = GetDist(NeighbourNode.x, NeighbourNode.z, start->x, start->z);
-				
-				
-				
+					int mouvCost = currentNode.SCost + GetDist(currentNode.x, currentNode.z, NeighbourNode.x, NeighbourNode.z);
+					if (mouvCost < NeighbourNode.SCost || !nodeIsIn(open, NeighbourNode))
+					{
+						NeighbourNode.SCost = mouvCost;
+						NeighbourNode.ECost = GetDist(NeighbourNode.x, NeighbourNode.z, start->x, start->z);
+					}
+					//NeighbourNode.SCost = GetDist(NeighbourNode.x, NeighbourNode.z, end->x, end->z);
+					//NeighbourNode.ECost = GetDist(NeighbourNode.x, NeighbourNode.z, start->x, start->z);
+					NeighbourNode.parentNode = &currentNode;
+					if (!nodeIsIn(open, NeighbourNode))
+					{
+						InsertLiNodElt(open, NeighbourNode, open->size);
+					}
+					
 				}
 			}
 		}
