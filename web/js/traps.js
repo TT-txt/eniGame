@@ -35,7 +35,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         break;
                     case 'n':
-                        dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
+                        dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && element.coord.x == trap.coord.x && element.coord.z > trap.coord.z && element.coord.z < heroPos.z && element.coord.y + 0.1 == trap.coord.y) {
@@ -67,7 +67,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         break;
                     case 's':
-                        dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
+                        dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1) {
@@ -124,11 +124,11 @@ function trapActivate(map, heroPos) {
                             else scene.remove(dispenserArrow);
                             break;
                         case 'n':
-                            if (dispenserArrow.position.z <= map.floor.z) dispenserArrow.position.z += 0.2;
+                            if (dispenserArrow.position.z <= map.floor.z) dispenserArrow.position.z -= 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                         case 's':
-                            if (dispenserArrow.position.z >= 0) dispenserArrow.position.z -= 0.2;
+                            if (dispenserArrow.position.z >= 0) dispenserArrow.position.z += 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                     }

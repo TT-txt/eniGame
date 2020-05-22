@@ -10,13 +10,13 @@
 <script src="include/three/OrbitControls.js"></script>
 <script src="include/three/GLTFLoader.js"></script>
 <!-- Functions include -->
+<script src="js/model.js"></script>
 <script src="js/classes.js"></script>
 <script src="js/maps.js"></script>
 <script src="js/traps.js"></script>
 <script src="js/logic.js"></script>
 <script src="js/camera.js"></script>
 <script src="js/mesh.js"></script>
-<script src="js/model.js"></script>
 <script src="js/mapConstruction.js"></script>
 <script src="js/event.js"></script>
 <script src="js/editor.js"></script>
@@ -58,7 +58,11 @@
 					let pushableBoxes = {
 						meshes: []
 					};
-
+					let dispenserArrows = {
+						meshes: [],
+						distance: [],
+						isIn: []
+					};
 
 					const deathNotif = new Notyf({
 						duration: 40000,
@@ -116,13 +120,13 @@
 					let dispenser;
 					let pressurePlate;
 					let pushableBox;
+					let dispenserArrow;
+					let dropperArrow;
+					let fireMesh;
 
 					//random variables, finding uses somewhere
 					let arrowIn = false;
 					let fireIn = false;
-					let dispenserArrow;
-					let dropperArrow;
-					let fireMesh;
 
 					//Animation
 					const mixers = [];

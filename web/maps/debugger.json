@@ -1,0 +1,115 @@
+{
+    "maps": [
+        {
+            "walls": [
+                {
+                    "x": 10,
+                    "y": 1,
+                    "z": 10
+                }
+            ],
+            "floor": {
+                "x": 11,
+                "y": 0,
+                "z": 11
+            },
+            "traps": [
+                {
+                    "type": 3,
+                    "coord": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "activated": true,
+                    "facing": "s",
+                    "group": 1
+                },
+                {
+                    "type": 3,
+                    "coord": {
+                        "x": 8,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "activated": true,
+                    "facing": "e",
+                    "group": 2
+                }
+            ],
+            "logics": [
+                {
+                    "type": 0,
+                    "coord": {
+                        "x": 9,
+                        "y": 1,
+                        "z": 5
+                    },
+                    "onUse": 0,
+                    "activated": false,
+                    "group": null
+                },{
+                    "type": 0,
+                    "coord": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 5
+                    },
+                    "onUse": 3,
+                    "activated": false,
+                    "group": 1
+                },
+                {
+                    "type": 1,
+                    "coord": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "onUse": 0,
+                    "activated": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "group": null
+                },
+                {
+                    "type": 1,
+                    "coord": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "onUse": 0,
+                    "activated": {
+                        "x": 6,
+                        "y": 1,
+                        "z": 6
+                    },
+                    "group": null
+                }
+            ],
+            "solved": false,
+            "type": null,
+            "exits": [
+                false,
+                false,
+                {
+                    "x": 11,
+                    "y": 0,
+                    "z": 5
+                },
+                false
+            ],
+            "spawnPoint": {
+                "x": 2,
+                "y": 1,
+                "z": 2
+            }
+        }
+    ],
+    "theme": 0,
+    "size": 2,
+    "endMap": 2
+}

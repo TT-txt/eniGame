@@ -172,11 +172,11 @@ function createMap(mapConstructor) {
                     case 'e':
                         trap.add(dispenser);
                         break;
-                    case 's':
+                    case 'n':
                         dispenser.rotation.y += Math.PI / 2;
                         trap.add(dispenser);
                         break;
-                    case 'n':
+                    case 's':
                         dispenser.rotation.y -= Math.PI / 2;
                         trap.add(dispenser);
                         break;

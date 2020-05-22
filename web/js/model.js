@@ -34,6 +34,6 @@ function loadModels() {
     }
 
     function handleBasiccc_load(gltf){
-        fireMesh = gltf.scene;
+        fireMesh = gltf.scene[0];
     }
 }
