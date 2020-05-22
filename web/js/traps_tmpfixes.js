@@ -1,6 +1,11 @@
+let dispenserArrows = {
+	meshes: [],
+	distance: [],
+};
 let trapped = false;
 let boxing = false;
 unmovableBox = false;
+
 
 function trapTrigger(trap, heroPos, gameStarted) {
     if (gameStarted && !trapped) {
@@ -12,18 +17,15 @@ function trapTrigger(trap, heroPos, gameStarted) {
 
             case 1: //ARROW DISPENSER 1
                 //create arrow mesh
-                dispenserArrowD = {
-                    x: currentLevel.maps[currentMap].floor.x,
-                    y: 0,
-                    z: currentLevel.maps[currentMap].floor.z
-                }
                 dispenserArrow = arrowMesh.clone();
-                scene.add(dispenserArrow);
-                dispenserArrow.scale.set(0.01, 0.01, 0.01);
-                dispenserArrow.position.set(trap.coord.x, trap.coord.y, trap.coord.z);
+                dispenserArrows.meshes.push(dispenserArrow);
+                //not in the scene ?
+                scene.add(dispenserArrows.meshes[dispenserArrows.meshes.length - 1]);
+                dispenserArrows.meshes[dispenserArrows.meshes.length - 1].scale.set(0.01, 0.01, 0.01);
+                dispenserArrows.meshes[dispenserArrows.meshes.length - 1].position.set(trap.coord.x, trap.coord.y, trap.coord.z);
                 switch (trap.facing) {
                     case 'e':
-                        dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
+                        dispenserArrows.meshes[dispenserArrows.meshes.length - 1].rotation.set(Math.PI / 2, 0, -Math.PI / 2);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == trap.coord.y) {
@@ -37,7 +39,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             if(wall.z == trap.coord.z && wall.x > trap.coord.x && wall.y == trap.coord.y){
                                 if(heroPos.z == wall.z && wall.x < heroPos.x){
                                     boxing = true;
-                                    dispenserArrowD.x = wall.x;
+                                    dispenserArrows.distance.push(wall.x);
                                     break;
                                 }
                             }
@@ -49,7 +51,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         break;
                     case 'n':
-                        dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
+                        dispenserArrows.meshes[dispenserArrows.meshes.length-1].rotation.set(-Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && element.coord.x == trap.coord.x && element.coord.z > trap.coord.z && element.coord.z < heroPos.z && element.coord.y + 0.1 == trap.coord.y) {
@@ -62,7 +64,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             if(wall.x == trap.coord.x && wall.z < trap.coord.z && wall.y == trap.coord.y){
                                 if(heroPos.x == wall.x && wall.z > heroPos.z){
                                     boxing = true;
-                                    dispenserArrowD.z = wall.z;
+                                    dispenserArrows.distance.push(wall.z);
                                     break;
                                 }
                             }
@@ -74,7 +76,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         break;
                     case 'w':
-                        dispenserArrow.rotation.set(0, 0, Math.PI / 2);
+                        dispenserArrows.meshes[dispenserArrows.meshes.length-1].rotation.set(0, 0, Math.PI / 2);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && trap.coord.x > element.coord.x && trap.coord.z == element.coord.z && element.coord.x > heroPos.x && trap.coord.y == element.coord.y + 0.1) {
@@ -87,7 +89,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             if(wall.z == trap.coord.z && wall.x < trap.coord.x && wall.y == trap.coord.y){
                                 if(heroPos.z == wall.z && wall.x > heroPos.x){
                                     boxing = true;
-                                    dispenserArrowD.x = wall.x;
+                                    dispenserArrows.distance.push(wall.coord.x);
                                     break;
                                 }
                             }
@@ -99,7 +101,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         break;
                     case 's':
-                        dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
+                        dispenserArrows.meshes[dispenserArrows.meshes.length-1].rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1) {
@@ -112,7 +114,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             if(wall.x == trap.coord.x && wall.z > trap.coord.z && wall.y == trap.coord.y){
                                 if(heroPos.x == wall.x && wall.z < heroPos.z){
                                     boxing = true;
-                                    dispenserArrowD.z = wall.z;
+                                    dispenserArrows.distance.push(wall.z);
                                     break;
                                 }
                             }
@@ -143,6 +145,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
 }
 
 function trapActivate(map, heroPos) {
+    let dispenserCount = 0;
     for (let elt of map.traps) {
         if (elt.activated) {
             switch (elt.type) {
@@ -155,24 +158,41 @@ function trapActivate(map, heroPos) {
                     }
                     break;
                 case 1://ARROW ONCE
-                    switch (elt.facing) {//TOFIX HERE IS THE PB IDK HOW TO DO MATHS§
+                    switch (elt.facing) {
                         case 'e':
-                            if (dispenserArrow.position.x <= dispenserArrowD.x) dispenserArrow.position.x += 0.2;
-                            else scene.remove(dispenserArrow);
+                            if (dispenserArrows.meshes[dispenserCount].position.x <= dispenserArrows.distance[dispenserCount].x) dispenserArrows.meshes[dispenserCount].position.x += 0.2;
+                            else {
+                                scene.remove(dispenserArrows.meshes[dispenserCount]);
+                                // dispenserArrows.meshes.splice(dispenserCount, 1);
+                                // dispenserArrows.distance.splice(dispenserCount, 1);
+                            }
                             break;
                         case 'w':
-                            if (dispenserArrow.position.x >= map.floor.x - dispenserArrowD.x) dispenserArrow.position.x -= 0.2;
-                            else scene.remove(dispenserArrow);
+                            if (dispenserArrows.meshes[dispenserCount].position.x >= dispenserArrows.distance[dispenserCount].x) dispenserArrows.meshes[dispenserCount].position.x -= 0.2;
+                            else{ 
+                                scene.remove(dispenserArrows.meshes[dispenserCount]);
+                                // dispenserArrows.meshes.splice(dispenserCount, 1);
+                                // dispenserArrows.distance.splice(dispenserCount, 1);
+                            }
                             break;
                         case 'n':
-                            if (dispenserArrow.position.z <= map.floor.z - dispenserArrowD.z) dispenserArrow.position.z -= 0.2;
-                            else scene.remove(dispenserArrow);
+                            if (dispenserArrows.meshes[dispenserCount].position.z <= dispenserArrows.distance[dispenserCount].z) dispenserArrows.meshes[dispenserCount].position.z -= 0.2;
+                            else{ 
+                                scene.remove(dispenserArrows.meshes[dispenserCount]);
+                                // dispenserArrows.meshes.splice(dispenserCount, 1);
+                                // dispenserArrows.distance.splice(dispenserCount, 1);
+                            }
                             break;
                         case 's':
-                            if (dispenserArrow.position.z >= elt.coord.z + dispenserArrowD.z) dispenserArrow.position.z += 0.2;
-                            else scene.remove(dispenserArrow);
+                            if (dispenserArrows.meshes[dispenserCount].position.z >= dispenserArrows.distance[dispenserCount].z) dispenserArrows.meshes[dispenserCount].position.z += 0.2;
+                            else {
+                                scene.remove(dispenserArrows.meshes[dispenserCount]);
+                                //dispenserArrows.meshes.splice(dispenserCount, 1);
+                                //dispenserArrows.distance.splice(dispenserCount, 1);
+                            }
                             break;
                     }
+                    dispenserCount+=1;
                     break;
                 case 2: //arrow infinite
                     //Death detection

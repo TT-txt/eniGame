@@ -6,6 +6,11 @@
                     "x": 10,
                     "y": 1,
                     "z": 10
+                },
+                {
+                    "x": 5,
+                    "y": 1,
+                    "z": 3
                 }
             ],
             "floor": {
@@ -15,7 +20,7 @@
             },
             "traps": [
                 {
-                    "type": 3,
+                    "type": 1,
                     "coord": {
                         "x": 5,
                         "y": 1,
@@ -26,7 +31,7 @@
                     "group": 1
                 },
                 {
-                    "type": 3,
+                    "type": 1,
                     "coord": {
                         "x": 8,
                         "y": 1,
@@ -34,7 +39,7 @@
                     },
                     "activated": true,
                     "facing": "e",
-                    "group": 2
+                    "group": null
                 }
             ],
             "logics": [
@@ -51,11 +56,11 @@
                 },{
                     "type": 0,
                     "coord": {
-                        "x": 2,
+                        "x": 5,
                         "y": 1,
                         "z": 5
                     },
-                    "onUse": 3,
+                    "onUse": 1,
                     "activated": false,
                     "group": 1
                 },

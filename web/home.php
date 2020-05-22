@@ -39,7 +39,7 @@
 					<h1 style="color:white; font-family:'8bit_wondernominal'">eniGame</h1>
 					<button id="PLAY" type="button" class="btn btn-outline-secondary" onclick="">PLAY</button>
 					<br />
-					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/eniGame/web/maps/tutorial.json')">TUTORIAL</button>
+					<button id="TUTORIAL" type="button" class="btn btn-success" onclick="loadMap('http://localhost/eniGame/web/maps/debugger.json')">TUTORIAL</button>
 					<br />
 					<button id="EDITOR" type="button" class="btn btn-success" onclick="loadEditor()">EDITOR</button>
 				</div>
@@ -58,11 +58,8 @@
 					let pushableBoxes = {
 						meshes: []
 					};
-					let dispenserArrows = {
-						meshes: [],
-						distance: [],
-						isIn: []
-					};
+
+					let dispenserArrowD;
 
 					const deathNotif = new Notyf({
 						duration: 40000,
