@@ -3,12 +3,17 @@
         {
             "walls": [
                 {
-                    "x": 10,
+                    "x": 4,
                     "y": 1,
-                    "z": 10
+                    "z": 3
                 },
                 {
-                    "x": 5,
+                    "x": 6,
+                    "y": 1,
+                    "z": 3
+                },
+                {
+                    "x": 8,
                     "y": 1,
                     "z": 3
                 }
@@ -22,24 +27,35 @@
                 {
                     "type": 1,
                     "coord": {
-                        "x": 5,
+                        "x": 4,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "activated": false,
+                    "facing": "s",
+                    "group": 1
+                },
+                {
+                    "type": 2,
+                    "coord": {
+                        "x": 6,
                         "y": 1,
                         "z": 0
                     },
                     "activated": true,
                     "facing": "s",
-                    "group": 1
+                    "group": 2
                 },
                 {
-                    "type": 1,
+                    "type": 3,
                     "coord": {
                         "x": 8,
                         "y": 1,
-                        "z": 2
+                        "z": 0
                     },
                     "activated": true,
-                    "facing": "e",
-                    "group": null
+                    "facing": "s",
+                    "group": 3
                 }
             ],
             "logics": [

@@ -17,6 +17,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     y: 0,
                     z: currentLevel.maps[currentMap].floor.z
                 }
+                console.log("DISPENSER AFFICHE");
                 dispenserArrow = arrowMesh.clone();
                 scene.add(dispenserArrow);
                 dispenserArrow.scale.set(0.01, 0.01, 0.01);
@@ -33,9 +34,9 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             else boxing = false;
                         }
                         //WORKING THORICALY
-                        for(let wall of currentLevel.maps[currentMap].walls){
-                            if(wall.z == trap.coord.z && wall.x > trap.coord.x && wall.y == trap.coord.y){
-                                if(heroPos.z == wall.z && wall.x < heroPos.x){
+                        for (let wall of currentLevel.maps[currentMap].walls) {
+                            if (wall.z == trap.coord.z && wall.x > trap.coord.x && wall.y == trap.coord.y) {
+                                if (heroPos.z == wall.z && wall.x < heroPos.x) {
                                     boxing = true;
                                     dispenserArrowD.x = wall.x;
                                     break;
@@ -58,9 +59,9 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             }
                             else boxing = false;
                         }
-                        for(let wall of currentLevel.maps[currentMap].walls){
-                            if(wall.x == trap.coord.x && wall.z < trap.coord.z && wall.y == trap.coord.y){
-                                if(heroPos.x == wall.x && wall.z > heroPos.z){
+                        for (let wall of currentLevel.maps[currentMap].walls) {
+                            if (wall.x == trap.coord.x && wall.z < trap.coord.z && wall.y == trap.coord.y) {
+                                if (heroPos.x == wall.x && wall.z > heroPos.z) {
                                     boxing = true;
                                     dispenserArrowD.z = wall.z;
                                     break;
@@ -83,9 +84,9 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             }
                             else boxing = false;
                         }
-                        for(let wall of currentLevel.maps[currentMap].walls){
-                            if(wall.z == trap.coord.z && wall.x < trap.coord.x && wall.y == trap.coord.y){
-                                if(heroPos.z == wall.z && wall.x > heroPos.x){
+                        for (let wall of currentLevel.maps[currentMap].walls) {
+                            if (wall.z == trap.coord.z && wall.x < trap.coord.x && wall.y == trap.coord.y) {
+                                if (heroPos.z == wall.z && wall.x > heroPos.x) {
                                     boxing = true;
                                     dispenserArrowD.x = wall.x;
                                     break;
@@ -108,9 +109,9 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             }
                             else boxing = false;
                         }
-                        for(let wall of currentLevel.maps[currentMap].walls){
-                            if(wall.x == trap.coord.x && wall.z > trap.coord.z && wall.y == trap.coord.y){
-                                if(heroPos.x == wall.x && wall.z < heroPos.z){
+                        for (let wall of currentLevel.maps[currentMap].walls) {
+                            if (wall.x == trap.coord.x && wall.z > trap.coord.z && wall.y == trap.coord.y) {
+                                if (heroPos.x == wall.x && wall.z < heroPos.z) {
                                     boxing = true;
                                     dispenserArrowD.z = wall.z;
                                     break;
@@ -240,63 +241,66 @@ function trapActivate(map, heroPos) {
                     }
 
                     //Arrow display
-                    if (arrowIn) {
-                        switch (elt.facing) {
-                            case 'e':
-                                if (dropperArrow.position.x <= map.floor.x) dropperArrow.position.x += 0.2;
-                                else {
-                                    scene.remove(dropperArrow);
-                                    arrowIn = false;
-                                }
-                                break;
-                            case 'w':
-                                if (dropperArrow.position.x >= 0) dropperArrow.position.x -= 0.2;
-                                else {
-                                    scene.remove(dropperArrow);
-                                    arrowIn = false;
-                                }
-                                break;
-                            case 'n':
-                                if (dropperArrow.position.z >= 0) dropperArrow.position.z -= 0.2;
-                                else {
-                                    scene.remove(dropperArrow);
-                                    arrowIn = false;
-                                }
-                                break;
-                            case 's':
-                                if (dropperArrow.position.z <= map.floor.z) dropperArrow.position.z += 0.2;
-                                else {
-                                    scene.remove(dropperArrow);
-                                    arrowIn = false;
-                                }
-                                break;
+                    if (arrowMesh != undefined) {
+                        if (arrowIn) {
+                            console.log("DROPPER AFFICHE");
+                            switch (elt.facing) {
+                                case 'e':
+                                    if (dropperArrow.position.x <= map.floor.x) dropperArrow.position.x += 0.2;
+                                    else {
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
+                                    }
+                                    break;
+                                case 'w':
+                                    if (dropperArrow.position.x >= 0) dropperArrow.position.x -= 0.2;
+                                    else {
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
+                                    }
+                                    break;
+                                case 'n':
+                                    if (dropperArrow.position.z >= 0) dropperArrow.position.z -= 0.2;
+                                    else {
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
+                                    }
+                                    break;
+                                case 's':
+                                    if (dropperArrow.position.z <= map.floor.z) dropperArrow.position.z += 0.2;
+                                    else {
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
+                                    }
+                                    break;
+                            }
                         }
-                    }
-                    else {
-                        dropperArrow = arrowMesh.clone();
-                        dropperArrow.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
-                        arrowIn = true;
-                        scene.add(dropperArrow);
-                        dropperArrow.scale.set(0.01, 0.01, 0.01);
-                        switch (elt.facing) {
-                            case 'e':
-                                dropperArrow.rotation.set(0 , 0, -Math.PI / 2);
-                                elt.activated = true;
-                                break;
-                            case 'n':
-                                dropperArrow.rotation.set(-Math.PI / 2, 0, 0);
-                                elt.activated = true;
-                                break;
-                            case 'w':
-                                dropperArrow.rotation.set(0, 0, Math.PI / 2);
-                                elt.activated = true;
-                                break;
-                            case 's':
-                                dropperArrow.rotation.set(Math.PI / 2, 0, 0);
-                                elt.activated = true;
-                                break;
-                            default:
-                                break;
+                        else { //AVANT ICI arrowMesh n'existe pas (arrowMesh is not defined)
+                            dropperArrow = arrowMesh.clone();
+                            dropperArrow.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                            arrowIn = true;
+                            scene.add(dropperArrow);
+                            dropperArrow.scale.set(0.01, 0.01, 0.01);
+                            switch (elt.facing) {
+                                case 'e':
+                                    dropperArrow.rotation.set(0, 0, -Math.PI / 2);
+                                    elt.activated = true;
+                                    break;
+                                case 'n':
+                                    dropperArrow.rotation.set(-Math.PI / 2, 0, 0);
+                                    elt.activated = true;
+                                    break;
+                                case 'w':
+                                    dropperArrow.rotation.set(0, 0, Math.PI / 2);
+                                    elt.activated = true;
+                                    break;
+                                case 's':
+                                    dropperArrow.rotation.set(Math.PI / 2, 0, 0);
+                                    elt.activated = true;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                     break;
@@ -336,64 +340,67 @@ function trapActivate(map, heroPos) {
                                 break;
                         }
                     }
-                    if (fireIn) {
-                        switch (elt.facing) {
-                            case 'e':
-                                if (firecharge.position.x <= map.floor.x) {
-                                    firecharge.position.x += 0.2;
-                                    firecharge.rotation.x += 0.2;
-                                    firecharge.rotation.y += 0.2;
-                                    firecharge.rotation.z += 0.2;
-                                }
-                                else {
-                                    scene.remove(firecharge);
-                                    fireIn = false;
-                                }
-                                break;
-                            case 'w':
-                                if (firecharge.position.x >= 0) {
-                                    firecharge.position.x -= 0.2;
-                                    firecharge.rotation.x += 0.2;
-                                    firecharge.rotation.y += 0.2;
-                                    firecharge.rotation.z += 0.2;
-                                }
-                                else {
-                                    scene.remove(firecharge);
-                                    fireIn = false;
-                                }
-                                break;
-                            case 'n':
-                                if (firecharge.position.z >= 0) {
-                                    firecharge.position.z -= 0.2;
-                                    firecharge.rotation.x += 0.2;
-                                    firecharge.rotation.y += 0.2;
-                                    firecharge.rotation.z += 0.2;
-                                }
-                                else {
-                                    scene.remove(firecharge);
-                                    fireIn = false;
-                                }
-                                break;
-                            case 's':
-                                if (firecharge.position.z <= map.floor.z) {
-                                    firecharge.position.z += 0.2;
-                                    firecharge.rotation.x += 0.2;
-                                    firecharge.rotation.y += 0.2;
-                                    firecharge.rotation.z += 0.2;
-                                }
-                                else {
-                                    scene.remove(firecharge);
-                                    fireIn = false;
-                                }
-                                break;
+                    if (fireMesh != undefined) {
+                        if (fireIn) {
+                            switch (elt.facing) {
+                                case 'e':
+                                    if (firecharge.position.x <= map.floor.x) {
+                                        firecharge.position.x += 0.2;
+                                        firecharge.rotation.x += 0.2;
+                                        firecharge.rotation.y += 0.2;
+                                        firecharge.rotation.z += 0.2;
+                                    }
+                                    else {
+                                        scene.remove(firecharge);
+                                        fireIn = false;
+                                    }
+                                    break;
+                                case 'w':
+                                    if (firecharge.position.x >= 0) {
+                                        firecharge.position.x -= 0.2;
+                                        firecharge.rotation.x += 0.2;
+                                        firecharge.rotation.y += 0.2;
+                                        firecharge.rotation.z += 0.2;
+                                    }
+                                    else {
+                                        scene.remove(firecharge);
+                                        fireIn = false;
+                                    }
+                                    break;
+                                case 'n':
+                                    if (firecharge.position.z >= 0) {
+                                        firecharge.position.z -= 0.2;
+                                        firecharge.rotation.x += 0.2;
+                                        firecharge.rotation.y += 0.2;
+                                        firecharge.rotation.z += 0.2;
+                                    }
+                                    else {
+                                        scene.remove(firecharge);
+                                        fireIn = false;
+                                    }
+                                    break;
+                                case 's':
+                                    if (firecharge.position.z <= map.floor.z) {
+                                        firecharge.position.z += 0.2;
+                                        firecharge.rotation.x += 0.2;
+                                        firecharge.rotation.y += 0.2;
+                                        firecharge.rotation.z += 0.2;
+                                    }
+                                    else {
+                                        scene.remove(firecharge);
+                                        fireIn = false;
+                                    }
+                                    break;
+                            }
                         }
-                    }
-                    else {
-                        firecharge = fireMesh.clone();
-                        firecharge.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
-                        fireIn = true;
-                        scene.add(firecharge);
-                        firecharge.scale.set(0.2, 0.2, 0.2);
+                        else {
+                            console.log("FIRECHARGE AFFICHE");
+                            firecharge = fireMesh.clone();
+                            firecharge.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                            fireIn = true;
+                            scene.add(firecharge);
+                            firecharge.scale.set(0.2, 0.2, 0.2);
+                        }
                     }
                     break;
             }

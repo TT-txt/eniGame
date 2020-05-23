@@ -117,13 +117,14 @@
 					let dispenser;
 					let pressurePlate;
 					let pushableBox;
-					let dispenserArrow;
-					let dropperArrow;
+					let arrowMesh;
 					let fireMesh;
 
 					//random variables, finding uses somewhere
 					let arrowIn = false;
 					let fireIn = false;
+					let dispenserArrow;
+					let dropperArrow;
 
 					//Animation
 					const mixers = [];
