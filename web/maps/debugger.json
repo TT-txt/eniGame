@@ -27,7 +27,7 @@
                 {
                     "type": 1,
                     "coord": {
-                        "x": 4,
+                        "x": 5,
                         "y": 1,
                         "z": 0
                     },
@@ -40,10 +40,10 @@
                     "coord": {
                         "x": 6,
                         "y": 1,
-                        "z": 0
+                        "z": 10
                     },
                     "activated": true,
-                    "facing": "s",
+                    "facing": "n",
                     "group": 2
                 },
                 {
@@ -73,13 +73,13 @@
                 {
                     "type": 0,
                     "coord": {
-                        "x": 5,
+                        "x": 4,
                         "y": 1,
                         "z": 5
                     },
-                    "onUse": 2,
+                    "onUse": 1,
                     "activated": false,
-                    "group": 2
+                    "group": 1
                 },
                 {
                     "type": 1,
