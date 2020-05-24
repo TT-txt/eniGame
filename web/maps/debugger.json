@@ -1,4 +1,5 @@
 {
+    "size": 2,
     "maps": [
         {
             "walls": [
@@ -132,6 +133,5 @@
         }
     ],
     "theme": 0,
-    "size": 2,
     "endMap": 2
 }

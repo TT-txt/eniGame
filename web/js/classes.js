@@ -27,10 +27,10 @@ level array :
 20 ... 24
 ************************ */
 class level {
-    constructor(maps, theme, size, endMap) {
+    constructor(size, maps, theme, endMap) {
+        this.size = size; //size of the level (square)
         this.maps = maps; //containing array with all the maps in the level (25)
         this.theme = theme; //texture themes
-        this.size = size; //size of the level (square)
         this.endMap = endMap; //int with the end map index
     }
 } 

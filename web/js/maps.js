@@ -58,24 +58,27 @@ var testLevel = new level(
     0,
     5
 );
-var objToJsonFile = "textToWrite=" + JSON.stringify(testLevel);
-//console.log(objToJsonFile);
-
-// Creating a XHR object
-let xhr = new XMLHttpRequest();
-let url = "http://localhost/eniGame/web/maps/saveMap.php";
-xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
-
-// Set the request header i.e. which type of content you are sending
-xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//xhr.setRequestHeader("Content-length", objToJsonFile.length);
-//xhr.setRequestHeader("Connection", "close");
-
-xhr.onreadystatechange = function () {//Call a function when the state changes.
-    if (xhr.readyState == 4 && xhr.status == 200) {
-        alert(xhr.responseText);
-    }
-}
-
-xhr.send(objToJsonFile);
 */
+
+function saveMap(obj) {
+    var objToJsonFile = "textToWrite=" + JSON.stringify(obj);
+    //console.log(objToJsonFile);
+
+    // Creating a XHR object
+    let xhr = new XMLHttpRequest();
+    let url = "http://localhost/eniGame/web/maps/saveMap.php";
+    xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
+
+    // Set the request header i.e. which type of content you are sending
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //xhr.setRequestHeader("Content-length", objToJsonFile.length);
+    //xhr.setRequestHeader("Connection", "close");
+
+    xhr.onreadystatechange = function () {//Call a function when the state changes.
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert(xhr.responseText);
+        }
+    }
+
+    xhr.send(objToJsonFile);
+}
