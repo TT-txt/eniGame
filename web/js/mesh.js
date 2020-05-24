@@ -21,6 +21,7 @@ function createSkybox() {
     let skyboxGeo = new THREE.BoxBufferGeometry(50, 50, 50);
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
     skybox.position.set(currentLevel.maps[currentMap].floor.x / 2, 0, currentLevel.maps[currentMap].floor.z / 2);
+    skybox.name = "Skybox";
     scene.add(skybox);
 }
 

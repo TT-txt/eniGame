@@ -30,10 +30,12 @@ function loadModels() {
     }
 
     function handleBasicc_load(gltf){
+        //Model without animation
         arrowMesh = gltf.scene.children[0];
     }
 
     function handleBasiccc_load(gltf){
-        fireMesh = gltf.scene[0];
+        //Model without animation
+        fireMesh = gltf.scene.children[0];
     }
 }

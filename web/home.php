@@ -20,13 +20,13 @@
 <script src="js/mapConstruction.js"></script>
 <script src="js/event.js"></script>
 <script src="js/editor.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script src="include/notyf/notyf.min.js"></script>
+<link rel="stylesheet" href="include/notyf/notyf.min.css">
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
 </head>
 
 <body>
 	<?php include("include/nav.php"); ?>
-	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 	<div class="row">
 		<div class="col-lg-1">
 		</div>
@@ -125,6 +125,7 @@
 					let fireIn = false;
 					let dispenserArrow;
 					let dropperArrow;
+					let firecharge;
 
 					//Animation
 					const mixers = [];

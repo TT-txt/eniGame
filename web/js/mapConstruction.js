@@ -37,7 +37,7 @@ function createMap(mapConstructor) {
     for (child of doorR.children) doorR.children.pop();
     for (child of doorB.children) doorB.children.pop();
     pushableBoxes.meshes.length = 0; //FUNNY HAHA STACK OVERFLOW SOLUTION
-    while(pushableBoxes.meshes.length > 0){
+    while (pushableBoxes.meshes.length > 0) {
         pushableBoxes.meshes.pop();
     }
 
@@ -274,7 +274,7 @@ function createMap(mapConstructor) {
                 break;
         }
     }
-    
+
     //spawning the hero
     hero.position.set(mapConstructor.spawnPoint.x, mapConstructor.spawnPoint.y - 0.5, mapConstructor.spawnPoint.z);
 
@@ -359,25 +359,25 @@ function gameOver(state) {
         let rand = Math.random();
         if (rand < 0.1) {
             message += 'Tututututu tutuuuuuuuu VICTORY';
-        } else if(rand >= 0.1 && rand < 0.2) {
+        } else if (rand >= 0.1 && rand < 0.2) {
             message += 'Well, you\’re not that bad after all';
-        } else if(rand >= 0.2 && rand < 0.3) {
+        } else if (rand >= 0.2 && rand < 0.3) {
             message += 'Don\'t show off, that was the easiest level';
-        } else if(rand >= 0.3 && rand < 0.4) {
+        } else if (rand >= 0.3 && rand < 0.4) {
             message += 'All this time to complete one level...<br/> Guess you had a hard time';
-        } else if(rand >= 0.4 && rand < 0.5) {
+        } else if (rand >= 0.4 && rand < 0.5) {
             message += 'You were lucky, believe us..';
-        } else if(rand >= 0.5 && rand < 0.6) {
+        } else if (rand >= 0.5 && rand < 0.6) {
             message += 'You won! Finally...';
-        } else if(rand >= 0.6 && rand < 0.7) {
+        } else if (rand >= 0.6 && rand < 0.7) {
             message += 'You deserve an oscar!';
-        } else if(rand >= 0.7 && rand < 0.8) {
+        } else if (rand >= 0.7 && rand < 0.8) {
             message += 'What a triumph!';
-        } else if(rand >= 0.8 && rand < 0.9) {
+        } else if (rand >= 0.8 && rand < 0.9) {
             message += 'What you did here was almost impressive.';
         } else {
             message += 'I\'ll find your cheats you little sly dog!';
-    }
+        }
         message += '</p><button id="CONTINUE" type="button" class="btn btn-outline-secondary" onclick="">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button></div>';
         mainToRebuild.innerHTML += message;
     }
@@ -437,7 +437,7 @@ function gameOver(state) {
             message += 'Ask TT for some help...';
         }
 
-        message += '</p><button id="REPLAY" type="button" class="btn btn-outline-secondary" onclick="">REPLAY</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'score.php\'">Score</button></div>';
+        message += '</p><button id="MENU" type="button" class="btn btn-success" onclick="location.reload()">MENU</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'score.php\'">SCORE</button></div>';
         mainToRebuild.innerHTML += message;
     }
 }

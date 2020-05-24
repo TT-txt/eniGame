@@ -17,14 +17,14 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     y: 0,
                     z: currentLevel.maps[currentMap].floor.z
                 }
-                console.log("DISPENSER AFFICHE");
-                dispenserArrow = arrowMesh.clone();
+                dispenserArrow = new THREE.Mesh(arrowMesh.geometry, arrowMesh.material);
+                dispenserArrow.name = "Dispenser Arrow";
                 scene.add(dispenserArrow);
                 dispenserArrow.scale.set(0.01, 0.01, 0.01);
                 dispenserArrow.position.set(trap.coord.x, trap.coord.y, trap.coord.z);
                 switch (trap.facing) {
                     case 'e':
-                        dispenserArrow.rotation.set(Math.PI / 2, 0, -Math.PI / 2);
+                        dispenserArrow.rotation.set(0, 0, -Math.PI / 2);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
                             if (element.type == 1 && element.coord.z == trap.coord.z && trap.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == trap.coord.y) {
@@ -33,10 +33,10 @@ function trapTrigger(trap, heroPos, gameStarted) {
                             }
                             else boxing = false;
                         }
-                        //WORKING THORICALY
+                        //WORKING THEORICALLY
                         for (let wall of currentLevel.maps[currentMap].walls) {
                             if (wall.z == trap.coord.z && wall.x > trap.coord.x && wall.y == trap.coord.y) {
-                                if (heroPos.z == wall.z && wall.x < heroPos.x) {
+                                if (heroPos.z == wall.z && wall.x < heroPos.x && wall.x < dispenserArrowD.x) {
                                     boxing = true;
                                     dispenserArrowD.x = wall.x;
                                     break;
@@ -61,7 +61,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         for (let wall of currentLevel.maps[currentMap].walls) {
                             if (wall.x == trap.coord.x && wall.z < trap.coord.z && wall.y == trap.coord.y) {
-                                if (heroPos.x == wall.x && wall.z > heroPos.z) {
+                                if (heroPos.x == wall.x && wall.z > heroPos.z && wall.z > dispenserArrowD.z) {
                                     boxing = true;
                                     dispenserArrowD.z = wall.z;
                                     break;
@@ -86,7 +86,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         }
                         for (let wall of currentLevel.maps[currentMap].walls) {
                             if (wall.z == trap.coord.z && wall.x < trap.coord.x && wall.y == trap.coord.y) {
-                                if (heroPos.z == wall.z && wall.x > heroPos.x) {
+                                if (heroPos.z == wall.z && wall.x > heroPos.x && wall.x > dispenserArrowD.x) {
                                     boxing = true;
                                     dispenserArrowD.x = wall.x;
                                     break;
@@ -103,15 +103,16 @@ function trapTrigger(trap, heroPos, gameStarted) {
                         dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
                         trap.activated = true;
                         for (let element of currentLevel.maps[currentMap].logics) {
-                            if (element.type == 1 && trap.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1) {
+                            if (element.type == 1 && element.coord.x == trap.coord.x && element.coord.z < trap.coord.z && heroPos.z < element.coord.z && trap.coord.y == element.coord.y + 0.1) {
                                 boxing = true;
+                                console.log("BOXING HARD");
                                 break;
                             }
                             else boxing = false;
                         }
                         for (let wall of currentLevel.maps[currentMap].walls) {
                             if (wall.x == trap.coord.x && wall.z > trap.coord.z && wall.y == trap.coord.y) {
-                                if (heroPos.x == wall.x && wall.z < heroPos.z) {
+                                if (heroPos.x == wall.x && wall.z < heroPos.z && wall.z > dispenserArrowD.z) {
                                     boxing = true;
                                     dispenserArrowD.z = wall.z;
                                     break;
@@ -134,6 +135,8 @@ function trapTrigger(trap, heroPos, gameStarted) {
                 scene.remove(dropperArrow);
                 break;
             case 3:
+                firecharge = new THREE.Mesh(fireMesh.geometry, fireMesh.material);
+                firecharge.name = "Firecharge";
                 if (trap.activated) trap.activated = false;
                 else if (!trap.activated) trap.activated = true;
                 scene.remove(firecharge);
@@ -156,21 +159,21 @@ function trapActivate(map, heroPos) {
                     }
                     break;
                 case 1://ARROW ONCE
-                    switch (elt.facing) {//TOFIX HERE IS THE PB IDK HOW TO DO MATHS§
+                    switch (elt.facing) {//Checks if there is a wall to stop the arrow
                         case 'e':
-                            if (dispenserArrow.position.x <= dispenserArrowD.x) dispenserArrow.position.x += 0.2;
+                            if (dispenserArrow.position.x < dispenserArrowD.x) dispenserArrow.position.x += 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                         case 'w':
-                            if (dispenserArrow.position.x >= map.floor.x - dispenserArrowD.x) dispenserArrow.position.x -= 0.2;
+                            if (dispenserArrow.position.x > dispenserArrowD.x) dispenserArrow.position.x -= 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                         case 'n':
-                            if (dispenserArrow.position.z <= map.floor.z - dispenserArrowD.z) dispenserArrow.position.z -= 0.2;
+                            if (dispenserArrow.position.z > dispenserArrowD.z) dispenserArrow.position.z -= 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                         case 's':
-                            if (dispenserArrow.position.z >= elt.coord.z + dispenserArrowD.z) dispenserArrow.position.z += 0.2;
+                            if (dispenserArrow.position.z < dispenserArrowD.z) dispenserArrow.position.z += 0.2;
                             else scene.remove(dispenserArrow);
                             break;
                     }
@@ -180,60 +183,56 @@ function trapActivate(map, heroPos) {
                     if (!trapped) {
                         switch (elt.facing) {
                             case 'e':
-                                for (let element of currentLevel.maps[currentMap].logics) {
-                                    if (element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == elt.coord.y) {
+                                for (let wall of currentLevel.maps[currentMap].walls) {
+                                    if (wall.z == elt.coord.z && elt.coord.x < wall.x && heroPos.x > wall.x && wall.y == elt.coord.y) {
                                         boxing = true;
                                         break;
                                     }
                                     else boxing = false;
                                 }
                                 if (!boxing && elt.coord.z == heroPos.z && elt.coord.x < heroPos.x) {
-                                    trapped = true;
-                                    deathNotif.error('You died, press R to <strong>restart</strong>');
-                                    console.log("DEAD");
+                                    for (let element of currentLevel.maps[currentMap].logics) {
+                                        if (element.type == 1 && element.coord.z == elt.coord.z && elt.coord.x < element.coord.x && heroPos.x > element.coord.x && element.coord.y + 0.1 == elt.coord.y) {
+                                            boxing = true;
+                                            break;
+                                        }
+                                        else boxing = false;
+                                    }
+                                    if (!boxing) {
+                                        trapped = true;
+                                        deathNotif.error('You died, press R to <strong>restart</strong>');
+                                        console.log("DEAD");
+                                    }
                                 }
                                 break;
                             case 'n':
-                                for (let element of currentLevel.maps[currentMap].logics) {
-                                    if (element.type == 1 && element.coord.x == elt.coord.x && element.coord.z < elt.coord.z && element.coord.z > heroPos.z && element.coord.y + 0.1 == elt.coord.y) {
+                                for (let wall of currentLevel.maps[currentMap].walls) {
+                                    if (wall.x == elt.coord.x && elt.coord.z > wall.z && heroPos.x < wall.x && wall.y == elt.coord.y) {
                                         boxing = true;
                                         break;
                                     }
                                     else boxing = false;
                                 }
                                 if (!boxing && elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
-                                    trapped = true;
-                                    deathNotif.error('You died, press R to <strong>restart</strong>');
-                                    console.log("DEAD!");
+                                    for (let element of currentLevel.maps[currentMap].logics) {
+                                        if (element.type == 1 && element.coord.x == elt.coord.x && elt.coord.z > element.coord.z && heroPos.z < element.coord.z && element.coord.y + 0.1 == elt.coord.y) {
+                                            boxing = true;
+                                            break;
+                                        }
+                                        else boxing = false;
+                                    }
+                                    if (!boxing) {
+                                        trapped = true;
+                                        deathNotif.error('You died, press R to <strong>restart</strong>');
+                                        console.log("DEAD");
+                                    }
                                 }
                                 break;
                             case 'w':
-                                for (let element of currentLevel.maps[currentMap].logics) {
-                                    if (element.type == 1 && elt.coord.x > element.coord.x && elt.coord.z == element.coord.z && element.coord.x > heroPos.x && elt.coord.y == element.coord.y + 0.1) {
-                                        boxing = true;
-                                        break;
-                                    }
-                                    else boxing = false;
-                                }
-                                if (!boxing && elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
-                                    trapped = true;
-                                    deathNotif.error('You died, press R to <strong>restart</strong>');
-                                    console.log("DEAD!");
-                                }
+
                                 break;
                             case 's':
-                                for (let element of currentLevel.maps[currentMap].logics) {
-                                    if (element.type == 1 && elt.coord.x == elt.coord.x && element.coord.z > elt.coord.z && heroPos.z > element.coord.z && elt.coord.y == element.coord.y + 0.1) {
-                                        boxing = true;
-                                        break;
-                                    }
-                                    else boxing = false;
-                                }
-                                if (!boxing && elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
-                                    trapped = true;
-                                    console.log("DEAD!");
-                                    deathNotif.error('You died, press R to <strong>restart</strong>');
-                                }
+
                                 break;
                             default:
                                 break;
@@ -243,31 +242,98 @@ function trapActivate(map, heroPos) {
                     //Arrow display
                     if (arrowMesh != undefined) {
                         if (arrowIn) {
-                            console.log("DROPPER AFFICHE");
                             switch (elt.facing) {
                                 case 'e':
-                                    if (dropperArrow.position.x <= map.floor.x) dropperArrow.position.x += 0.2;
+                                    if (dropperArrow.position.x < map.floor.x) {
+                                        // If the arrow hits a wall
+                                        for (let wall of currentLevel.maps[currentMap].walls) {
+                                            //If the arrow is in a wall
+                                            if (dropperArrow.position.z == wall.z && dropperArrow.position.x + 1 >= wall.x) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        for (let logic of currentLevel.maps[currentMap].logics) {
+                                            //If the arrow is in a box
+                                            if (logic.type == 1 && dropperArrow.position.z == logic.coord.z && dropperArrow.position.x + 1 >= logic.coord.x) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        dropperArrow.position.x += 0.1;
+                                    }
                                     else {
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
                                     break;
                                 case 'w':
-                                    if (dropperArrow.position.x >= 0) dropperArrow.position.x -= 0.2;
+                                    if (dropperArrow.position.x > 0) {
+                                        // If the arrow hits a wall
+                                        for (let wall of currentLevel.maps[currentMap].walls) {
+                                            //If the arrow is in a wall
+                                            if (dropperArrow.position.z == wall.z && dropperArrow.position.x - 1 <= wall.x) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        for (let logic of currentLevel.maps[currentMap].logics) {
+                                            //If the arrow is in a box
+                                            if (logic.type == 1 && dropperArrow.position.z == logic.coord.z && dropperArrow.position.x - 1 <= logic.coord.x) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        dropperArrow.position.x -= 0.1;
+                                    }
                                     else {
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
                                     break;
                                 case 'n':
-                                    if (dropperArrow.position.z >= 0) dropperArrow.position.z -= 0.2;
+                                    if (dropperArrow.position.z > 0) {
+                                        // If the arrow hits a wall
+                                        for (let wall of currentLevel.maps[currentMap].walls) {
+                                            //If the arrow is in a wall
+                                            if (dropperArrow.position.x == wall.x && dropperArrow.position.z - 1 <= wall.z) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        for (let logic of currentLevel.maps[currentMap].logics) {
+                                            //If the arrow is in a box
+                                            if (logic.type == 1 && dropperArrow.position.x == logic.coord.x && dropperArrow.position.z - 1 <= logic.coord.z) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        dropperArrow.position.z -= 0.1;
+                                    }
                                     else {
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
                                     break;
                                 case 's':
-                                    if (dropperArrow.position.z <= map.floor.z) dropperArrow.position.z += 0.2;
+                                    if (dropperArrow.position.z < map.floor.z) {
+                                        // If the arrow hits a wall
+                                        for (let wall of currentLevel.maps[currentMap].walls) {
+                                            //If the arrow is in a wall
+                                            if (dropperArrow.position.x == wall.x && dropperArrow.position.z + 1 >= wall.z) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        for (let logic of currentLevel.maps[currentMap].logics) {
+                                            //If the arrow is in a box
+                                            if (logic.type == 1 && dropperArrow.position.x == logic.coord.x && dropperArrow.position.z + 1 >= logic.coord.z) {
+                                                scene.remove(dropperArrow);
+                                                arrowIn = false;
+                                            }
+                                        }
+                                        dropperArrow.position.z += 0.1;
+                                    }
                                     else {
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
@@ -275,7 +341,7 @@ function trapActivate(map, heroPos) {
                                     break;
                             }
                         }
-                        else { //AVANT ICI arrowMesh n'existe pas (arrowMesh is not defined)
+                        else {
                             dropperArrow = arrowMesh.clone();
                             dropperArrow.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
                             arrowIn = true;
