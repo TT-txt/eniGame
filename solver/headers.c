@@ -42,8 +42,8 @@ typedef struct Logic
     int type;
     COORD coord;
     int onUse;
-    char *activated; //is on/off or contains the SPAWN coords of a logic elem
-    int group;       //Linked with a trap group or 0;
+    int activated[3]; //is on/off or contains the SPAWN coords of a logic elem => 1, 0 or x,y,z (if type == 1)
+    int group;        //Linked with a trap group or 0;
 } LOGIC;
 
 typedef struct Map
@@ -53,8 +53,8 @@ typedef struct Map
     TRAP *traps;
     LOGIC *logics;
     bool solved;
-    int type; //Map presets to help the solver
-    COORD exits[4];
+    int type;       //Map presets to help the solver
+    COORD exits[4]; //Contains the actual coords or (-2, -2, -2) if the exit is not defined
     COORD spawnPoint;
 } MAP;
 
@@ -123,10 +123,29 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
                     return (MALFORMED_JSON);
                 else
                     printf("%d, ", i);
+                if (i + 1 != level->size * level->size)
+                {
+                    fgetc(jsonObject); //skip the coma separating two maps (to avoid MALFORMED_JSON)
+                }
             }
-
-            return (EXIT_SUCCESS);
         }
+
+        //theme
+        while (fgetc(jsonObject) != ':');
+        level->theme = fgetc(jsonObject) - '0';
+
+        //endMap
+        while (fgetc(jsonObject) != ':');
+        int end = fgetc(jsonObject) - '0';
+        int tmp;
+        while ((tmp = fgetc(jsonObject)) != '}'){
+            end *= 10;
+            end += tmp - '0';
+        }
+        level->endMap = end;
+        printf("endMap : %d", level->endMap);
+
+        return (EXIT_SUCCESS);
     }
 }
 
@@ -141,12 +160,14 @@ int readMap(FILE *jsonObject, MAP *map)
     {
         map = NULL;
         return (EXIT_SUCCESS);
-    } else if (tmp != '{'){
-        return(MALFORMED_JSON);
+    }
+    else if (tmp != '{')
+    {
+        return (MALFORMED_JSON);
     }
 
     // Map Walls
-    while ((fgetc(jsonObject)) != '[')
+    while (fgetc(jsonObject) != '[')
         ; //Gets at the start of the walls COORD array
     map->walls = readCoords(jsonObject);
 
@@ -165,11 +186,243 @@ int readMap(FILE *jsonObject, MAP *map)
     printf("%d, %d, %d\n", map->floor.x, map->floor.y, map->floor.z);
 
     //Traps
-    while ((tmp = fgetc(jsonObject)) != '[') //Gets at the start of the JSON traps array
+    while (tmp = fgetc(jsonObject) != '[') //Gets at the start of the JSON traps array
     {
         printf("%c", tmp);
     }
     printf("\n");
+
+    map->traps = NULL;
+    int trapAmount = 0;
+    while (fgetc(jsonObject) != ']')
+    {
+        trapAmount += 1;
+        TRAP *tmp = (TRAP *)realloc(map->traps, trapAmount * sizeof(TRAP));
+        if (tmp == NULL)
+        {
+            return (MALFORMED_JSON);
+        }
+        else
+        {
+            map->traps = tmp;
+            //Read the next trap
+            //trap type
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->traps[trapAmount - 1].type = fgetc(jsonObject) - '0';
+
+            //trap coords
+            while (fgetc(jsonObject) != ':')
+                ;
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->traps[trapAmount - 1].coord.x = fgetc(jsonObject) - '0';
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->traps[trapAmount - 1].coord.y = fgetc(jsonObject) - '0';
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->traps[trapAmount - 1].coord.z = fgetc(jsonObject) - '0';
+
+            //trap activated
+            while (fgetc(jsonObject) != ':')
+                ;
+            if (fgetc(jsonObject) == 't')
+            {
+                map->traps[trapAmount - 1].activated = true;
+            }
+            else
+            {
+                map->traps[trapAmount - 1].activated = false;
+            }
+
+            //trap facing
+            while (fgetc(jsonObject) != ':')
+                ;
+            int facing = fgetc(jsonObject);
+            if (facing == 'w')
+            {
+                map->traps[trapAmount - 1].facing = w;
+            }
+            else if (facing == 'n')
+            {
+                map->traps[trapAmount - 1].facing = n;
+            }
+            else if (facing == 'e')
+            {
+                map->traps[trapAmount - 1].facing = e;
+            }
+            else if (facing == 's')
+            {
+                map->traps[trapAmount - 1].facing = s;
+            }
+            else
+            {
+                return (MALFORMED_JSON);
+            }
+
+            //trap group
+            while (fgetc(jsonObject) != ':')
+                ;
+            int group = fgetc(jsonObject);
+            if (group == 'n')
+            {
+                map->traps[trapAmount - 1].group = null;
+            }
+            else
+            {
+                map->traps[trapAmount - 1].group = group - '0';
+            }
+            //Places the cursor for the next possible trap
+            while (fgetc(jsonObject) != '}')
+                ;
+        }
+    }
+
+    //Logics
+    while (tmp = fgetc(jsonObject) != '[') //Gets at the start of the JSON traps array
+    {
+        printf("%c", tmp);
+    }
+    printf("\n");
+
+    map->traps = NULL;
+    int logicAmount = 0;
+    while (fgetc(jsonObject) != ']')
+    {
+        logicAmount += 1;
+        LOGIC *tmp = (LOGIC *)realloc(map->logics, logicAmount * sizeof(LOGIC));
+        if (tmp == NULL)
+        {
+            return (MALFORMED_JSON);
+        }
+        else
+        {
+            map->logics = tmp;
+            //Read the next logic
+            //logic type
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->logics[logicAmount - 1].type = fgetc(jsonObject) - '0';
+
+            //trap coords
+            while (fgetc(jsonObject) != ':')
+                ;
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->logics[logicAmount - 1].coord.x = fgetc(jsonObject) - '0';
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->logics[logicAmount - 1].coord.y = fgetc(jsonObject) - '0';
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->logics[logicAmount - 1].coord.z = fgetc(jsonObject) - '0';
+
+            //trap onUse
+            while (fgetc(jsonObject) != ':')
+                ;
+            int group = fgetc(jsonObject);
+            map->logics[logicAmount - 1].group = group - '0';
+
+            //trap activated
+            while (fgetc(jsonObject) != ':')
+                ;
+            if (map->logics[logicAmount - 1].type == 1)
+            {
+                while (fgetc(jsonObject) != ':')
+                    ;
+                map->logics[logicAmount - 1].activated[0] = fgetc(jsonObject) - '0'; //x
+                while (fgetc(jsonObject) != ':')
+                    ;
+                map->logics[logicAmount - 1].activated[1] = fgetc(jsonObject) - '0'; //y
+                while (fgetc(jsonObject) != ':')
+                    ;
+                map->logics[logicAmount - 1].activated[2] = fgetc(jsonObject) - '0'; //z
+            }
+            else if (fgetc(jsonObject) == 'f')
+            {
+                map->logics[logicAmount - 1].activated[0] = 0; //false
+            }
+            else
+            {
+                map->logics[logicAmount - 1].activated[0] = 1; //true
+            }
+
+            //trap group
+            while (fgetc(jsonObject) != ':')
+                ;
+            group = fgetc(jsonObject);
+            if (group == 'n')
+            {
+                map->logics[logicAmount - 1].group = null;
+            }
+            else
+            {
+                map->logics[logicAmount - 1].group = group - '0';
+            }
+            //Places the cursor for the next possible logic in the array
+            while (fgetc(jsonObject) != '}')
+                ;
+        }
+    }
+
+    //solved
+    while (fgetc(jsonObject) != ':')
+        ;
+    if (fgetc(jsonObject) == 'f')
+        map->solved = false;
+    else
+        return (MALFORMED_JSON);
+
+    //type
+    while (fgetc(jsonObject) != ':')
+        ;
+    tmp = fgetc(jsonObject);
+    if (tmp == 'n')
+        map->type = null;
+    else
+        map->type = tmp - '0';
+
+    //exits (COORD array)
+    while (fgetc(jsonObject) != ':')
+        ;
+    if (fgetc(jsonObject) != '[')
+        return (MALFORMED_JSON);
+    COORD falseEquivalent = {-2, -2, -2};
+    for (int i = 0; i < 4; i += 1)
+    {
+        if (fgetc(jsonObject) == 'f')
+            map->exits[i] = falseEquivalent;
+        else
+        {
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->exits[i].x = fgetc(jsonObject) - '0'; //x
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->exits[i].y = fgetc(jsonObject) - '0'; //y
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->exits[i].z = fgetc(jsonObject) - '0'; //z
+        }
+    }
+
+    //spawnPoint
+    while (fgetc(jsonObject) != ':')
+        ;
+    while (fgetc(jsonObject) != ':')
+                ;
+            map->spawnPoint.x = fgetc(jsonObject) - '0'; //x
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->spawnPoint.y = fgetc(jsonObject) - '0'; //y
+            while (fgetc(jsonObject) != ':')
+                ;
+            map->spawnPoint.z = fgetc(jsonObject) - '0'; //z
+    
+    //Get to the end of the map element
+    fgetc(jsonObject);
+    fgetc(jsonObject);
 
     return (EXIT_SUCCESS);
 }
