@@ -47,25 +47,35 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
             for (int i = 0; i < (level->size * level->size); i += 1)
             {
                 //Reads an entire map and adds it to the level struct
-                if (readMap(jsonObject, mapsToLoad+i))
+                if (readMap(jsonObject, mapsToLoad + i))
                     return (MALFORMED_JSON);
                 else
                     printf("%d, ", i);
                 if (i + 1 != level->size * level->size)
                 {
-                    fgetc(jsonObject); //skip the coma separating two maps (to avoid MALFORMED_JSON)
+                    while (fgetc(jsonObject) != ',')
+                        ; //skip the coma separating two maps (to avoid MALFORMED_JSON)
                 }
             }
+            level->maps = mapsToLoad;
+            printf("\n");
         }
 
         //theme
-        while (fgetc(jsonObject) != ':')
-            ;
+        while ((toCheck = fgetc(jsonObject)) != ':') // size:
+        {
+            printf("%c", toCheck);
+        }
+        printf("\n");
         level->theme = fgetc(jsonObject) - '0';
+        printf("--%d--\n", level->theme);
 
         //endMap
-        while (fgetc(jsonObject) != ':')
-            ;
+        while ((toCheck = fgetc(jsonObject)) != ':') // size:
+        {
+            printf("%c", toCheck);
+        }
+        printf("\n");
         int end = fgetc(jsonObject) - '0';
         int tmp;
         while ((tmp = fgetc(jsonObject)) != '}')
@@ -74,6 +84,7 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
             end += tmp - '0';
         }
         level->endMap = end;
+        printf("--%d--\n", level->endMap);
 
         return (EXIT_SUCCESS);
     }
@@ -103,7 +114,7 @@ int readMap(FILE *jsonObject, MAP *map)
     // Map Walls
     while (fgetc(jsonObject) != '[')
         ; //Gets at the start of the walls COORD array
-    map->walls = readCoords(jsonObject);
+    map->wallAmount = readCoords(jsonObject, &(map->walls));
 
     // Floor
     while ((fgetc(jsonObject)) != '{')
@@ -169,7 +180,7 @@ int readMap(FILE *jsonObject, MAP *map)
             //trap facing
             while (fgetc(jsonObject) != ':')
                 ;
-            fgetc(jsonObject);//to clear the " before the actual facing
+            fgetc(jsonObject); //to clear the " before the actual facing
             int facing = fgetc(jsonObject);
             if (facing == 'w')
             {
@@ -209,6 +220,7 @@ int readMap(FILE *jsonObject, MAP *map)
                 ;
         }
     }
+    map->trapAmount = trapAmount;
 
     //Logics
     while ((tmp = fgetc(jsonObject)) != '[')
@@ -299,6 +311,7 @@ int readMap(FILE *jsonObject, MAP *map)
                 ;
         }
     }
+    map->logicAmount = logicAmount;
 
     //solved
     while (fgetc(jsonObject) != ':')
@@ -365,11 +378,11 @@ int readMap(FILE *jsonObject, MAP *map)
     return (EXIT_SUCCESS);
 }
 
-COORD *readCoords(FILE *jsonObject)
+int readCoords(FILE *jsonObject, COORD **walls)
 {
-    //This function returns a COORD array
+    //This function returns a COORD array throgh *walls and the amount of walls in the walls array
     if (!jsonObject)
-        return NULL;
+        return 0;
 
     //While in the walls array > load coords
     int tmp;
@@ -386,21 +399,22 @@ COORD *readCoords(FILE *jsonObject)
         while (fgetc(jsonObject) != ':')
             ;
         tmpSave[amountOfCoords].z = fgetc(jsonObject) - '0';
-        amountOfCoords++;
+        amountOfCoords += 1;
         fgetc(jsonObject); //to bypass the closing bracket
     }
 
-    COORD *coords = (COORD *)malloc((amountOfCoords) * sizeof(COORD)); // Mallocs the level
+    COORD *coords = (COORD *)realloc(*walls, (amountOfCoords) * sizeof(COORD)); // Mallocs the level
     if (coords == NULL)
     {
-        return (NULL);
+        return 0;
     }
     else
     {
-        for (int i = 0; i < amountOfCoords; i += 3)
+        for (int i = 0; i < amountOfCoords; i += 1)
         {
-            coords[i] = tmpSave[i];
+            *(coords + i) = tmpSave[i];
         }
-        return (coords);
+        *walls = coords;
+        return (amountOfCoords);
     }
 }

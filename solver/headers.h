@@ -49,9 +49,12 @@ typedef struct Logic
 typedef struct Map
 {
     COORD *walls;
+    int wallAmount;
     COORD floor;
     TRAP *traps;   //traps array
+    int trapAmount; 
     LOGIC *logics; //logics array 
+    int logicAmount;
     bool solved;
     int type;       //Map presets to help the solver
     COORD exits[4]; //Contains the actual coords or (-2, -2, -2) if the exit is not defined
@@ -71,4 +74,4 @@ typedef struct Level
 // Prototypes
 int loadLevel(FILE *, LEVEL *);
 int readMap(FILE *, MAP *);
-COORD *readCoords(FILE *);
+int readCoords(FILE *, COORD **);
