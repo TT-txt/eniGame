@@ -1,4 +1,4 @@
-var createdLevel = new level(null, null, null);
+var createdLevel = new level(null, null, null, null);
 
 function loadEditor() {
     const container = document.querySelector('#scene-container');
@@ -58,7 +58,6 @@ function mapSelector(size) {
     container.innerHTML += styleToInsert;
 
     // Adds the clickable table elements to the table
-    console.log(createdLevel);
     container = document.querySelector('#levelEditor');
     for (i = 0; i < size; i += 1) {
         for (j = 0; j < size; j += 1) {
@@ -98,7 +97,6 @@ function mapSelector(size) {
 }
 
 function mapEditor(index, levelSize) {
-    console.log(createdLevel);
     // Empties the previous container
     var parent = document.getElementById("levelEditor");
     parent.parentNode.removeChild(parent);
@@ -124,7 +122,9 @@ function mapEditor(index, levelSize) {
     container = document.querySelector("#mapEditor");
     container.innerHTML += '<button id="buttonBack" class="btn btn-outline-danger float-left" onclick="mapSelector(' + levelSize + ')">&lt;</button>';
     container.innerHTML += '<legend><strong>Map layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
-    updateMapToEdit(5, 5);
+    console.log(index);
+    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z);
+
 
     // Event listener to update the table size from the text inputs
     document.getElementById("mapSizeX").addEventListener('change', function (x) {
@@ -218,3 +218,26 @@ function updateMapToEdit(x, z) {
     }
     document.getElementById("mapToEdit").innerHTML = tableContent;
 }
+
+
+function addTrap(mapIndex, type, coord, activated, facing, group){
+    if(type == 0) createdLevel.maps[mapIndex].traps.push(new trap(type, new THREE.Vector3(coord.x, coord.y, coord.z), true, null, null));
+    else{
+        createdLevel.maps[mapIndex].traps.push(new trap(type, new THREE.Vector3(coord.x, coord.y, coord.z), activated, facing, group));
+    }
+}
+
+function addLogic(mapIndex, type, coord, onUSe, group){
+    if(type == 0) createdLevel.maps[mapIndex].logic.push(new logic(type, new THREE.Vector3(coord.x, coord.y, coord.z), onUse, false, group);
+    else if(type == 1) createdLevel.maps[mapIndex].logic.push(new logic(type, new THREE.Vector3(0, 0, 0), onUse, new THREE.Vector3(coord.x, coord.y, coord.z), group,))
+}
+
+function addWall(coord, mapIndex){
+    createdLevel.maps[mapIndex].walls.push(new THREE.Vector3(coord.x, coord.y, coord.z));
+}
+
+//need to add something when clicking on a trap: new menu showing activate: radio ?, coord: ,group, facing and submit button in order to add it;
+//need to add the same for the logic group,
+//might aswell do some adjustement to the update map, to add some stuf in the for in order to show the multiples elements
+//maybe add a var containing coords of the elements added, in order to not allow the player to add stuff at the same place
+//need to find how to export json to play actually those levels ?
