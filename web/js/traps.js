@@ -29,39 +29,63 @@ function trapTrigger(trap, heroPos, gameStarted) {
                     switch (trap.facing) {
                         case 'w':
                             dispenserArrow.rotation.set(0, 0, Math.PI / 2);
-                            break;
-
-                        case 'n':
-                            dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
-                            break;
-
-                        case 'e':
-                            dispenserArrow.rotation.set(0, 0, -Math.PI / 2);
-
-                            break;
-                        case 's':
-                            dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
-
-                            //Checks the max travel distance of an arrow
-                            let closestObstacle = currentLevel.maps[currentMap].floor.z;
+                            closestDispenserObstacle = 0;
                             for (wall of currentLevel.maps[currentMap].walls) {
-                                if (wall.z < closestObstacle && wall.z > trap.coord.z && trap.coord.x == wall.x && trap.coord.y == wall.y) {
-                                    closestObstacle = wall.z;
+                                if (wall.x > closestDispenserObstacle && wall.x < trap.coord.x && trap.coord.z == wall.z && trap.coord.y == wall.y) {
+                                    closestDispenserObstacle = wall.x;
                                 }
                             }
                             for (logic of currentLevel.maps[currentMap].logics) {
-                                if (logic.type == 1 && logic.coord.z < closestObstacle && logic.coord.z > trap.coord.z && trap.coord.x == logic.coord.x && trap.coord.y == logic.coord.y + 0.1) {
-                                    closestObstacle = logic.coord.z;
+                                if (logic.type == 1 && logic.coord.x > closestDispenserObstacle && logic.coord.x < trap.coord.x && trap.coord.z == logic.coord.z && trap.coord.y == logic.coord.y + 0.1) {
+                                    closestDispenserObstacle = logic.coord.x;
                                 }
                             }
-                            // Display the arrow
-                            console.log(closestObstacle);
-                            while (dispenserArrow.position.z + 1 <= closestObstacle) {
-                                dispenserArrow.position.z += 0.1;
-                                console.log("ZOUF");
+                            break;
+                        case 'n':
+                            dispenserArrow.rotation.set(-Math.PI / 2, 0, 0);
+                            //Checks the max travel distance of an arrow
+                            closestDispenserObstacle = 0;
+                            for (wall of currentLevel.maps[currentMap].walls) {
+                                if (wall.z > closestDispenserObstacle && wall.z < trap.coord.z && trap.coord.x == wall.x && trap.coord.y == wall.y) {
+                                    closestDispenserObstacle = wall.x;
+                                }
+                            }
+                            for (logic of currentLevel.maps[currentMap].logics) {
+                                if (logic.type == 1 && logic.coord.z > closestDispenserObstacle && logic.coord.z < trap.coord.z && trap.coord.x == logic.coord.x && trap.coord.y == logic.coord.y + 0.1) {
+                                    closestDispenserObstacle = logic.coord.x;
+                                }
                             }
                             break;
-
+                        case 'e':
+                            dispenserArrow.rotation.set(0, 0, -Math.PI / 2);
+                            //Checks the max travel distance of an arrow
+                            closestDispenserObstacle = currentLevel.maps[currentMap].floor.x;
+                            for (wall of currentLevel.maps[currentMap].walls) {
+                                if (wall.x < closestDispenserObstacle && wall.x > trap.coord.x && trap.coord.z == wall.z && trap.coord.y == wall.y) {
+                                    closestDispenserObstacle = wall.x;
+                                }
+                            }
+                            for (logic of currentLevel.maps[currentMap].logics) {
+                                if (logic.type == 1 && logic.coord.x < closestDispenserObstacle && logic.coord.x > trap.coord.x && trap.coord.z == logic.coord.z && trap.coord.y == logic.coord.y + 0.1) {
+                                    closestDispenserObstacle = logic.coord.x;
+                                }
+                            }
+                            break;
+                        case 's':
+                            dispenserArrow.rotation.set(Math.PI / 2, 0, 0);
+                            //Checks the max travel distance of an arrow
+                            closestDispenserObstacle = currentLevel.maps[currentMap].floor.z;
+                            for (wall of currentLevel.maps[currentMap].walls) {
+                                if (wall.z < closestDispenserObstacle && wall.z > trap.coord.z && trap.coord.x == wall.x && trap.coord.y == wall.y) {
+                                    closestDispenserObstacle = wall.z;
+                                }
+                            }
+                            for (logic of currentLevel.maps[currentMap].logics) {
+                                if (logic.type == 1 && logic.coord.z < closestDispenserObstacle && logic.coord.z > trap.coord.z && trap.coord.x == logic.coord.x && trap.coord.y == logic.coord.y + 0.1) {
+                                    closestDispenserObstacle = logic.coord.z;
+                                }
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -98,8 +122,37 @@ function trapActivate(map, heroPos) {
                     }
                     break;
                 case 1://ARROW ONCE
-
-                    break;
+                    switch(elt.facing){
+                        case 'e':
+                            if(dispenserArrow.position.x + 1 <= closestDispenserObstacle) dispenserArrow.position.x += 0.1;
+                            else{ 
+                                scene.remove(dispenserArrow);
+                                elt.activated = false;
+                            }
+                            break;
+                        case 's':
+                            if(dispenserArrow.position.z + 1 <= closestDispenserObstacle) dispenserArrow.position.z+=0.1;
+                            else{ 
+                                scene.remove(dispenserArrow);
+                                elt.activated = false;
+                            }
+                            break;
+                        case 'w':
+                            if(dispenserArrow.position.x >= closestDispenserObstacle + 0.5) dispenserArrow.position.x-=0.1;
+                            else{ 
+                                scene.remove(dispenserArrow);
+                                elt.activated = false;
+                            }
+                            break;
+                        case 'n':
+                            if(dispenserArrow.position.z >= closestDispenserObstacle + 0.5) dispenserArrow.position.z-=0.1;
+                            else{ 
+                                scene.remove(dispenserArrow);
+                                elt.activated = false;
+                            }
+                            break;
+                    }
+                    break; //comment this line in order to have funny shit
                 case 2: //arrow infinite
                     //Death detection
                     if (!trapped) {
@@ -108,99 +161,31 @@ function trapActivate(map, heroPos) {
                     //Arrow display
                     if (arrowMesh != undefined) {
                         if (arrowIn) {
-                            switch (elt.facing) {
+                            switch(elt.facing){
                                 case 'e':
-                                    if (dropperArrow.position.x < map.floor.x) {
-                                        // If the arrow hits a wall
-                                        for (let wall of currentLevel.maps[currentMap].walls) {
-                                            //If the arrow is in a wall
-                                            if (dropperArrow.position.z == wall.z && dropperArrow.position.x + 1 >= wall.x) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        for (let logic of currentLevel.maps[currentMap].logics) {
-                                            //If the arrow is in a box
-                                            if (logic.type == 1 && dropperArrow.position.z == logic.coord.z && dropperArrow.position.x + 1 >= logic.coord.x) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        dropperArrow.position.x += 0.1;
-                                    }
-                                    else {
-                                        scene.remove(dropperArrow);
-                                        arrowIn = false;
-                                    }
-                                    break;
-                                case 'w':
-                                    if (dropperArrow.position.x > 0) {
-                                        // If the arrow hits a wall
-                                        for (let wall of currentLevel.maps[currentMap].walls) {
-                                            //If the arrow is in a wall
-                                            if (dropperArrow.position.z == wall.z && dropperArrow.position.x - 1 <= wall.x) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        for (let logic of currentLevel.maps[currentMap].logics) {
-                                            //If the arrow is in a box
-                                            if (logic.type == 1 && dropperArrow.position.z == logic.coord.z && dropperArrow.position.x - 1 <= logic.coord.x) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        dropperArrow.position.x -= 0.1;
-                                    }
-                                    else {
-                                        scene.remove(dropperArrow);
-                                        arrowIn = false;
-                                    }
-                                    break;
-                                case 'n':
-                                    if (dropperArrow.position.z > 0) {
-                                        // If the arrow hits a wall
-                                        for (let wall of currentLevel.maps[currentMap].walls) {
-                                            //If the arrow is in a wall
-                                            if (dropperArrow.position.x == wall.x && dropperArrow.position.z - 1 <= wall.z) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        for (let logic of currentLevel.maps[currentMap].logics) {
-                                            //If the arrow is in a box
-                                            if (logic.type == 1 && dropperArrow.position.x == logic.coord.x && dropperArrow.position.z - 1 <= logic.coord.z) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        dropperArrow.position.z -= 0.1;
-                                    }
-                                    else {
+                                    if(dropperArrow.position.x + 1 <= closestDropperObstacle) dropperArrow.position.x += 0.1;
+                                    else{ 
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
                                     break;
                                 case 's':
-                                    if (dropperArrow.position.z < map.floor.z) {
-                                        // If the arrow hits a wall
-                                        for (let wall of currentLevel.maps[currentMap].walls) {
-                                            //If the arrow is in a wall
-                                            if (dropperArrow.position.x == wall.x && dropperArrow.position.z + 1 >= wall.z) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        for (let logic of currentLevel.maps[currentMap].logics) {
-                                            //If the arrow is in a box
-                                            if (logic.type == 1 && dropperArrow.position.x == logic.coord.x && dropperArrow.position.z + 1 >= logic.coord.z) {
-                                                scene.remove(dropperArrow);
-                                                arrowIn = false;
-                                            }
-                                        }
-                                        dropperArrow.position.z += 0.1;
+                                    if(dropperArrow.position.z + 1 <= closestDropperObstacle) dropperArrow.position.z+=0.1;
+                                    else{ 
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
                                     }
-                                    else {
+                                    break;
+                                case 'w':
+                                    if(dropperArrow.position.x >= closestDropperObstacle + 0.5) dropperArrow.position.x-=0.1;
+                                    else{ 
+                                        scene.remove(dropperArrow);
+                                        arrowIn = false;
+                                    }
+                                    break;
+                                case 'n':
+                                    if(dropperArrow.position.z >= closestDropperObstacle + 0.5) dropperArrow.position.z-=0.1;
+                                    else{ 
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
@@ -214,21 +199,64 @@ function trapActivate(map, heroPos) {
                             scene.add(dropperArrow);
                             dropperArrow.scale.set(0.01, 0.01, 0.01);
                             switch (elt.facing) {
-                                case 'e':
-                                    dropperArrow.rotation.set(0, 0, -Math.PI / 2);
-                                    elt.activated = true;
+                                case 'w':
+                                    dropperArrow.rotation.set(0, 0, Math.PI / 2);
+                                    closestDropperObstacle = 0;
+                                    for (wall of currentLevel.maps[currentMap].walls) {
+                                        if (wall.x > closestDropperObstacle && wall.x < elt.coord.x && elt.coord.z == wall.z && elt.coord.y == wall.y) {
+                                            closestDropperObstacle = wall.x;
+                                        }
+                                    }
+                                    for (logic of currentLevel.maps[currentMap].logics) {
+                                        if (logic.type == 1 && logic.coord.x > closestDropperObstacle && logic.coord.x < elt.coord.x && elt.coord.z == logic.coord.z && elt.coord.y == logic.coord.y + 0.1) {
+                                            closestDropperObstacle = logic.coord.x;
+                                        }
+                                    }
                                     break;
                                 case 'n':
                                     dropperArrow.rotation.set(-Math.PI / 2, 0, 0);
-                                    elt.activated = true;
+                                    //Checks the max travel distance of an arrow
+                                    closestDropperObstacle = 0;
+                                    for (wall of currentLevel.maps[currentMap].walls) {
+                                        if (wall.z > closestDropperObstacle && wall.z < elt.coord.z && elt.coord.x == wall.x && elt.coord.y == wall.y) {
+                                            closestDropperObstacle = wall.x;
+                                        }
+                                    }
+                                    for (logic of currentLevel.maps[currentMap].logics) {
+                                        if (logic.type == 1 && logic.coord.z > closestDropperObstacle && logic.coord.z < elt.coord.z && elt.coord.x == logic.coord.x && elt.coord.y == logic.coord.y + 0.1) {
+                                            closestDropperObstacle = logic.coord.x;
+                                        }
+                                    }
                                     break;
-                                case 'w':
-                                    dropperArrow.rotation.set(0, 0, Math.PI / 2);
-                                    elt.activated = true;
+                                case 'e':
+                                    dropperArrow.rotation.set(0, 0, -Math.PI / 2);
+                                    //Checks the max travel distance of an arrow
+                                    closestDropperObstacle = currentLevel.maps[currentMap].floor.x;
+                                    for (wall of currentLevel.maps[currentMap].walls) {
+                                        if (wall.x < closestDropperObstacle && wall.x > elt.coord.x && elt.coord.z == wall.z && elt.coord.y == wall.y) {
+                                            closestDropperObstacle = wall.x;
+                                        }
+                                    }
+                                    for (logic of currentLevel.maps[currentMap].logics) {
+                                        if (logic.type == 1 && logic.coord.x < closestDropperObstacle && logic.coord.x > elt.coord.x && elt.coord.z == logic.coord.z && elt.coord.y == logic.coord.y + 0.1) {
+                                            closestDropperObstacle = logic.coord.x;
+                                        }
+                                    }
                                     break;
                                 case 's':
                                     dropperArrow.rotation.set(Math.PI / 2, 0, 0);
-                                    elt.activated = true;
+                                    //Checks the max travel distance of an arrow
+                                    closestDropperObstacle = currentLevel.maps[currentMap].floor.z;
+                                    for (wall of currentLevel.maps[currentMap].walls) {
+                                        if (wall.z < closestDropperObstacle && wall.z > elt.coord.z && elt.coord.x == wall.x && elt.coord.y == wall.y) {
+                                            closestDropperObstacle = wall.z;
+                                        }
+                                    }
+                                    for (logic of currentLevel.maps[currentMap].logics) {
+                                        if (logic.type == 1 && logic.coord.z < closestDropperObstacle && logic.coord.z > elt.coord.z && elt.coord.x == logic.coord.x && elt.coord.y == logic.coord.y + 0.1) {
+                                            closestDropperObstacle = logic.coord.z;
+                                        }
+                                    }
                                     break;
                                 default:
                                     break;

@@ -4,19 +4,19 @@
         {
             "walls": [
                 {
-                    "x": 4,
+                    "x": 7,
                     "y": 1,
-                    "z": 3
+                    "z": 11
                 },
                 {
-                    "x": 6,
+                    "x": 2,
                     "y": 1,
                     "z": 4
                 },
                 {
-                    "x": 8,
+                    "x": 6,
                     "y": 1,
-                    "z": 3
+                    "z": 8
                 }
             ],
             "floor": {
@@ -30,10 +30,10 @@
                     "coord": {
                         "x": 5,
                         "y": 1,
-                        "z": 0
+                        "z": 4
                     },
                     "activated": false,
-                    "facing": "s",
+                    "facing": "w",
                     "group": 1
                 },
                 {
@@ -41,10 +41,10 @@
                     "coord": {
                         "x": 6,
                         "y": 1,
-                        "z": 10
+                        "z": 5
                     },
                     "activated": true,
-                    "facing": "n",
+                    "facing": "s",
                     "group": 2
                 },
                 {
