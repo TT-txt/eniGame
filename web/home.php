@@ -181,8 +181,8 @@
 					// perform any updates to the scene, called once per frame
 					// avoid heavy computation here
 					function update() {
-						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 						trapActivate(currentLevel.maps[currentMap], hero.position);
+						logicTrigger(currentLevel.maps[currentMap].logics, hero.position, gameStarted);
 						if (death >= 3) return;
 					}
 

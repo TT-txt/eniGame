@@ -100,9 +100,13 @@ function trapTrigger(trap, heroPos, gameStarted) {
             case 3:
                 firecharge = new THREE.Mesh(fireMesh.geometry, fireMesh.material);
                 firecharge.name = "Firecharge";
-                if (trap.activated) trap.activated = false;
+                if (trap.activated){
+                    trap.activated = false;
+                    for(let elt of scene.children){ 
+                        if(elt.name == "Cube") scene.remove(elt);
+                    }
+                }
                 else if (!trap.activated) trap.activated = true;
-                scene.remove(firecharge);
             default:
                 break;
         }
@@ -271,6 +275,7 @@ function trapActivate(map, heroPos) {
                             case 'e':
                                 if (elt.coord.z == heroPos.z && elt.coord.x < heroPos.x) {
                                     trapped = true;
+                                    scene.remove(firecharge);
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
@@ -278,6 +283,7 @@ function trapActivate(map, heroPos) {
                             case 'n':
                                 if (elt.coord.x == heroPos.x && elt.coord.z > heroPos.z) {
                                     trapped = true;
+                                    scene.remove(firecharge);
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
@@ -285,6 +291,7 @@ function trapActivate(map, heroPos) {
                             case 'w':
                                 if (elt.coord.z == heroPos.z && elt.coord.x > heroPos.x) {
                                     trapped = true;
+                                    scene.remove(firecharge);
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
@@ -292,6 +299,7 @@ function trapActivate(map, heroPos) {
                             case 's':
                                 if (elt.coord.x == heroPos.x && elt.coord.z < heroPos.z) {
                                     trapped = true;
+                                    scene.remove(firecharge);
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }

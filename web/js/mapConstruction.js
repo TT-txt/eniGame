@@ -220,6 +220,12 @@ function createMap(mapConstructor) {
             case 3://flames
                 let smoker = new THREE.Mesh(cube, smokerMaterial);
                 smoker.position.set(elt.coord.x, elt.coord.y, elt.coord.z);
+                for (let element of mapConstructor.logics) {
+                    if (element.group == elt.group && element.onUse == elt.type && element.activated && elt.activated) elt.activated = false;
+                    else if (element.group == elt.group && element.onUse == elt.type && element.activated && !elt.activated) elt.activated = true;
+                    else if (element.group == elt.group && element.onUse == elt.type && !element.activated && elt.activated) elt.activated = true;
+                    else if (element.group == elt.group && element.onUse == elt.type && !element.activated && !elt.activated) elt.activated = false;
+                }
                 switch (elt.facing) {
                     case 'e':
                         trap.add(smoker);
@@ -320,6 +326,7 @@ function mapReset(stuck) {
                 currentLevel.maps[currentMap].solved = false;
                 break;
             }
+            else if(child.name == "Cube") scene.remove(child);
             if (typeof (dropperArrow) != 'undefined') scene.remove(dropperArrow);
             if (typeof (dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
             if (typeof (firecharge) != 'undefined') scene.remove(firecharge);
