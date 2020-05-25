@@ -1,77 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
-#define MISSING_ARGS 2
-#define WRONG_ARGS 3
-#define WRONG_FILE_PATH 4
-#define MALFORMED_JSON 5
-#define MALLOC_ERROR 6
-#define null 0
-
-// *******************************************
-
-typedef enum Direction
-{
-    w,
-    n,
-    e,
-    s
-} DIRECTION;
-
-// C : Coord > Js : Vector3
-typedef struct Coord
-{
-    int x;
-    int y;
-    int z;
-} COORD;
-
-typedef struct Trap
-{
-    int type;
-    COORD coord;
-    bool activated;
-    DIRECTION facing;
-    int group;
-} TRAP;
-
-typedef struct Logic
-{
-    int type;
-    COORD coord;
-    int onUse;
-    int activated[3]; //is on/off or contains the SPAWN coords of a logic elem => 1, 0 or x,y,z (if type == 1)
-    int group;        //Linked with a trap group or 0;
-} LOGIC;
-
-typedef struct Map
-{
-    COORD *walls;
-    COORD floor;
-    TRAP *traps;
-    LOGIC *logics;
-    bool solved;
-    int type;       //Map presets to help the solver
-    COORD exits[4]; //Contains the actual coords or (-2, -2, -2) if the exit is not defined
-    COORD spawnPoint;
-} MAP;
-
-typedef struct Level
-{
-    int size;
-    MAP *maps;
-    int theme;
-    int endMap;
-} LEVEL;
-
-// *******************************************
-
-// Prototypes
-int loadLevel(FILE *, LEVEL *);
-int readMap(FILE *, MAP *);
-COORD *readCoords(FILE *);
+#include "headers.h"
 
 // *******************************************
 
@@ -100,6 +27,7 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
         printf("\n");
         int size = fgetc(jsonObject) - '0'; //converts char (ASCII) to int
         printf("-- %d --\n", size);
+        level->size = size;
 
         //Reads the map
         while ((toCheck = fgetc(jsonObject)) != '[') //Gets at the start of the JSON maps array
@@ -119,7 +47,7 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
             for (int i = 0; i < (level->size * level->size); i += 1)
             {
                 //Reads an entire map and adds it to the level struct
-                if (readMap(jsonObject, mapsToLoad + i))
+                if (readMap(jsonObject, mapsToLoad+i))
                     return (MALFORMED_JSON);
                 else
                     printf("%d, ", i);
@@ -131,24 +59,29 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
         }
 
         //theme
-        while (fgetc(jsonObject) != ':');
+        while (fgetc(jsonObject) != ':')
+            ;
         level->theme = fgetc(jsonObject) - '0';
 
         //endMap
-        while (fgetc(jsonObject) != ':');
+        while (fgetc(jsonObject) != ':')
+            ;
         int end = fgetc(jsonObject) - '0';
         int tmp;
-        while ((tmp = fgetc(jsonObject)) != '}'){
+        while ((tmp = fgetc(jsonObject)) != '}')
+        {
             end *= 10;
             end += tmp - '0';
         }
         level->endMap = end;
-        printf("endMap : %d", level->endMap);
 
         return (EXIT_SUCCESS);
     }
 }
 
+//*********************************
+
+//Map read
 int readMap(FILE *jsonObject, MAP *map)
 {
     if (!jsonObject || !map)
@@ -156,6 +89,7 @@ int readMap(FILE *jsonObject, MAP *map)
 
     // Checks if the map is in fact a JSON object
     int tmp = fgetc(jsonObject);
+    //printf("\n%c\n", tmp);
     if (tmp == 'n')
     {
         map = NULL;
@@ -183,15 +117,11 @@ int readMap(FILE *jsonObject, MAP *map)
     while ((fgetc(jsonObject)) != ':')
         ;
     map->floor.z = fgetc(jsonObject) - '0';
-    printf("%d, %d, %d\n", map->floor.x, map->floor.y, map->floor.z);
+    //printf("%d, %d, %d\n", map->floor.x, map->floor.y, map->floor.z);
 
     //Traps
-    while (tmp = fgetc(jsonObject) != '[') //Gets at the start of the JSON traps array
-    {
-        printf("%c", tmp);
-    }
-    printf("\n");
-
+    while ((tmp = fgetc(jsonObject)) != '[')
+        ; //Gets at the start of the JSON traps array
     map->traps = NULL;
     int trapAmount = 0;
     while (fgetc(jsonObject) != ']')
@@ -239,6 +169,7 @@ int readMap(FILE *jsonObject, MAP *map)
             //trap facing
             while (fgetc(jsonObject) != ':')
                 ;
+            fgetc(jsonObject);//to clear the " before the actual facing
             int facing = fgetc(jsonObject);
             if (facing == 'w')
             {
@@ -280,13 +211,10 @@ int readMap(FILE *jsonObject, MAP *map)
     }
 
     //Logics
-    while (tmp = fgetc(jsonObject) != '[') //Gets at the start of the JSON traps array
-    {
-        printf("%c", tmp);
-    }
-    printf("\n");
+    while ((tmp = fgetc(jsonObject)) != '[')
+        ; //Gets at the start of the JSON logics array
 
-    map->traps = NULL;
+    map->logics = NULL;
     int logicAmount = 0;
     while (fgetc(jsonObject) != ']')
     {
@@ -294,7 +222,7 @@ int readMap(FILE *jsonObject, MAP *map)
         LOGIC *tmp = (LOGIC *)realloc(map->logics, logicAmount * sizeof(LOGIC));
         if (tmp == NULL)
         {
-            return (MALFORMED_JSON);
+            return (MALLOC_ERROR);
         }
         else
         {
@@ -339,13 +267,19 @@ int readMap(FILE *jsonObject, MAP *map)
                     ;
                 map->logics[logicAmount - 1].activated[2] = fgetc(jsonObject) - '0'; //z
             }
-            else if (fgetc(jsonObject) == 'f')
-            {
-                map->logics[logicAmount - 1].activated[0] = 0; //false
-            }
             else
             {
-                map->logics[logicAmount - 1].activated[0] = 1; //true
+                if (fgetc(jsonObject) == 'f')
+                {
+                    map->logics[logicAmount - 1].activated[0] = 0; //false
+                }
+                else
+                {
+                    map->logics[logicAmount - 1].activated[0] = 1; //true
+                }
+
+                map->logics[logicAmount - 1].activated[1] = -2; //Means these aren't coords
+                map->logics[logicAmount - 1].activated[2] = -2; //Means these aren't coords
             }
 
             //trap group
@@ -392,7 +326,9 @@ int readMap(FILE *jsonObject, MAP *map)
     for (int i = 0; i < 4; i += 1)
     {
         if (fgetc(jsonObject) == 'f')
+        {
             map->exits[i] = falseEquivalent;
+        }
         else
         {
             while (fgetc(jsonObject) != ':')
@@ -405,21 +341,23 @@ int readMap(FILE *jsonObject, MAP *map)
                 ;
             map->exits[i].z = fgetc(jsonObject) - '0'; //z
         }
+        while (fgetc(jsonObject) != ',')
+            ; //Go to the next array entry
     }
 
     //spawnPoint
     while (fgetc(jsonObject) != ':')
         ;
     while (fgetc(jsonObject) != ':')
-                ;
-            map->spawnPoint.x = fgetc(jsonObject) - '0'; //x
-            while (fgetc(jsonObject) != ':')
-                ;
-            map->spawnPoint.y = fgetc(jsonObject) - '0'; //y
-            while (fgetc(jsonObject) != ':')
-                ;
-            map->spawnPoint.z = fgetc(jsonObject) - '0'; //z
-    
+        ;
+    map->spawnPoint.x = fgetc(jsonObject) - '0'; //x
+    while (fgetc(jsonObject) != ':')
+        ;
+    map->spawnPoint.y = fgetc(jsonObject) - '0'; //y
+    while (fgetc(jsonObject) != ':')
+        ;
+    map->spawnPoint.z = fgetc(jsonObject) - '0'; //z
+
     //Get to the end of the map element
     fgetc(jsonObject);
     fgetc(jsonObject);
@@ -436,24 +374,32 @@ COORD *readCoords(FILE *jsonObject)
     //While in the walls array > load coords
     int tmp;
     int amountOfCoords = 0;
-    int tmpSave[150]; //This array will save the coords for later (150/3 = 50 coords max storage = 50 walls on the map)
-    do
+    COORD tmpSave[50] = {0, 0, 0}; //This array will save the coords for later (150/3 = 50 coords max storage = 50 walls on the map)
+    while (fgetc(jsonObject) != ']')
     {
-        tmp = fgetc(jsonObject);
-        if (tmp == ':')
-            tmpSave[amountOfCoords++] = fgetc(jsonObject) - '0';
-    } while (tmp != ']');
+        while (fgetc(jsonObject) != ':')
+            ;
+        tmpSave[amountOfCoords].x = fgetc(jsonObject) - '0';
+        while (fgetc(jsonObject) != ':')
+            ;
+        tmpSave[amountOfCoords].y = fgetc(jsonObject) - '0';
+        while (fgetc(jsonObject) != ':')
+            ;
+        tmpSave[amountOfCoords].z = fgetc(jsonObject) - '0';
+        amountOfCoords++;
+        fgetc(jsonObject); //to bypass the closing bracket
+    }
 
-    COORD *coords = (COORD *)malloc(amountOfCoords * sizeof(COORD)); // Mallocs the level
+    COORD *coords = (COORD *)malloc((amountOfCoords) * sizeof(COORD)); // Mallocs the level
     if (coords == NULL)
     {
         return (NULL);
     }
     else
     {
-        for (int i = 0; i < amountOfCoords; i += 1)
+        for (int i = 0; i < amountOfCoords; i += 3)
         {
-            (coords + i)->x = tmpSave[i];
+            coords[i] = tmpSave[i];
         }
         return (coords);
     }

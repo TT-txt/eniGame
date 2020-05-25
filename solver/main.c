@@ -1,4 +1,4 @@
-#include "headers.c"
+#include "levelLoader.c"
 
 int main(int argc, char *argv[])
 {
@@ -26,10 +26,9 @@ int main(int argc, char *argv[])
 
             FILE *mapToSolve;
 
-            if (mapToSolve = fopen(mapPath, "r"))
+            if ((mapToSolve = fopen(mapPath, "r")))
             {
                 // Starts reading the json file
-                char notImportant;
                 if (loadLevel(mapToSolve, &levelToSolve))
                 {
                     printf("JSON not valid...\n");
