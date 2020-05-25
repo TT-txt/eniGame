@@ -30,9 +30,11 @@ function mapSelector(size) {
         createdLevel.size = size;
         let array = [];
         for (let k = 0; k < size * size; k += 1) {
-            array[k] = new map(null, new THREE.Vector3(5, 0, 5), null, null, false, 0, [false, false, false, false], new THREE.Vector3(1, 1, 1));
+            array[k] = new map([], new THREE.Vector3(5, 0, 5), [], [], false, 0, [false, false, false, false], new THREE.Vector3(1, 1, 1));
         }
         createdLevel.maps = array;
+        createdLevel.theme = 0;
+        createdLevel.endMap = createdLevel.size*createdLevel.size;
     }
 
     // Indexes used 
@@ -56,10 +58,10 @@ function mapSelector(size) {
     container.innerHTML += styleToInsert;
 
     // Adds the clickable table elements to the table
+    console.log(createdLevel);
     container = document.querySelector('#levelEditor');
     for (i = 0; i < size; i += 1) {
         for (j = 0; j < size; j += 1) {
-            console.log(createdLevel);
             let mapToAdd = '<button onClick="mapEditor(' + (i * size + j) + ', ' + size + ')" style="border-color:black;border-width:4px;border-top-style:';
             //Top
             if (i == 0) {
