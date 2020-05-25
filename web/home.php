@@ -59,7 +59,8 @@
 						meshes: []
 					};
 
-					let dispenserArrowD;
+					let closestDispenserObstacle;
+					let closestDroppererObstacle;
 
 					const deathNotif = new Notyf({
 						duration: 40000,
