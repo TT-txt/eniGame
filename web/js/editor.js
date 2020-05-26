@@ -34,7 +34,7 @@ function mapSelector(size) {
         }
         createdLevel.maps = array;
         createdLevel.theme = 0;
-        createdLevel.endMap = createdLevel.size*createdLevel.size;
+        createdLevel.endMap = createdLevel.size * createdLevel.size;
     }
 
     // Indexes used 
@@ -114,7 +114,7 @@ function mapEditor(index, levelSize) {
     container.innerHTML += '<label class="text-white" for="mapSize">Map size (max 9): </label><div id="mapSize" class="input-group"><input placeholder="Length &#9472;" class="form-control" id="mapSizeX" type="text" name="mapSize"/> <div class="input-group-prepend"><span class="input-group-text">&times;</span></div> <input placeholder="Width &#124;" class="form-control" id="mapSizeZ" type="text" name="mapSizeZ"/></div><br/><hr style="height: 0;border:none;border-top:4px white dotted;"/>';
     container.innerHTML += '<button id="buttonWall" class="btn btn-light" onClick="updateItemButton(\'Wall\')">Add Wall</button>';
     container.innerHTML += '<br/><label class="text-white" for="logics">Logics</label><br/><select multiple class="form-control form-control-lg" id="logics" name="logics"><option value="Pressure Plate">Pressure Plate</option><option value="Pushable Box">Pushable Box</option></select>';
-    container.innerHTML += '<br/><br/><label class="text-white :" for="traps">Traps</label><br/><select multiple class="form-control form-control-lg" id="traps" name="traps"><option value="Spikes">Spikes</option><option value="Arrow Once">Arrow Once</option><option value="Arrow Infinite">Arrow Infinite Grouped</option><option value="Flame Infinite">Flame Thrower</option></select>';
+    container.innerHTML += '<br/><br/><label class="text-white :" for="traps">Traps</label><br/><select multiple class="form-control form-control-lg" id="traps" name="traps"><option value="Spikes">Spikes</option><option value="Arrow Once">Arrow Once</option><option value="Arrow Infinite">Arrow Infinite</option><option value="Flame Infinite">Flame Thrower</option></select>';
     container.innerHTML += '<br/><button id="deleteItem" class="btn btn-danger" onClick="updateItemButton(\'Delete Item\')">Delete Item</button>';
     container.innerHTML += '<br/><p class="text-white" style="border:2px solid #6351ce">Item selected : <strong id="selectedItem">NONE</strong></p>';
 
@@ -122,8 +122,7 @@ function mapEditor(index, levelSize) {
     container = document.querySelector("#mapEditor");
     container.innerHTML += '<button id="buttonBack" class="btn btn-outline-danger float-left" onclick="mapSelector(' + levelSize + ')">&lt;</button>';
     container.innerHTML += '<legend><strong>Map layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
-    console.log(index);
-    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z);
+    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
 
 
     // Event listener to update the table size from the text inputs
@@ -132,15 +131,19 @@ function mapEditor(index, levelSize) {
         if (newX > 9) {
             //Takes the maximum value
             createdLevel.maps[index].floor.x = 9;
-            updateMapToEdit(9, createdLevel.maps[index].floor.z);
-        } else if (newX < 4) {
-            //Doesn't do anything
+            updateMapToEdit(9, createdLevel.maps[index].floor.z, index);
+            return;
+        } else if (newX > 3 && newX <= 9) {
+            //Updates the floor size
+            createdLevel.maps[index].floor.x = newX;
+            updateMapToEdit(newX, createdLevel.maps[index].floor.z, index);
             return;
         }
         else {
-            //Updates the floor size
-            createdLevel.maps[index].floor.x = newX;
-            updateMapToEdit(newX, createdLevel.maps[index].floor.z);
+            //Takes the default value
+            createdLevel.maps[index].floor.x = 5;
+            updateMapToEdit(5, createdLevel.maps[index].floor.z, index);
+            return;
         }
     });
     document.getElementById("mapSizeZ").addEventListener('change', function (z) {
@@ -148,15 +151,18 @@ function mapEditor(index, levelSize) {
         if (newZ > 9) {
             //Takes the maximum value
             createdLevel.maps[index].floor.z = 9;
-            updateMapToEdit(createdLevel.maps[index].floor.x, 9);
-        } else if (newZ < 4) {
-            //Doesn't do anything
+            updateMapToEdit(createdLevel.maps[index].floor.x, 9, index);
+        } else if (newZ > 3 && newZ <= 9) {
+            //Updates the floor size
+            createdLevel.maps[index].floor.z = newZ;
+            updateMapToEdit(createdLevel.maps[index].floor.x, newZ, index);
             return;
         }
         else {
-            //Updates the floor size
-            createdLevel.maps[index].floor.z = newZ;
-            updateMapToEdit(createdLevel.maps[index].floor.x, newZ);
+            //Takes the default value
+            createdLevel.maps[index].floor.z = 5;
+            updateMapToEdit(createdLevel.maps[index].floor.x, 5, index);
+            return;
         }
     });
 
@@ -207,12 +213,122 @@ function updateItemButton(value) {
 
 
 //Current map size table update
-function updateMapToEdit(x, z) {
+function updateMapToEdit(x, z, index) {
+    console.log(index);
     let tableContent = ' ';
-    for (let i = 0; i < x; i += 1) {
+    for (let j = 0; j < x; j += 1) {
         tableContent += '<tr>';
-        for (let j = 0; j < z; j += 1) {
-            tableContent += '<td id="' + i + ', ' + j + '" style="border:black 1px solid;padding:0 10px;">(' + i + ', ' + j + ')<br/><button class="btn btn-primary" onClick="">Add</button> </td>';
+        for (let i = 0; i < z; i += 1) {
+            //traps here 
+            tableContent += '<td id="' + i + ', ' + j + '" style="border:black 1px solid;padding:0 10px;">(' + i + ', ' + j + ')<br/>';
+            let elementsToInsert = [];
+            for (let elt of createdLevel.maps[index].traps) {
+                if (elt.coord.x == i && elt.coord.z == j) {
+                    //add background image of the item, then 
+                    switch (elt.type) {
+                        case 0: //spikes, so idk...
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<button type="button" onClick="itemClick()" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" alt="Plate" height="28px"/></button>');
+                            break;
+                        case 1://dispenser
+                            switch (elt.facing) {
+                                //texture is on textures/trap/dispenser/dispenserFront.png
+                                case 'n':
+                                    //rotate pi
+                                    break;
+                                case 's':
+                                    //no rotation
+                                    break;
+                                case 'e':
+                                    //rotation pi/2
+                                    break;
+                                case 'w':
+                                    //rotation of -pi/2
+                                    break;
+                            }
+                            break;
+                        case 2://dropper, same texture
+                            switch (elt.facing) {
+                                //texture is on textures/trap/dropper/dropperFront.png
+                                case 'n':
+                                    //rotate pi
+                                    break;
+                                case 's':
+                                    //no rotation
+                                    break;
+                                case 'e':
+                                    //rotation pi/2
+                                    break;
+                                case 'w':
+                                    //rotation of -pi/2
+                                    break;
+                            }
+                            break;
+                        case 3://smoker
+                            switch (elt.facing) {
+                                //texture is on textures/trap/smoker/smokerFront.png
+                                case 'n':
+                                    //rotate pi
+                                    break;
+                                case 's':
+                                    //no rotation
+                                    break;
+                                case 'e':
+                                    //rotation pi/2
+                                    break;
+                                case 'w':
+                                    //rotation of -pi/2
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
+            //logic here
+            for (let elt of createdLevel.maps[index].logics) {
+                if (elt.coord.x == i && elt.coord.z == j) {
+                    //add background image of the item, then 
+                    switch (elt.type) {
+                        case 0://pressure plate
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#pressureModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" alt="Plate" height="28px"/></button> <div class="modal fade" id="pressureModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Pressure Plate details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="onUse">onUse activate ?</label> <select class="form-control" id="onUse"> <option value="null">Open Doors</option> <option value="1">Arrow once</option> <option value="2">Arrow infinite</option> <option value="3">Flames</option> </select><br/> <label for="group">Group ? (If you want it to open doors, ignore this)</label> <select class="form-control" id="group"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> </div> <div class="modal-footer"><button type="button" class="btn btn-danger">Delete</button> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button> </div> </div> </div> </div>');
+                            console.log("ZOUF");
+                            break;
+                        case 1://box
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<img src="textures/logic/pushableBox.png" alt="Plate" height="32px"/>');
+                            break;
+                    }
+                }
+            }
+            //walls
+            for (let elt of createdLevel.maps[index].logics) {
+                if (elt.coord.x == i && elt.coord.z == j) {
+                    //texture is under textures/env/walls/stoneBrick.png
+                }
+            }
+            //Sorts the y to display them in the right order
+            for (let sorted = 0; sorted < elementsToInsert.length; sorted += 2) {
+                for (let sortIndex = elementsToInsert.length - 2; sortIndex > sorted; sortIndex -= 2) {
+                    if (elementsToInsert[sortIndex] < elementsToInsert[sortIndex - 2]) {
+                        //swap the 4 occurences
+                        //Swap y coords (for the sorting)
+                        let tmp = elementsToInsert[sortIndex];
+                        elementsToInsert[sortIndex] = elementsToInsert[sortIndex - 2];
+                        elementsToInsert[sortIndex - 2] = tmp;
+                        //Swap the actual string values
+                        tmp = elementsToInsert[sortIndex + 1];
+                        elementsToInsert[sortIndex + 1] = elementsToInsert[sortIndex - 1];
+                        elementsToInsert[sortIndex - 1] = tmp;
+                    }
+                }
+            }
+            console.log(elementsToInsert);
+            //Actually adds the elements 
+            for (let k = 1; k < elementsToInsert.length; k += 2) {
+                tableContent += elementsToInsert[k];
+            }
+            tableContent += '<button class="btn btn-primary" onClick="addContent(' + i + ', ' + j + ', ' + index + ')">Add</button> </td>';
         }
         tableContent += '</tr>'
     }
@@ -220,24 +336,94 @@ function updateMapToEdit(x, z) {
 }
 
 
-function addTrap(mapIndex, type, coord, activated, facing, group){
-    if(type == 0) createdLevel.maps[mapIndex].traps.push(new trap(type, new THREE.Vector3(coord.x, coord.y, coord.z), true, null, null));
-    else{
+function addTrap(mapIndex, type, coord, activated, facing, group) {
+    if (type == 0) createdLevel.maps[mapIndex].traps.push(new trap(type, new THREE.Vector3(coord.x, coord.y, coord.z), true, null, null));
+    else {
         createdLevel.maps[mapIndex].traps.push(new trap(type, new THREE.Vector3(coord.x, coord.y, coord.z), activated, facing, group));
     }
 }
 
-function addLogic(mapIndex, type, coord, onUSe, group){
-    if(type == 0) createdLevel.maps[mapIndex].logic.push(new logic(type, new THREE.Vector3(coord.x, coord.y, coord.z), onUse, false, group);
-    else if(type == 1) createdLevel.maps[mapIndex].logic.push(new logic(type, new THREE.Vector3(0, 0, 0), onUse, new THREE.Vector3(coord.x, coord.y, coord.z), group,))
+function addLogic(mapIndex, type, coord, onUSe, group) {
+    if (type == 0) createdLevel.maps[mapIndex].logics.push(new logic(type, coord, onUse, false, group));
+    else if (type == 1) createdLevel.maps[mapIndex].logics.push(new logic(type, new THREE.Vector3(0, 0, 0), onUse, coord, group))
 }
 
-function addWall(coord, mapIndex){
+function addWall(coord, mapIndex) {
     createdLevel.maps[mapIndex].walls.push(new THREE.Vector3(coord.x, coord.y, coord.z));
 }
 
-//need to add something when clicking on a trap: new menu showing activate: radio ?, coord: ,group, facing and submit button in order to add it;
-//need to add the same for the logic group,
-//might aswell do some adjustement to the update map, to add some stuf in the for in order to show the multiples elements
-//maybe add a var containing coords of the elements added, in order to not allow the player to add stuff at the same place
-//need to find how to export json to play actually those levels ?
+function addContent(x, z, mapIndex) {
+    selectedItem = document.getElementById("selectedItem").textContent
+    if (x < 0 || z < 0)
+        return;
+
+    //Get y
+    let idToFind = x + ', ' + z;
+    let y = document.getElementById(idToFind).children.length - 1;
+    if (y < 1) y = 1;
+
+    // Adds the item to the level object 
+    if (selectedItem == "Pressure Plate") {
+        if (y < 2) {
+            createdLevel.maps[mapIndex].logics.push(new logic(0, new THREE.Vector3(x, y, z), 0, false, null));
+        } else {
+            deathNotif.dismissAll();
+            deathNotif.error("You can't add a pressure plate on top of another block...");
+        }
+    } else if (selectedItem == "Spikes") {
+        if (y < 2) {
+            createdLevel.maps[mapIndex].traps.push(new logic(0, new THREE.Vector3(x, y - 1, z), 0, false, null));
+        } else {
+            deathNotif.dismissAll();
+            deathNotif.error("You can't add spikes on top of another block...");
+        }
+    } else if (selectedItem == "Spikes") {
+        if (y < 2) {
+            createdLevel.maps[mapIndex].logics.push(new logic(1, new THREE.Vector3(0, 0, 0), 0, new THREE.Vector3(x, y - 1, z), null));
+        } else {
+            deathNotif.dismissAll();
+            deathNotif.error("You can't add boxes on top of another block...");
+        }
+    }else if (selectedItem == "Arrow Once") {
+
+    } else if (selectedItem == "Arrow Infinite") {
+
+    } else if (selectedItem == "Flame Infinite") {
+
+    } else if (selectedItem == "Wall") {
+
+    }
+
+    updateMapToEdit(createdLevel.maps[mapIndex].floor.x, createdLevel.maps[mapIndex].floor.z, mapIndex);
+    return;
+}
+
+function itemClick() {
+
+    return;
+}
+
+/*
+                               /$$                 /$$
+                              | $$                | $$
+ /$$$$$$/$$$$  /$$   /$$      | $$$$$$$   /$$$$$$ | $$  /$$$$$$
+| $$_  $$_  $$| $$  | $$      | $$__  $$ /$$__  $$| $$ /$$__  $$
+| $$ \ $$ \ $$| $$  | $$      | $$  \ $$| $$$$$$$$| $$| $$  \ $$
+| $$ | $$ | $$| $$  | $$      | $$  | $$| $$_____/| $$| $$  | $$
+| $$ | $$ | $$|  $$$$$$$      | $$  | $$|  $$$$$$$| $$| $$$$$$$/
+|__/ |__/ |__/ \____  $$      |__/  |__/ \_______/|__/| $$____/
+               /$$  | $$                              | $$
+              |  $$$$$$/                              | $$
+               \______/                               |__/
+
+need to add something when clicking on a trap: new menu showing activate: radio ?, coord: ,group, facing and submit button in order to add it; maybe modal ?
+need to add the same for the logic group,
+might aswell do some adjustement to the update map, to add some stuf in the for in order to show the multiples elements
+maybe add a var containing coords of the elements added, in order to not allow the player to add stuff at the same place
+need to find how to export json to play actually those levels ?
+when on a map, you can choose the exits, BUT
+if the index is 0, or size Z, or size Z * int, you can't add a left exit (exit 0),
+of if the index is inferior to size Z, you can't add a top exit (exit 1)
+or if the index of the map is size z - Z * int, you can't add a right exit (exit 2)
+or if the index of the map is superior (size y - 1) * size Z, you can't add a bottom exit (exit 3)
+*/
