@@ -44,7 +44,7 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
             <style>
                 .navbar-expand-lg .navbar-nav .nav-link {
                     margin-right: 60px;
-                }    
+                }
             </style>
             <li class="nav-item" id="test">
                 <a class="nav-link" href="rules.php">Rules</a>
@@ -54,15 +54,17 @@ if (isset($_POST['login']) and isset($_POST['password'])) {
                     Leaderboards
                 </a>
                 <div class="dropdown-menu">
-                <style>                    
-                    .dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover {
-                        background-color: #6351CE;
-                        color: white;
-                        text-decoration: none;
-                    }
-                </style>
+                    <style>
+                        .dropdown-item:active,
+                        .dropdown-item:focus,
+                        .dropdown-item:hover {
+                            background-color: #6351CE;
+                            color: white;
+                            text-decoration: none;
+                        }
+                    </style>
                     <a class="dropdown-item" href="leaderboards.php?sortBy=score">By Score</a>
-                    <a class="dropdown-item" href="leaderboards.php?sortBy=levels">By Levels</a>
+                    <a class="dropdown-item" href="leaderboards.php?sortBy=level">By Levels</a>
                 </div>
             </li>
             <li class="nav-item" id="test">

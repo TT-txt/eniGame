@@ -326,7 +326,7 @@ function mapReset(stuck) {
                 currentLevel.maps[currentMap].solved = false;
                 break;
             }
-            else if(child.name == "Cube") scene.remove(child);
+            else if (child.name == "Cube") scene.remove(child);
             if (typeof (dropperArrow) != 'undefined') scene.remove(dropperArrow);
             if (typeof (dispenserArrow) != 'undefined') scene.remove(dispenserArrow);
             if (typeof (firecharge) != 'undefined') scene.remove(firecharge);
@@ -387,6 +387,23 @@ function gameOver(state) {
         }
         message += '</p><button id="CONTINUE" type="button" class="btn btn-outline-secondary" onclick="">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button></div>';
         mainToRebuild.innerHTML += message;
+
+        let scoreToAdd = "toAdd=5";
+        // Creating a XHR object
+        let xhr = new XMLHttpRequest();
+        let url = "http://localhost/eniGame/web/include/addScore.php";
+        xhr.open("POST", url, true); //true is for async (so the client doesn't have to wait the complete save of the file to continue using the site)
+
+        // Set the request header i.e. which type of content you are sending
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {//Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.send(scoreToAdd);
     }
     else {
         /********* 16 MESSAGES *********
