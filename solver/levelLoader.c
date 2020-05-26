@@ -36,6 +36,7 @@ int loadLevel(FILE *jsonObject, LEVEL *level)
         }
         printf("\n");
         MAP *mapsToLoad = (MAP *)malloc(size * size * sizeof(MAP)); // Mallocs the level
+        memset(mapsToLoad, 0, size * size * sizeof(MAP));
         if (mapsToLoad == NULL)
         {
             return (MALLOC_ERROR);
