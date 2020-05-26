@@ -5,7 +5,7 @@ if (isset($_POST["toAdd"]) && isset($_SESSION["id"])) {
     $newScore = $_POST["toAdd"];
     include("connect.php");
 
-    $scoreQuery = "INSERT INTO SCORES (who, score, date) VALUES ('" . $_SESSION["id"] . "', '5', '" . date("Y-m-d") . "');";
+    $scoreQuery = "INSERT INTO SCORES (who, score, date) VALUES ('" . $_SESSION["id"] . "', '$newScore', '" . date("Y-m-d") . "');";
 
     $test = mysqli_query($link, $scoreQuery);
     if ($test) {
