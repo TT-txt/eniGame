@@ -35,6 +35,12 @@ function mapSelector(size) {
         createdLevel.maps = array;
         createdLevel.theme = 0;
         createdLevel.endMap = createdLevel.size * createdLevel.size;
+
+        //Adds a submit map button to send it to the database
+        /*
+        let whereToInsert = document.getElementById('topAside');
+        whereToInsert.innerHTML = '<button type="button" class="btn btn-dark btn-lg" id="submitMapButton" onClick="submitMap()">Submit the map !</button> ';
+        */
     }
 
     // Indexes used 
@@ -112,16 +118,17 @@ function mapEditor(index, levelSize) {
     container = document.querySelector("#toolBarBody");
     //mapSizeX, mapSizeZ
     container.innerHTML += '<label class="text-white" for="mapSize">Map size (max 9): </label><div id="mapSize" class="input-group"><input placeholder="Length &#9472;" class="form-control" id="mapSizeX" type="text" name="mapSize"/> <div class="input-group-prepend"><span class="input-group-text">&times;</span></div> <input placeholder="Width &#124;" class="form-control" id="mapSizeZ" type="text" name="mapSizeZ"/></div><br/><hr style="height: 0;border:none;border-top:4px white dotted;"/>';
-    container.innerHTML += '<button id="buttonWall" class="btn btn-light" onClick="updateItemButton(\'Wall\')">Add Wall</button>';
-    container.innerHTML += '<br/><label class="text-white" for="logics">Logics</label><br/><select multiple class="form-control form-control-lg" id="logics" name="logics"><option value="Pressure Plate">Pressure Plate</option><option value="Pushable Box">Pushable Box</option></select>';
-    container.innerHTML += '<br/><br/><label class="text-white :" for="traps">Traps</label><br/><select multiple class="form-control form-control-lg" id="traps" name="traps"><option value="Spikes">Spikes</option><option value="Arrow Once">Arrow Once</option><option value="Arrow Infinite">Arrow Infinite</option><option value="Flame Infinite">Flame Thrower</option></select>';
-    container.innerHTML += '<br/><button id="deleteItem" class="btn btn-danger" onClick="updateItemButton(\'Delete Item\')">Delete Item</button>';
-    container.innerHTML += '<br/><p class="text-white" style="border:2px solid #6351ce">Item selected : <strong id="selectedItem">NONE</strong></p>';
+    container.innerHTML += '<p class="text-white" style="border:2px solid #6351ce">Item selected : <strong id="selectedItem">NONE</strong></p><br/>';
+    container.innerHTML += '<button id="buttonWall" class="btn btn-light btn-block" style="margin:0;" onClick="updateItemButton(\'Wall\')">Wall</button>';
+    container.innerHTML += '<br/><label class="text-white" for="logics">Logics</label><br/><select multiple class="form-control form-control-lg" style="overflow: hidden;" id="logics" name="logics"><option value="Pressure Plate">Pressure Plate</option><option value="Pushable Box">Pushable Box</option></select>';
+    container.innerHTML += '<br/><br/><label class="text-white :" for="traps">Traps</label><br/><select multiple class="form-control form-control-lg" style="overflow: hidden;" id="traps" name="traps"><option value="Spikes">Spikes</option><option value="Arrow Once">Arrow Once</option><option value="Arrow Infinite">Arrow Infinite</option><option value="Flame Infinite">Flame Thrower</option></select>';
+    container.innerHTML += '<br/><button id="deleteItem" class="btn btn-danger btn-block" style="margin:0;" onClick="updateItemButton(\'Delete Item\')">Delete Item</button>';
+    
 
     // Map Editor display
     container = document.querySelector("#mapEditor");
     container.innerHTML += '<button id="buttonBack" class="btn btn-outline-danger float-left" onclick="mapSelector(' + levelSize + ')">&lt;</button>';
-    container.innerHTML += '<legend><strong>Map layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
+    container.innerHTML += '<legend><strong>Map ' + index + ' layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
     updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
 
 
@@ -214,10 +221,36 @@ function updateItemButton(value) {
 
 //Current map size table update
 function updateMapToEdit(x, z, index) {
-    console.log(index);
+    //console.log(index);
     let tableContent = ' ';
     for (let j = 0; j < x; j += 1) {
-        tableContent += '<tr>';
+
+        //Top map walls
+        if (j == 0) {
+            tableContent += '<tr style="border: gray 2px dashed;background-color:#343a40;"><th style="border-bottom: gray 2px solid;border-right: gray 2px solid;"></th>';
+            for (let i = 0; i < z; i += 1) {
+                tableContent += '<th class="topWall">';
+                if (index >= createdLevel.size) {
+                    tableContent += '<button class="btn btn-warning btn-sm" onClick="addExit(' + i + ', -1, ' + index + ', \'top\')">PLACE EXIT</button>';
+                } else {
+                    //Filler
+                    tableContent += '<div style="height:60px;"></div>';
+                }
+                tableContent += '</th>';
+            }
+            tableContent += '<th style="border-bottom: gray 2px solid;border-left: gray 2px solid;"></th></tr>';
+        }
+
+        tableContent += '<tr><th class="leftWall" style="border: gray 2px dashed;background-color:#343a40;">';
+        //Left map walls
+        if (index % createdLevel.size != 0) {
+            tableContent += '<button class="btn btn-warning btn-sm" onClick="addExit( -1, ' + j + ', ' + index + ', \'left\')">PLACE EXIT</button>';
+        } else {
+            //Filler
+            tableContent += '<div style="width:60px;"></div>';
+        }
+        tableContent += '</th>';
+
         for (let i = 0; i < z; i += 1) {
             //traps here 
             tableContent += '<td id="' + i + ', ' + j + '" style="border:black 1px solid;padding:0 10px;">(' + i + ', ' + j + ')<br/>';
@@ -228,11 +261,11 @@ function updateMapToEdit(x, z, index) {
                     switch (elt.type) {
                         case 0: //spikes, so idk...
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + j + ', ' + index + ')" style="padding:0;width:32px;height:32px;"><img src="textures/trap/spikes/spikes.png" alt="Plate" height="28px"/></button>');
+                            elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + elt.coord.y + ', ' + j + ', ' + index + ', \'spike\')" style="padding:0;width:32px;height:32px;"><img src="textures/trap/spikes/spikes.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Plate" height="28px"/></button>');
                             break;
                         case 1://dispenser
-                        elementsToInsert.push(elt.coord.y);
-                        elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon'+ i + j +'" src="textures/trap/dispenser/dispenserFront.png" alt="Dispenser" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facing">Direction ?</label> <select class="form-control" id="facing"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activated" value="true" checked> <label class="form-check-label" for="activated">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivated" value="false"> <label class="form-check-label" for="deactivated">Deactivated</label> </div><br/> <label for="group">Group ?</label> <select class="form-control" id="group"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDispenser" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 1,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/dispenser/dispenserFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dispenser" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDispenser' + i + j + '">Direction ?</label> <select class="form-control" id="facingDispenser' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedDispenser' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedDispenser' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedDispenser' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedDispenser' + i + j + '">Deactivated</label> </div><br/> <label for="groupDispenser' + i + j + '">Group ?</label> <select class="form-control" id="groupDispenser' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDispenser" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 1,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             switch (elt.facing) {
                                 //texture is on textures/trap/dispenser/dispenserFront.png
                                 case 'n':
@@ -250,8 +283,8 @@ function updateMapToEdit(x, z, index) {
                             }
                             break;
                         case 2://dropper, same texture
-                        elementsToInsert.push(elt.coord.y);
-                        elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon'+ i + j +'" src="textures/trap/dropper/dropperFront.png" alt="Dropper" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facing">Direction ?</label> <select class="form-control" id="facing"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activated" value="true" checked> <label class="form-check-label" for="activated">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivated" value="false"> <label class="form-check-label" for="deactivated">Deactivated</label> </div><br/> <label for="group">Group ?</label> <select class="form-control" id="group"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDropper" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 2,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/dropper/dropperFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dropper" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDropper' + i + j + '">Direction ?</label> <select class="form-control" id="facingDropper' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedDropper' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedDropper' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedDropper' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedDropper' + i + j + '">Deactivated</label> </div><br/> <label for="groupDropper' + i + j + '">Group ?</label> <select class="form-control" id="groupDropper' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDropper" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 2,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             switch (elt.facing) {
                                 //texture is on textures/trap/dropper/dropperFront.png
                                 case 'n':
@@ -269,13 +302,13 @@ function updateMapToEdit(x, z, index) {
                             }
                             break;
                         case 3://smoker
-                        elementsToInsert.push(elt.coord.y);
-                        elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon'+ i + j +'" src="textures/trap/smoker/smokerFront.png" alt="Smoker" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facing">Direction ?</label> <select class="form-control" id="facing"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activated" value="true" checked> <label class="form-check-label" for="activated">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivated" value="false"> <label class="form-check-label" for="deactivated">Deactivated</label> </div><br/> <label for="group">Group ?</label> <select class="form-control" id="group"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteSmoker" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 3,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push(elt.coord.y);
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/smoker/smokerFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Smoker" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingSmoker' + i + j + '">Direction ?</label> <select class="form-control" id="facingSmoker' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedSmoker' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedSmoker' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedSmoker' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedSmoker' + i + j + '">Deactivated</label> </div><br/> <label for="groupSmoker' + i + j + '">Group ?</label> <select class="form-control" id="groupSmoker' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteSmoker" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 3,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             switch (elt.facing) {
                                 //texture is on textures/trap/smoker/smokerFront.png
                                 case 'n':
                                     //rotatation of 180°
-                                    document.getElementById('smokerIcon'+ i + j).transform = "rotate(180)";
+                                    document.getElementById('smokerIcon' + i + j).transform = "rotate(180)";
                                     break;
                                 case 's':
                                     //no rotation
@@ -283,11 +316,11 @@ function updateMapToEdit(x, z, index) {
                                     break;
                                 case 'e':
                                     //rotation 270°
-                                    document.getElementById('smokerIcon'+ i + j).transform = "rotate(270)";
+                                    document.getElementById('smokerIcon' + i + j).transform = "rotate(270)";
                                     break;
                                 case 'w':
                                     //rotation of 90°
-                                    document.getElementById('smokerIcon'+ i + j).transform = "rotate(90)";
+                                    document.getElementById('smokerIcon' + i + j).transform = "rotate(90)";
                                     break;
                             }
                             break;
@@ -301,11 +334,11 @@ function updateMapToEdit(x, z, index) {
                     switch (elt.type) {
                         case 0://pressure plate
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#pressureModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" alt="Plate" height="28px"/></button> <div class="modal fade" id="pressureModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Pressure Plate details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="onUse">onUse activate ?</label> <select class="form-control" id="onUse"> <option value="null">Open Doors</option> <option value="1">Arrow once</option> <option value="2">Arrow infinite</option> <option value="3">Flames</option> </select><br/> <label for="group">Group ? (If you want it to open doors, ignore this)</label> <select class="form-control" id="group"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/></form><button type="button" id="deletePressurePlate" class="btn btn-danger" onclick="deletePlate(' + i + ', ' + j + ', ' + index + ')" data-dismiss="modal">Delete this Pressure Plate</button> </div> <div class="modal-footer"><button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#pressureModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Plate" height="28px"/></button> <div class="modal fade" id="pressureModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Pressure Plate details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="onUsePlate' + i + j + '">onUse activate ?</label> <select class="form-control" id="onUsePlate' + i + j + '"> <option value="null">Open Doors</option> <option value="1">Arrow once</option> <option value="2">Arrow infinite</option> <option value="3">Flames</option> </select><br/> <label for="groupPlate' + i + j + '">Group ? (If you want it to open doors, ignore this)</label> <select class="form-control" id="groupPlate' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/></form><button type="button" id="deletePressurePlate" class="btn btn-danger" onclick="deletePlate(' + i + ', ' + j + ', ' + index + ')" data-dismiss="modal">Delete this Pressure Plate</button> </div> <div class="modal-footer"><button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             break;
                         case 1://box
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + j + ', ' + index + ')" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pushableBox.png" alt="Box" height="28px"/></button>');
+                            elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + elt.coord.y + ', ' + j + ', ' + index + ', \'box\')" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pushableBox.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Box" height="28px"/></button>');
                             break;
                     }
                 }
@@ -315,7 +348,7 @@ function updateMapToEdit(x, z, index) {
                 if (elt.x == i && elt.z == j) {
                     //texture is under textures/env/walls/stoneBrick.png
                     elementsToInsert.push(elt.y);
-                    elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + j + ', ' + index + ')" style="padding:0;width:32px;height:32px;"><img src="textures/env/walls/stoneBrick.png" alt="Box" height="28px"/></button>');
+                    elementsToInsert.push('<button type="button" onClick="itemClick(' + i + ', ' + elt.y + ', ' + j + ', ' + index + ', \'wall\')" style="padding:0;width:32px;height:32px;"><img src="textures/env/walls/stoneBrick.png" title="(' + elt.x + ', ' + elt.y + ', ' + elt.z + ')" alt="Wall" height="28px"/></button>');
                 }
             }
             //Sorts the y to display them in the right order
@@ -334,29 +367,93 @@ function updateMapToEdit(x, z, index) {
                     }
                 }
             }
-            console.log(elementsToInsert);
+            //console.log(elementsToInsert);
             //Actually adds the elements 
             for (let k = 1; k < elementsToInsert.length; k += 2) {
                 tableContent += elementsToInsert[k];
             }
             tableContent += '<button class="btn btn-primary" onClick="addContent(' + i + ', ' + j + ', ' + index + ')">Add</button> </td>';
         }
-        tableContent += '</tr>'
+
+        tableContent += '<th class="rightWall" style="border: gray 2px dashed;background-color:#343a40;">';
+        //Right map walls
+        if (index % createdLevel.size != createdLevel.size - 1) {
+            tableContent += '<button class="btn btn-warning btn-sm" onClick="addExit( -1, ' + j + ', ' + index + ', \'right\')">PLACE EXIT</button>';
+        } else {
+            //Filler
+            tableContent += '<div style="width:60px;"></div>';
+        }
+        tableContent += '</th></tr>'
+
+        //Bottom map walls
+        if (j == x - 1) {
+            tableContent += '<tr style="border: gray 2px dashed;background-color:#343a40;"><th style="border-top: gray 2px solid;border-right: gray 2px solid;"></th>';
+            for (let i = 0; i < z; i += 1) {
+                tableContent += '<th class="bottomWall">';
+                if (index < (createdLevel.size * createdLevel.size) - createdLevel.size) {
+                    tableContent += '<button class="btn btn-warning btn-sm" onClick="addExit(' + i + ', ' + j + ', ' + index + ', \'bottom\')">PLACE EXIT</button>';
+                } else {
+                    //Filler
+                    tableContent += '<div style="height:60px;"></div>';
+                }
+                tableContent += '</th>';
+            }
+            tableContent += '<th style="border-top: gray 2px solid;border-left: gray 2px solid;"></th></tr>';
+        }
     }
+
+    //Disables some map exits
+    //Top ones
+    if (index < createdLevel.size) {
+        let elts = document.getElementsByClassName('topWall');
+        for (elt of elts)
+            elt.classList.add('disabled');
+    }
+    //Bottom ones
+    if (index >= (createdLevel.size * createdLevel.size) - createdLevel.size) {
+        let elts = document.getElementsByClassName('bottomWall');
+        for (elt of elts)
+            elt.classList.add('disabled');
+    }
+    //Left ones
+    if (index % createdLevel.size == 0) {
+        let elts = document.getElementsByClassName('leftWall');
+        for (elt of elts)
+            elt.classList.add('disabled');
+    }
+    //Right ones
+    if (index % createdLevel.size == createdLevel.size - 1) {
+        let elts = document.getElementsByClassName('leftWall');
+        for (elt of elts)
+            elt.classList.add('disabled');
+    }
+
+
     document.getElementById("mapToEdit").innerHTML = tableContent;
 }
 
 
 function addContent(x, z, mapIndex) {
-    selectedItem = document.getElementById("selectedItem").textContent
+    selectedItem = document.getElementById("selectedItem").textContent;
     if (x < 0 || z < 0)
         return;
+
+    //Used to check if a block is trying to be placed above a pressure Plate of something like that
+    let placeable = true;
+
 
     //Get y
     let idToFind = x + ', ' + z;
     let y = document.getElementById(idToFind).children.length - 1;
-    if (y < 1) y = 1;
-    let placeable = true;
+    //Adding some elements actually adds two children so we remove one here in the height counter (modal is responsible for it (not me I swear))
+    for (elt of createdLevel.maps[mapIndex].traps) {
+        if (elt.type > 0 && elt.coord.x == x && elt.coord.z == z) {
+            y--;
+        }
+    }
+    if (y > 3) return;//Height limit
+    if (y < 1) y = 1;//Just in case I dunno
+
 
     // Adds the item to the level object 
     if (selectedItem == "Pressure Plate") {
@@ -381,17 +478,28 @@ function addContent(x, z, mapIndex) {
             deathNotif.error("You can't add boxes on top of another block...");
         }
     } else if (selectedItem == "Arrow Once") {
+        //If the is already a dispenser on the map
+        for (let elt of createdLevel.maps[mapIndex].traps) {
+            if (elt.type == 1) {
+                deathNotif.dismissAll();
+                deathNotif.error("You can't add another Dispenser to this map...");
+                return;
+            }
+        }
+
         for (let elt of createdLevel.maps[mapIndex].logics) {
             if (elt.type == 0 && elt.coord.x == x && elt.coord.z == z) {
                 //If this trap is one the same coord as a pressurePlate
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a dispenser on top of a Pressure Plate...");
+                return;
             } else if (elt.type == 1 && elt.activated.x == x && elt.activated.z == z) {
                 //If this trap is one the same coord as a pushableBox
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a dispenser on top of a Pushable Box...");
+                return;
             }
         }
 
@@ -402,6 +510,7 @@ function addContent(x, z, mapIndex) {
                     placeable = false;
                     deathNotif.dismissAll();
                     deathNotif.error("You can't add a dispenser on top of Spikes...");
+                    return;
                 }
             }
         }
@@ -412,17 +521,28 @@ function addContent(x, z, mapIndex) {
         }
 
     } else if (selectedItem == "Arrow Infinite") {
+        //If the is already a dropper on the map
+        for (let elt of createdLevel.maps[mapIndex].traps) {
+            if (elt.type == 2) {
+                deathNotif.dismissAll();
+                deathNotif.error("You can't add another Dropper to this map...");
+                return;
+            }
+        }
+
         for (let elt of createdLevel.maps[mapIndex].logics) {
             if (elt.type == 0 && elt.coord.x == x && elt.coord.z == z) {
                 //If this trap is one the same coord as a pressurePlate
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a dropper on top of a Pressure Plate...");
+                return;
             } else if (elt.type == 1 && elt.activated.x == x && elt.activated.z == z) {
                 //If this trap is one the same coord as a pushableBox
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a dropper on top of a Pushable Box...");
+                return;
             }
         }
 
@@ -433,6 +553,7 @@ function addContent(x, z, mapIndex) {
                     placeable = false;
                     deathNotif.dismissAll();
                     deathNotif.error("You can't add a dropper on top of Spikes...");
+                    return;
                 }
             }
         }
@@ -442,17 +563,28 @@ function addContent(x, z, mapIndex) {
             createdLevel.maps[mapIndex].traps.push(new trap(2, new THREE.Vector3(x, y, z), true, 's', null));
         }
     } else if (selectedItem == "Flame Infinite") {
+        //If the is already a Smoker on the map
+        for (let elt of createdLevel.maps[mapIndex].traps) {
+            if (elt.type == 3) {
+                deathNotif.dismissAll();
+                deathNotif.error("You can't add another Smoker to this map...");
+                return;
+            }
+        }
+
         for (let elt of createdLevel.maps[mapIndex].logics) {
             if (elt.type == 0 && elt.coord.x == x && elt.coord.z == z) {
                 //If this trap is one the same coord as a pressurePlate
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a Flame Thrower on top of a Pressure Plate...");
+                return;
             } else if (elt.type == 1 && elt.activated.x == x && elt.activated.z == z) {
                 //If this trap is one the same coord as a pushableBox
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a Flame Thrower on top of a Pushable Box...");
+                return;
             }
         }
 
@@ -463,6 +595,7 @@ function addContent(x, z, mapIndex) {
                     placeable = false;
                     deathNotif.dismissAll();
                     deathNotif.error("You can't add a Flame Thrower on top of Spikes...");
+                    return;
                 }
             }
         }
@@ -478,11 +611,13 @@ function addContent(x, z, mapIndex) {
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a wall on top of a Pressure Plate...");
+                return;
             } else if (elt.type == 1 && elt.activated.x == x && elt.activated.z == z) {
                 //If this trap is one the same coord as a pushableBox
                 placeable = false;
                 deathNotif.dismissAll();
                 deathNotif.error("You can't add a wall on top of a Pushable Box...");
+                return;
             }
         }
 
@@ -493,6 +628,7 @@ function addContent(x, z, mapIndex) {
                     placeable = false;
                     deathNotif.dismissAll();
                     deathNotif.error("You can't add a wall on top of Spikes...");
+                    return;
                 }
             }
         }
@@ -507,14 +643,47 @@ function addContent(x, z, mapIndex) {
     return;
 }
 
-function itemClick(x, y, mapIndex) {
-    console.log("click! (" + x + ", " + y + ")");
+function itemClick(x, y, z, mapIndex, type) {
+    selectedItem = document.getElementById("selectedItem").textContent;
+
+    if (selectedItem == "Delete Item") {
+        switch (type) {
+            case "wall":
+                let yToRemove = 0;
+                //Get the highest wall
+                for (let i in createdLevel.maps[mapIndex].walls) {
+                    if (createdLevel.maps[mapIndex].walls[i].x == x && createdLevel.maps[mapIndex].walls[i].y == y && createdLevel.maps[mapIndex].walls[i].z == z) {
+                        createdLevel.maps[mapIndex].walls.splice(i, 1);
+                    }
+                }
+                break;
+            case "spike":
+                for (let i in createdLevel.maps[mapIndex].traps) {
+                    if (createdLevel.maps[mapIndex].traps[i].type == 0 && createdLevel.maps[mapIndex].traps[i].coord.x == x && createdLevel.maps[mapIndex].traps[i].coord.z == z) {
+                        createdLevel.maps[mapIndex].traps.splice(i, 1);
+                        break;
+                    }
+                }
+                break;
+            case "box":
+                for (let i in createdLevel.maps[mapIndex].logics) {
+                    if (createdLevel.maps[mapIndex].logics[i].type == 1 && createdLevel.maps[mapIndex].logics[i].activated.x == x && createdLevel.maps[mapIndex].logics[i].activated.z == z) {
+                        createdLevel.maps[mapIndex].logics.splice(i, 1);
+                        break;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    updateMapToEdit(createdLevel.maps[mapIndex].floor.x, createdLevel.maps[mapIndex].floor.z, mapIndex);
     return;
 }
 
 function deletePlate(x, z, mapIndex) {
     for (let i in createdLevel.maps[mapIndex].logics) {
-        if (createdLevel.maps[mapIndex].logics[i].coord.x == x && createdLevel.maps[mapIndex].logics[i].coord.z == z) {
+        if (createdLevel.maps[mapIndex].logics[i].type == 0 && createdLevel.maps[mapIndex].logics[i].coord.x == x && createdLevel.maps[mapIndex].logics[i].coord.z == z) {
             createdLevel.maps[mapIndex].logics.splice(i, 1);
             break;
         }
@@ -533,6 +702,30 @@ function deleteTrap(x, z, type, mapIndex) {
     updateMapToEdit(createdLevel.maps[mapIndex].floor.x, createdLevel.maps[mapIndex].floor.z, mapIndex);
     return;
 }
+
+function addExit(x, z, mapIndex, position) {
+    if (mapIndex < 0 || x < -1 || x > createdLevel.maps[mapIndex].floor.x || z < -1 || z > createdLevel.maps[mapIndex].floor.z)
+        return;
+    switch (position) {
+        case 'top':
+
+            break;
+        case 'right':
+
+            break;
+        case 'bottom':
+
+            break;
+        case 'left':
+
+            break;
+    }
+    return;
+}
+
+function submitMap() {
+    saveMap(createdLevel);
+}
 /*
                                /$$                 /$$
                               | $$                | $$
@@ -546,14 +739,6 @@ function deleteTrap(x, z, type, mapIndex) {
               |  $$$$$$/                              | $$
                \______/                               |__/
 
-need to add something when clicking on a trap: new menu showing activate: radio ?, coord: ,group, facing and submit button in order to add it; maybe modal ?
-need to add the same for the logic group,
-might aswell do some adjustement to the update map, to add some stuf in the for in order to show the multiples elements
-maybe add a var containing coords of the elements added, in order to not allow the player to add stuff at the same place
-need to find how to export json to play actually those levels ?
-when on a map, you can choose the exits, BUT
-if the index is 0, or size Z, or size Z * int, you can't add a left exit (exit 0),
-of if the index is inferior to size Z, you can't add a top exit (exit 1)
-or if the index of the map is size z - Z * int, you can't add a right exit (exit 2)
-or if the index of the map is superior (size y - 1) * size Z, you can't add a bottom exit (exit 3)
+TODO :  - ADD EXITS
+        - SUBMIT THE MAP (almost done NEED to edit home.php)
 */
