@@ -6,11 +6,18 @@ if (isset($_POST["textToWrite"])) {
     echo ($toWrite);
     include("../include/connect.php");
 
-    $file = "test.json";
 
-    $addLevel = "INSERT INTO MAPS (ID, content, whoposted, finished) VALUES ('', '$toWrite', '" . $_SESSION['id'] . "', '1');"; 
+    $addLevel = "INSERT INTO MAPS (content, whoposted, finished) VALUES ('$toWrite', '" . $_SESSION['id'] . "', '1');";
 
     mysqli_query($link, $addLevel);
+
+    $getMapId = "SELECT ID FROM MAPS WHERE whoposted='" . $_SESSION['id'] . "' ORDER BY ID LIMIT 0,1;";
+    $result = mysqli_query($link, $getMapId);
+
+    $array = mysqli_fetch_assoc($result);
+
+    $file = $array["ID"].".json";
+
     mysqli_close($link);
 
     // str is the content that is going to be written into the file
