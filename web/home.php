@@ -31,7 +31,7 @@
 		<div class="col-lg-1">
 		</div>
 		<div class="col-lg-10" id="mainContainer" style="box-shadow: 0px 6px 5px grey; padding-right: 0px !important;">
-			<aside class="row" style="text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;">
+			<aside class="row" id="topAside" style="text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;">
 				<button type="button" id="reset" class="btn btn-dark" onclick="mapReset()"><img src="img/reset.png" height="20px"></button>
 			</aside>
 			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
