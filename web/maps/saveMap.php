@@ -11,7 +11,7 @@ if (isset($_POST["textToWrite"])) {
 
     mysqli_query($link, $addLevel);
 
-    $getMapId = "SELECT ID FROM MAPS WHERE whoposted='" . $_SESSION['id'] . "' ORDER BY ID LIMIT 0,1;";
+    $getMapId = "SELECT ID FROM MAPS WHERE whoposted='" . $_SESSION['id'] . "' ORDER BY ID DESC LIMIT 0,1;";
     $result = mysqli_query($link, $getMapId);
 
     $array = mysqli_fetch_assoc($result);

@@ -2,6 +2,11 @@
 // url > target url
 // jsonLoadSuccess > function to call on success
 function loadMap(url) {
+    toVanish = document.querySelector("#levelSelector");
+    toVanish.style["display"] = "none";
+    toVanish = document.querySelector("#MENU");
+    toVanish.style["display"] = "none";
+
     var xhr = new XMLHttpRequest();
     let jsonToObject = new level();
     xhr.open('GET', url, true);

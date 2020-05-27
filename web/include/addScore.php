@@ -9,11 +9,12 @@ if (isset($_POST["toAdd"]) && isset($_SESSION["id"])) {
 
     $test = mysqli_query($link, $scoreQuery);
     if ($test) {
-        echo ("Score successfully added!");
+        echo ("+5 style points added!");
     } else {
-        echo ("Query failed...");
+        echo ("The query failed... You may have been cursed...");
     }
+
     mysqli_close($link);
 } else {
-    echo ("You aren't connected... Please connect to your account!");
+    echo ("You aren't connected... Please connect to your account to earn points!");
 }

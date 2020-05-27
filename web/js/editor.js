@@ -3,7 +3,7 @@ var createdLevel = new level(null, null, null, null);
 function loadEditor() {
     const container = document.querySelector('#scene-container');
     //Fills the container with a level size selctor
-    let toInsert = '<div id="levelScaler" class="align-items-center" style="display: flex;justify-content: center;flex-direction:column;background-color:white;width:100%;"><div style="width:100%"><div style="justify-content: center;" class="form-inline"><label style="font-size:20px;" for="levelSize">Choose your level&#39;s difficulty : &nbsp; </label><select class="form-control" id="levelSize" name="size"><option value="3" selected>DEFAULT : 3</option>'
+    let toInsert = '<div id="levelScaler" class="align-items-center" style="display: flex;justify-content: center;flex-direction:column;background-color:#f2f2f2;width:100%;"><div style="width:100%"><div style="justify-content: center;" class="form-inline"><label style="font-size:20px;" for="levelSize">Choose your level&#39;s difficulty : &nbsp; </label><select class="form-control" id="levelSize" name="size"><option value="3" selected>DEFAULT : 3</option>'
     for (let i = 1; i <= 5; i += 1) {
         toInsert += '<option value="' + i + '">' + i + '</option>';
     }
@@ -34,7 +34,7 @@ function mapSelector(size) {
         }
         createdLevel.maps = array;
         createdLevel.theme = 0;
-        createdLevel.endMap = createdLevel.size * createdLevel.size;
+        createdLevel.endMap = createdLevel.size * createdLevel.size - 1;
 
         //Adds a submit map button to send it to the database
         let whereToInsert = document.getElementById('topAside');
@@ -53,7 +53,7 @@ function mapSelector(size) {
     var container = document.querySelector('#scene-container');
 
     // Adds a table to select the map to edit
-    container.innerHTML = '<div id="levelEditor" style="background-color:white;width:100%;"></div>';
+    container.innerHTML = '<div id="levelEditor" style="background-color:#f2f2f2;width:100%;"></div>';
     let styleToInsert = '<style>#levelEditor {border:4px black solid;display:grid;grid-template-columns:';
     for (i = 0; i < size; i += 1) {
         styleToInsert += '1fr ';
@@ -94,7 +94,12 @@ function mapSelector(size) {
                 mapToAdd += 'dashed';
             }
 
-            mapToAdd += ';" class="editorGrid' + i + j + '"><p>' + (i * size + j) + '</p></button>';
+            mapToAdd += ';" class="editorGrid' + i + j + '"><p>' + (i * size + j) + '</p>';
+            if (!i && !j)
+                mapToAdd += '<br/><p style="padding:0;margin:0;font-family:\'8bit_wondernominal\';color:#6351ce;"> Level Spawn </p>';
+            if ((i * size + j) == createdLevel.endMap)
+                mapToAdd += '<br/><p style="padding:0;margin:0;font-family:\'8bit_wondernominal\';color:#6351ce;"> Level Exit </p>';
+            mapToAdd += '</button>';
             container.innerHTML += mapToAdd;
         }
     }
@@ -107,7 +112,7 @@ function mapEditor(index, levelSize) {
     var container = document.querySelector('#scene-container');
 
     // Creating the workspace and the toolBar (floating to the right)
-    container.innerHTML = '<div id="mapEditor" style="background-color:white;width:100%;"><aside class="float-right" id="toolBar" style="width:250px;margin:1%;padding:0;height:98%;"></aside></div>';
+    container.innerHTML = '<div id="mapEditor" style="background-color:#f2f2f2;width:100%;"><aside class="float-right" id="toolBar" style="width:250px;margin:1%;padding:0;height:98%;"></aside></div>';
     container = document.querySelector("#toolBar");
     container.innerHTML += '<button id="toolBarButton" type="button" onClick="toolBarToggle()" class="toolBarToggle btn-success" data-toggle="button" aria-pressed="false" style="width:100%;margin=0;background-color:#6351ce;font-weight:400;text-aline:cente;vertical-aline:middle;user-select:none;border:1px solid transparent;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius: .25rem;transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;">&#8744; Tool Bar</button>';
     container.innerHTML += '<div id="toolBarBody" style="min-height:40%;width:100%;margin:0;padding:20px 0;background-color:#343a40;"></div>'
@@ -121,13 +126,19 @@ function mapEditor(index, levelSize) {
     container.innerHTML += '<br/><label class="text-white" for="logics">Logics</label><br/><select multiple class="form-control form-control-lg" style="overflow: hidden;" id="logics" name="logics"><option value="Pressure Plate">Pressure Plate</option><option value="Pushable Box">Pushable Box</option></select>';
     container.innerHTML += '<br/><br/><label class="text-white :" for="traps">Traps</label><br/><select multiple class="form-control form-control-lg" style="overflow: hidden;" id="traps" name="traps"><option value="Spikes">Spikes</option><option value="Arrow Once">Arrow Once</option><option value="Arrow Infinite">Arrow Infinite</option><option value="Flame Infinite">Flame Thrower</option></select>';
     container.innerHTML += '<br/><button id="deleteItem" class="btn btn-danger btn-block" style="margin:0;" onClick="updateItemButton(\'Delete Item\')">Delete Item</button>';
-
+    container.innerHTML += '<hr style="height: 0;border:none;border-top:4px white dotted;"/><button id="newEndLevel" class="btn btn-primary btn-block" style="margin:0;" onClick="updateEndLevel(' + index + ')">Set the End of the level</button>'
 
     // Map Editor display
     container = document.querySelector("#mapEditor");
     container.innerHTML += '<button id="buttonBack" class="btn btn-outline-danger float-left" onclick="mapSelector(' + levelSize + ')">&lt;</button>';
-    container.innerHTML += '<legend><strong>Map ' + index + ' layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
-    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
+    if (index && index != createdLevel.endMap) {
+        container.innerHTML += '<legend><strong>Map ' + index + ' layout : </strong></legend><br/><table id="mapToEdit" style="background-color:#e0e0e0;margin:auto;border:solid black 2px"></table>';
+        updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
+    } else if (!index) {
+        container.innerHTML += '<legend><strong>Map ' + index + ' layout : </strong></legend><br/><h1 style="font-family:\'8bit_wondernominal\';color:#6351ce;">Default spawn layout</h1><br/> <h3>(exits on the bottom and the right)</h3>';
+    } else if (index == createdLevel.endMap) {
+        container.innerHTML += '<legend><strong>Map ' + index + ' layout : </strong></legend><br/><h1 style="font-family:\'8bit_wondernominal\';color:#6351ce;">Default exit layout</h1>';
+    }
 
 
     // Event listener to update the table size from the text inputs
@@ -188,6 +199,13 @@ function updatePreviewTable(event) {
         tableContent += '</tr>'
     }
     document.getElementById("levelPreview").innerHTML = tableContent;
+}
+
+function updateEndLevel(mapIndex) {
+    //changes the endMap contructor
+    createdLevel.endMap = mapIndex;
+    mapSelector(createdLevel.size);
+    return;
 }
 
 
@@ -271,15 +289,15 @@ function updateMapToEdit(x, z, index) {
                             break;
                         case 1://dispenser
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/dispenser/dispenserFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dispenser" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDispenser' + i + j + '">Direction ?</label> <select class="form-control" id="facingDispenser' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedDispenser' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedDispenser' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedDispenser' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedDispenser' + i + j + '">Deactivated</label> </div><br/> <label for="groupDispenser' + i + j + '">Group ?</label> <select class="form-control" id="groupDispenser' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDispenser" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 1,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="dispenserIcon' + i + j + '" src="textures/trap/dispenser/dispenserFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dispenser" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDispenser' + i + j + '">Direction ?</label> <select multiple class="form-control" id="facingDispenser' + i + j + '" style="overflow: hidden;"> <option value="e" >East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <label for="groupDispenser' + i + j + '">Group ?</label> <select class="form-control" id="groupDispenser' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDispenser" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 1,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             break;
                         case 2://dropper, same texture
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/dropper/dropperFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dropper" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDropper' + i + j + '">Direction ?</label> <select class="form-control" id="facingDropper' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedDropper' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedDropper' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedDropper' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedDropper' + i + j + '">Deactivated</label> </div><br/> <label for="groupDropper' + i + j + '">Group ?</label> <select class="form-control" id="groupDropper' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDropper" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 2,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="dropperIcon' + i + j + '" src="textures/trap/dropper/dropperFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Dropper" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingDropper' + i + j + '">Direction ?</label> <select multiple style="overflow: hidden;" class="form-control" id="facingDropper' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoffDropper' + i + j + '" id="activatedDropper' + i + j + '" value="1" checked> <label class="form-check-label" for="activatedDropper' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoffDropper' + i + j + '" id="deactivatedDropper' + i + j + '" value="0"> <label class="form-check-label" for="deactivatedDropper' + i + j + '">Deactivated</label> </div><br/> <label for="groupDropper' + i + j + '">Group ?</label> <select class="form-control" id="groupDropper' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteDropper" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 2,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             break;
                         case 3://smoker
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/smoker/smokerFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Smoker" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingSmoker' + i + j + '">Direction ?</label> <select class="form-control" id="facingSmoker' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="activatedSmoker' + i + j + '" value="true" checked> <label class="form-check-label" for="activatedSmoker' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoff" id="deactivatedSmoker' + i + j + '" value="false"> <label class="form-check-label" for="deactivatedSmoker' + i + j + '">Deactivated</label> </div><br/> <label for="groupSmoker' + i + j + '">Group ?</label> <select class="form-control" id="groupSmoker' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteSmoker" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 3,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#trapsModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img id="smokerIcon' + i + j + '" src="textures/trap/smoker/smokerFront.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Smoker" height="28px"/></button><!--Trap Modal --> <div class="modal fade" id="trapsModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Trap details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="facingSmoker' + i + j + '">Direction ?</label> <select multiple style="overflow: hidden;" class="form-control" id="facingSmoker' + i + j + '"> <option value="e">East</option> <option value="w">West</option> <option value="n">North</option> <option value="s">South</option> </select><br/> <div class="form-check"> <input class="form-check-input" type="radio" name="onoffSmoker' + i + j + '" id="activatedSmoker' + i + j + '" value="1" checked> <label class="form-check-label" for="activatedSmoker' + i + j + '">Activated</label> </div> <div class="form-check"> <input class="form-check-input" type="radio" name="onoffSmoker' + i + j + '" id="deactivatedSmoker' + i + j + '" value="0"> <label class="form-check-label" for="deactivatedSmoker' + i + j + '">Deactivated</label> </div><br/> <label for="groupSmoker' + i + j + '">Group ?</label> <select class="form-control" id="groupSmoker' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/> </form> <button type="button" id="deleteSmoker" class="btn btn-danger" onclick="deleteTrap(' + i + ', ' + j + ', 3,' + index + ')" data-dismiss="modal">Delete this Trap</button> </div> <div class="modal-footer"> <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             break;
                     }
                 }
@@ -291,7 +309,7 @@ function updateMapToEdit(x, z, index) {
                     switch (elt.type) {
                         case 0://pressure plate
                             elementsToInsert.push(elt.coord.y);
-                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#pressureModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Plate" height="28px"/></button> <div class="modal fade" id="pressureModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Pressure Plate details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="onUsePlate' + i + j + '">onUse activate ?</label> <select class="form-control" id="onUsePlate' + i + j + '"> <option value="null">Open Doors</option> <option value="1">Arrow once</option> <option value="2">Arrow infinite</option> <option value="3">Flames</option> </select><br/> <label for="groupPlate' + i + j + '">Group ? (If you want it to open doors, ignore this)</label> <select class="form-control" id="groupPlate' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/></form><button type="button" id="deletePressurePlate" class="btn btn-danger" onclick="deletePlate(' + i + ', ' + j + ', ' + index + ')" data-dismiss="modal">Delete this Pressure Plate</button> </div> <div class="modal-footer"><button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
+                            elementsToInsert.push('<button type="button" data-toggle="modal" data-target="#pressureModal' + i + j + '" style="padding:0;width:32px;height:32px;"><img src="textures/logic/pressurePlate.png" title="(' + elt.coord.x + ', ' + elt.coord.y + ', ' + elt.coord.z + ')" alt="Plate" height="28px"/></button> <div class="modal fade" id="pressureModal' + i + j + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="exampleModalLongTitle">Pressure Plate details</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div> <div class="modal-body"> <form> <label for="onUsePlate' + i + j + '">onUse activate ?</label> <select multiple style="overflow: hidden;" class="form-control" id="onUsePlate' + i + j + '"> <option value="0">Open Doors</option> <option value="1">Arrow once</option> <option value="2">Arrow infinite</option> <option value="3">Flames</option> </select><br/> <label for="groupPlate' + i + j + '">Group ? (If you want it to open doors, ignore this)</label> <select class="form-control" id="groupPlate' + i + j + '"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> </select><br/></form><button type="button" id="deletePressurePlate" class="btn btn-danger" onclick="deletePlate(' + i + ', ' + j + ', ' + index + ')" data-dismiss="modal">Delete this Pressure Plate</button> </div> <div class="modal-footer"><button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button></div></div></div></div>');
                             break;
                         case 1://box
                             elementsToInsert.push(elt.coord.y);
@@ -367,34 +385,71 @@ function updateMapToEdit(x, z, index) {
         }
     }
 
-    //Disables some map exits
-    //Top ones
-    if (index < createdLevel.size) {
-        let elts = document.getElementsByClassName('topWall');
-        for (elt of elts)
-            elt.classList.add('disabled');
-    }
-    //Bottom ones
-    if (index >= (createdLevel.size * createdLevel.size) - createdLevel.size) {
-        let elts = document.getElementsByClassName('bottomWall');
-        for (elt of elts)
-            elt.classList.add('disabled');
-    }
-    //Left ones
-    if (index % createdLevel.size == 0) {
-        let elts = document.getElementsByClassName('leftWall');
-        for (elt of elts)
-            elt.classList.add('disabled');
-    }
-    //Right ones
-    if (index % createdLevel.size == createdLevel.size - 1) {
-        let elts = document.getElementsByClassName('leftWall');
-        for (elt of elts)
-            elt.classList.add('disabled');
-    }
-
 
     document.getElementById("mapToEdit").innerHTML = tableContent;
+
+    //LISTENERS FOR THE MODALS
+
+    for (elt of createdLevel.maps[index].logics) {
+        if (elt.type == 0) {
+            document.getElementById("onUsePlate" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                elt.onUse = parseInt(e.target.value);
+            });
+            document.getElementById("groupPlate" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                elt.group = parseInt(e.target.value);
+            });
+        }
+    }
+
+    for (elt of createdLevel.maps[index].traps) {
+        switch (elt.type) {
+            case 1:
+                document.getElementById("facingDispenser" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.facing = e.target.value;
+                    $('#trapsModal' + elt.coord.x + elt.coord.z).modal('hide');
+                    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
+                });
+                document.getElementById("groupDispenser" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.group = parseInt(e.target.value);
+                });
+                break;
+
+            case 2:
+                document.getElementById("facingDropper" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.facing = e.target.value;
+                    $('#trapsModal' + elt.coord.x + elt.coord.z).modal('hide');
+                    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
+                });
+                document.getElementsByName("onoffDropper" + elt.coord.x + elt.coord.z)[0].addEventListener('change', function (e) {
+                    elt.activated = true;
+                });
+                document.getElementsByName("onoffDropper" + elt.coord.x + elt.coord.z)[1].addEventListener('change', function (e) {
+                    elt.activated = false;
+                });
+                document.getElementById("groupDropper" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.group = parseInt(e.target.value);
+                });
+                break;
+
+            case 3:
+                document.getElementById("facingSmoker" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.facing = e.target.value;
+                    $('#trapsModal' + elt.coord.x + elt.coord.z).modal('hide');
+                    updateMapToEdit(createdLevel.maps[index].floor.x, createdLevel.maps[index].floor.z, index);
+                });
+                document.getElementsByName("onoffSmoker" + elt.coord.x + elt.coord.z)[0].addEventListener('change', function (e) {
+                    elt.activated = true;
+                });
+                document.getElementsByName("onoffSmoker" + elt.coord.x + elt.coord.z)[1].addEventListener('change', function (e) {
+                    elt.activated = false;
+                });
+                document.getElementById("groupSmoker" + elt.coord.x + elt.coord.z).addEventListener('change', function (e) {
+                    elt.group = parseInt(e.target.value);
+                });
+                break;
+        }
+    }
+
     /****************
     ROTATES THE TRAPS 
     ****************/
@@ -402,35 +457,43 @@ function updateMapToEdit(x, z, index) {
         switch (elt.type) {
             case 1:
                 switch (elt.facing) {
-                    //texture is on textures/trap/dispenser/dispenserFront.png
+                    //texture is on textures/trap/smoker/smokerFront.png
                     case 'n':
-                        //rotate pi
+                        //rotatation of 180°
+                        document.getElementById('dispenserIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(180deg)";
                         break;
                     case 's':
                         //no rotation
+                        //document.getElementById('smokerIcon'+ i + j).transform = "rotate(0)";
                         break;
                     case 'e':
-                        //rotation pi/2
+                        //rotation 270°
+                        document.getElementById('dispenserIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(270deg)";
                         break;
                     case 'w':
-                        //rotation of -pi/2
+                        //rotation of 90°
+                        document.getElementById('dispenserIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(90deg)";
                         break;
                 }
                 break;
             case 2:
                 switch (elt.facing) {
-                    //texture is on textures/trap/dispenser/dispenserFront.png
+                    //texture is on textures/trap/smoker/smokerFront.png
                     case 'n':
-                        //rotate pi
+                        //rotatation of 180°
+                        document.getElementById('dropperIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(180deg)";
                         break;
                     case 's':
                         //no rotation
+                        //document.getElementById('smokerIcon'+ i + j).transform = "rotate(0)";
                         break;
                     case 'e':
-                        //rotation pi/2
+                        //rotation 270°
+                        document.getElementById('dropperIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(270deg)";
                         break;
                     case 'w':
-                        //rotation of -pi/2
+                        //rotation of 90°
+                        document.getElementById('dropperIcon' + elt.coord.x + elt.coord.z).style.transform = "rotate(90deg)";
                         break;
                 }
                 break;
@@ -439,24 +502,25 @@ function updateMapToEdit(x, z, index) {
                     //texture is on textures/trap/smoker/smokerFront.png
                     case 'n':
                         //rotatation of 180°
-                        document.getElementById('smokerIcon' + i + j).transform = "rotate(180)";
+                        document.getElementById('smokerIcon' + elt.coord.x + elt.coord.z).style.transform = "rotateZ(180deg)";
                         break;
                     case 's':
                         //no rotation
-                        //document.getElementById('smokerIcon'+ i + j).transform = "rotate(0)";
+                        document.getElementById('smokerIcon' + elt.coord.x + elt.coord.z).style.transform = "rotateZ(0deg)";
                         break;
                     case 'e':
                         //rotation 270°
-                        document.getElementById('smokerIcon' + i + j).transform = "rotate(270)";
+                        document.getElementById('smokerIcon' + elt.coord.x + elt.coord.z).style.transform = "rotateZ(270deg)";
                         break;
                     case 'w':
                         //rotation of 90°
-                        document.getElementById('smokerIcon' + i + j).transform = "rotate(90)";
+                        document.getElementById('smokerIcon' + elt.coord.x + elt.coord.z).style.transform = "rotateZ(90deg)";
                         break;
                 }
                 break;
         }
     }
+
     return;
 }
 
@@ -500,7 +564,7 @@ function addContent(x, z, mapIndex) {
         }
     } else if (selectedItem == "Pushable Box") {
         if (y < 2) {
-            createdLevel.maps[mapIndex].logics.push(new logic(1, new THREE.Vector3(x, y, z), 0, new THREE.Vector3(x, y - 1, z), null));
+            createdLevel.maps[mapIndex].logics.push(new logic(1, new THREE.Vector3(x, y, z), 0, new THREE.Vector3(x, y, z), null));
         } else {
             deathNotif.dismissAll();
             deathNotif.error("You can't add boxes on top of another block...");
@@ -545,7 +609,7 @@ function addContent(x, z, mapIndex) {
 
         //If the trap is still placeable
         if (placeable) {
-            createdLevel.maps[mapIndex].traps.push(new trap(1, new THREE.Vector3(x, y, z), false, 's', null));
+            createdLevel.maps[mapIndex].traps.push(new trap(1, new THREE.Vector3(x, y, z), false, 'e', null));
         }
 
     } else if (selectedItem == "Arrow Infinite") {
@@ -588,7 +652,7 @@ function addContent(x, z, mapIndex) {
 
         //If the trap is still placeable
         if (placeable) {
-            createdLevel.maps[mapIndex].traps.push(new trap(2, new THREE.Vector3(x, y, z), true, 's', null));
+            createdLevel.maps[mapIndex].traps.push(new trap(2, new THREE.Vector3(x, y, z), true, 'e', null));
         }
     } else if (selectedItem == "Flame Infinite") {
         //If the is already a Smoker on the map
@@ -630,7 +694,7 @@ function addContent(x, z, mapIndex) {
 
         //If the trap is still placeable
         if (placeable) {
-            createdLevel.maps[mapIndex].traps.push(new trap(3, new THREE.Vector3(x, y, z), true, 'n', null));
+            createdLevel.maps[mapIndex].traps.push(new trap(3, new THREE.Vector3(x, y, z), true, 'e', null));
         }
     } else if (selectedItem == "Wall") {
         for (let elt of createdLevel.maps[mapIndex].logics) {
@@ -778,6 +842,425 @@ function removeExit(x, z, mapIndex, position) {
 }
 
 function submitMap() {
+    //Adds the default spawn map
+    createdLevel.maps[0] = {
+        walls: [
+            {
+                x: 1,
+                y: 1,
+                z: 1
+            },
+            {
+                x: 1,
+                y: 2,
+                z: 1
+            },
+            {
+                x: 1,
+                y: 3,
+                z: 1
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 1
+            },
+            {
+                x: 1,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 1,
+                y: 2,
+                z: 3
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 0,
+                y: 1,
+                z: 3
+            }
+        ],
+        floor: {
+            x: 5,
+            y: 0,
+            z: 5
+        },
+        traps: [],
+        logics: [
+            {
+                type: 0,
+                coord: {
+                    x: 4,
+                    y: 1,
+                    z: 2
+                },
+                onUse: 0,
+                activated: false,
+                group: null
+            },
+            {
+                type: 0,
+                coord: {
+                    x: 2,
+                    y: 1,
+                    z: 4
+                },
+                onUse: 0,
+                activated: false,
+                group: null
+            }
+        ],
+        solved: false,
+        type: null,
+        exits: [
+            false,
+            false,
+            {
+                x: 5,
+                y: 0,
+                z: 2
+            },
+            {
+                x: 2,
+                y: 0,
+                z: 5
+            }
+        ],
+        spawnPoint: {
+            x: 2,
+            y: 1,
+            z: 2
+        }
+    }
+
+    //Adds the default end map
+    createdLevel.maps[createdLevel.endMap] = {
+        walls: [
+            {
+                x: 0,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 0,
+                y: 2,
+                z: 3
+            },
+            {
+                x: 1,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 2,
+                y: 1,
+                z: 2
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 1
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 0
+            },
+            {
+                x: 3,
+                y: 2,
+                z: 0
+            },
+            {
+                x: 0,
+                y: 1,
+                z: 0
+            },
+            {
+                x: 0,
+                y: 2,
+                z: 0
+            },
+            {
+                x: 1,
+                y: 3,
+                z: 0
+            },
+            {
+                x: 2,
+                y: 3,
+                z: 0
+            },
+            {
+                x: 0,
+                y: 3,
+                z: 1
+            },
+            {
+                x: 0,
+                y: 3,
+                z: 2
+            },
+            {
+                x: 5,
+                y: 1,
+                z: 0
+            },
+            {
+                x: 5,
+                y: 2,
+                z: 0
+            },
+            {
+                x: 5,
+                y: 1,
+                z: 1
+            },
+            {
+                x: 6,
+                y: 1,
+                z: 2
+            },
+            {
+                x: 7,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 8,
+                y: 1,
+                z: 3
+            },
+            {
+                x: 8,
+                y: 2,
+                z: 3
+            },
+            {
+                x: 8,
+                y: 1,
+                z: 0
+            },
+            {
+                x: 8,
+                y: 2,
+                z: 0
+            },
+            {
+                x: 7,
+                y: 3,
+                z: 0
+            },
+            {
+                x: 6,
+                y: 3,
+                z: 0
+            },
+            {
+                x: 8,
+                y: 3,
+                z: 1
+            },
+            {
+                x: 8,
+                y: 3,
+                z: 2
+            },
+            {
+                x: 8,
+                y: 1,
+                z: 5
+            },
+            {
+                x: 8,
+                y: 2,
+                z: 5
+            },
+            {
+                x: 7,
+                y: 1,
+                z: 5
+            },
+            {
+                x: 6,
+                y: 1,
+                z: 6
+            },
+            {
+                x: 5,
+                y: 1,
+                z: 7
+            },
+            {
+                x: 5,
+                y: 1,
+                z: 8
+            },
+            {
+                x: 5,
+                y: 2,
+                z: 8
+            },
+            {
+                x: 8,
+                y: 1,
+                z: 8
+            },
+            {
+                x: 8,
+                y: 2,
+                z: 8
+            },
+            {
+                x: 7,
+                y: 3,
+                z: 8
+            },
+            {
+                x: 6,
+                y: 3,
+                z: 8
+            },
+            {
+                x: 8,
+                y: 3,
+                z: 7
+            },
+            {
+                x: 8,
+                y: 3,
+                z: 6
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 8
+            },
+            {
+                x: 3,
+                y: 2,
+                z: 8
+            },
+            {
+                x: 3,
+                y: 1,
+                z: 7
+            },
+            {
+                x: 2,
+                y: 1,
+                z: 6
+            },
+            {
+                x: 1,
+                y: 1,
+                z: 5
+            },
+            {
+                x: 0,
+                y: 1,
+                z: 5
+            },
+            {
+                x: 0,
+                y: 2,
+                z: 5
+            },
+            {
+                x: 0,
+                y: 1,
+                z: 8
+            },
+            {
+                x: 0,
+                y: 2,
+                z: 8
+            },
+            {
+                x: 1,
+                y: 3,
+                z: 8
+            },
+            {
+                x: 2,
+                y: 3,
+                z: 8
+            },
+            {
+                x: 0,
+                y: 3,
+                z: 7
+            },
+            {
+                x: 0,
+                y: 3,
+                z: 6
+            }
+        ],
+        floor: {
+            x: 9,
+            y: 0,
+            z: 9
+        },
+        traps: [],
+        logics: [
+            {
+                type: 0,
+                coord: {
+                    x: 4,
+                    y: 1,
+                    z: 4
+                },
+                onUse: -1,
+                activated: false,
+                group: null
+            }
+        ],
+        solved: false,
+        type: null,
+        exits: [
+            false,
+            false,
+            false,
+            false
+        ],
+        spawnPoint: {
+            x: 4,
+            y: 1,
+            z: 4
+        }
+    };
+
+    //EXITS
+    if (createdLevel.endMap - 1 > 0) {
+        if (createdLevel.maps[createdLevel.endMap - 1].exits[2] != false) {
+            createdLevel.maps[createdLevel.endMap].exits[0] = new THREE.Vector3(-1, 0, 4);//Adds a left exit to the endMap
+        }
+    }
+    if (createdLevel.endMap + 1 < createdLevel.size * createdLevel.size) {
+        if (createdLevel.maps[createdLevel.endMap + 1].exits[0] != false) {
+            createdLevel.maps[createdLevel.endMap].exits[2] = new THREE.Vector3(9, 0, 4);//Adds a right exit to the endMap
+        }
+    }
+    if (createdLevel.endMap - 5 > 0) {
+        if (createdLevel.maps[createdLevel.endMap - 5].exits[3] != false) {
+            createdLevel.maps[createdLevel.endMap].exits[1] = new THREE.Vector3(4, 0, -1);//Adds a tp exit to the endMap
+        }
+    }
+    if (createdLevel.endMap + 5 < createdLevel.size * createdLevel.size) {
+        if (createdLevel.maps[createdLevel.endMap + 5].exits[1] != false) {
+            createdLevel.maps[createdLevel.endMap].exits[3] = new THREE.Vector3(4, 0, 9);//Adds a bottom exit to the endMap
+        }
+    }
+
+
+    console.log(createdLevel.maps[createdLevel.endMap]);
     saveMap(createdLevel);
     return;
 }
@@ -794,6 +1277,25 @@ function submitMap() {
               |  $$$$$$/                              | $$
                \______/                               |__/
 
-TODO :  - ADD EXITS
-        - SUBMIT THE MAP (almost done NEED to edit home.php)
+
+IDs :
++-------------+-----------+---------------------+
+|    Traps    |           |        Logic        |
++-------------+-----------+---------------------+
+| facing      | Dispenser | onUsePlate          |
+|             | Dropper   | groupPlate          |
+|             | Smoker    | deletePressurePlate |
+|             |           |                     |
+| activated   | Dispenser |                     |
+|             | Dropper   |                     |
+|             | Smoker    |                     |
+|             |           |                     |
+| deactivated | Dispenser |                     |
+|             | Dropper   |                     |
+|             | Smoker    |                     |
+|             |           |                     |
+| group       | Dispenser |                     |
+|             | Dropper   |                     |
+|             | Smoker    |                     |
++-------------+-----------+---------------------+
 */

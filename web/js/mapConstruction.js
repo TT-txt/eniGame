@@ -345,9 +345,9 @@ function mapReset(stuck) {
 function gameOver(state) {
     //state == true => You've beaten the level !
     //state == false => You've lost
-    document.getElementById("scene-container").childNodes[5].remove();
-    let mainToRebuild = document.getElementById("scene-container");
-
+    document.getElementById("scene-container").childNodes[document.getElementById("scene-container").childNodes.length - 1].remove();
+    let endScreen = document.getElementById("endScreen");
+    endScreen.style["display"] = "block";
     if (state) {
         /********* 10 MESSAGES *********
         - Tututututu tutuuuuuuuu VICTORY
@@ -362,7 +362,7 @@ function gameOver(state) {
         - I'll find your cheats you little sly dog!
         *******************************/
 
-        let message = '<div id="winScreen" style="background-color:black; width: 100%; height:100%;" ><p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span class="text-success" style="font-size:200%">Victory</span><br/>';
+        let message = '<p class="text-center" style="color:white; font-size:150%; font-family:\'8bit_wondernominal\'; padding-top:250px; line-height:2.5;"><span class="text-success" style="font-size:200%">Victory</span><br/>';
         let rand = Math.random();
         if (rand < 0.1) {
             message += 'Tututututu tutuuuuuuuu VICTORY';
@@ -385,8 +385,8 @@ function gameOver(state) {
         } else {
             message += 'I\'ll find your cheats you little sly dog!';
         }
-        message += '</p><button id="CONTINUE" type="button" class="btn btn-outline-secondary" onclick="">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button></div>';
-        mainToRebuild.innerHTML += message;
+        message += '</p><button id="CONTINUE" type="button" class="btn btn-success" onclick="playPressed()">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button>';
+        endScreen.innerHTML = message;
 
         let scoreToAdd = "toAdd=5";
         // Creating a XHR object
@@ -461,7 +461,7 @@ function gameOver(state) {
             message += 'Ask TT for some help...';
         }
 
-        message += '</p><button id="MENU" type="button" class="btn btn-success" onclick="location.reload()">MENU</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'score.php\'">SCORE</button></div>';
-        mainToRebuild.innerHTML += message;
+        message += '</p><button id="MENU" type="button" class="btn btn-success" onclick="location.reload()">MENU</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'scores.php\'">SCORE</button></div>';
+        endScreen.innerHTML = message;
     }
 }
