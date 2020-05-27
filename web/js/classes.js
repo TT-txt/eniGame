@@ -6,7 +6,7 @@ class map {
         this.logics = logics; //array containing all logic elt ENTER THEM BY ID !
         this.solved = solved; //boolean, not hard to understand
         this.type = type; //map type
-        this.exits = exits; //array with the exits, 0=>left, 1=>top; 2=>right; 3=>bottom
+        this.exits = exits; //array with the exits,false if not present or coords, 0=>left, 1=>top; 2=>right; 3=>bottom
         this.spawnPoint = spawnPoint; //coord of the spawnpoint for the level
     }
 }
