@@ -71,7 +71,7 @@ typedef struct Level
 
 //For Pathfinding
 
-typedef struct Node { int x; int z; int SCost; int ECost; NODE* parentNode; } NODE;
+typedef struct NODE { int x; int z; int SCost; int ECost; struct NODE* parentNode; } NODE;
 
 typedef struct LiNodElt
 {
