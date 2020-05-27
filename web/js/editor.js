@@ -37,10 +37,9 @@ function mapSelector(size) {
         createdLevel.endMap = createdLevel.size * createdLevel.size;
 
         //Adds a submit map button to send it to the database
-        /*
         let whereToInsert = document.getElementById('topAside');
+        console.log(whereToInsert);
         whereToInsert.innerHTML = '<button type="button" class="btn btn-dark btn-lg" id="submitMapButton" onClick="submitMap()">Submit the map !</button> ';
-        */
     }
 
     // Indexes used 
@@ -725,6 +724,7 @@ function addExit(x, z, mapIndex, position) {
 
 function submitMap() {
     saveMap(createdLevel);
+    return;
 }
 /*
                                /$$                 /$$
