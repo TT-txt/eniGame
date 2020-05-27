@@ -4,11 +4,12 @@
 #include<conio.h>
 
 #include"Solveur.h"
+//#include"headers.h"
 
 int GetDist(int x1, int z1, int x2, int z2);
 //IsWalkable todo
-bool IsWalkable(int x, int z, MAP* Level);
-COORD* Pathfind(COORD* start, COORD* end, MAP* Level);
+bool IsWalkable(int x, int z, MAP* Room);
+COORD* Pathfind(COORD* start, COORD* end, MAP* Room);
 /*
 int main()
 {
@@ -25,8 +26,29 @@ int main()
 */
 int GetDist(int x1, int z1, int x2, int z2) {return(abs(x2 - x1) + abs(z2 - z1));}
 
+bool IsWalkable(int x, int z, MAP* Room)
+{
+	/*
+	typedef struct Map
+{
+    COORD *walls;
+    int wallAmount;
+    COORD floor;
+    TRAP *traps;   //traps array
+    int trapAmount; 
+    LOGIC *logics; //logics array 
+    int logicAmount;
+    bool solved;
+    int type;       //Map presets to help the solver
+    COORD exits[4]; //Contains the actual coords or (-2, -2, -2) if the exit is not defined
+    COORD spawnPoint;
+} MAP;
+*/
+	
+}
+
 //not finish
-COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
+COORD* Pathfind(COORD* start, COORD* end, MAP* Room)
 {
 	LiChNod* open = newLiChNod();
 	LiChNod* close = newLiChNod();
@@ -34,6 +56,8 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 	StartN.x = start->x;
 	StartN.z = start->z;
 	StartN.parentNode = NULL;
+	StartN.SCost = 0;
+	StartN.ECost = GetDist(start->x, start->z, end->x, end->z);
 	InsertLiNodElt(open, StartN, 0);
 	while (open->size > 0) {
 		NODE currentNode = open->start->val;
@@ -73,18 +97,15 @@ COORD* Pathfind(COORD* start, COORD* end, MAP* Level)
 					NeighbourNode.z = currentNode.z + i;
 				}
 				//IsWalkable todo
-				//!nodeIsIn() here, might not be necessary, still need to check if the algo behave normaly without it.
-				if (!nodeIsIn(close, NeighbourNode) && IsWalkable(NeighbourNode.x, NeighbourNode.z, Level))
+				if (!nodeIsIn(close, NeighbourNode) && IsWalkable(NeighbourNode.x, NeighbourNode.z, Room))
 				{
-					int mouvCost = currentNode.SCost + GetDist(currentNode.x, currentNode.z, NeighbourNode.x, NeighbourNode.z);
+					int mouvCost = currentNode.SCost + 1;
 					if (mouvCost < NeighbourNode.SCost || !nodeIsIn(open, NeighbourNode))
 					{
 						NeighbourNode.SCost = mouvCost;
 						NeighbourNode.ECost = GetDist(NeighbourNode.x, NeighbourNode.z, start->x, start->z);
+						NeighbourNode.parentNode = &currentNode;
 					}
-					//NeighbourNode.SCost = GetDist(NeighbourNode.x, NeighbourNode.z, end->x, end->z);
-					//NeighbourNode.ECost = GetDist(NeighbourNode.x, NeighbourNode.z, start->x, start->z);
-					NeighbourNode.parentNode = &currentNode;
 					if (!nodeIsIn(open, NeighbourNode))
 					{
 						InsertLiNodElt(open, NeighbourNode, open->size);
