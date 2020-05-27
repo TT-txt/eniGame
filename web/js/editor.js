@@ -724,6 +724,7 @@ function addExit(x, z, mapIndex, position) {
 
 function submitMap() {
     saveMap(createdLevel);
+    return;
 }
 /*
                                /$$                 /$$

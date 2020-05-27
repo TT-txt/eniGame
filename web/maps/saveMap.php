@@ -3,7 +3,7 @@ session_start();
 header("Content-Type: application/json; charset=UTF-8");
 if (isset($_POST["textToWrite"])) {
     $toWrite = $_POST["textToWrite"];
-    echo ($toWrite);
+    //echo ($toWrite);
     include("../include/connect.php");
 
 

@@ -31,8 +31,8 @@
 		<div class="col-lg-1">
 		</div>
 		<div class="col-lg-10" id="mainContainer" style="box-shadow: 0px 6px 5px grey; padding-right: 0px !important;">
-			<aside class="row" id="topAside" style="text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;">
-				<button type="button" id="reset" class="btn btn-dark" onclick="mapReset()"><img src="img/reset.png" height="20px"></button>
+			<aside class="row" id="topAside" style="display:flex;justify-content:center;text-align:center; padding:20px; background-color:#6351ce; box-shadow: 0px 6px 5px grey;min-height:80px;">
+				
 			</aside>
 			<main class="row game" id="scene-container" style="text-align: center;  box-shadow: 0px 6px 5px grey;">
 				<div id="MENU" style="background-color:black;width:100%;padding:15%;">
@@ -133,6 +133,11 @@
 					const clock = new THREE.Clock();
 
 					function init(levelToPlay) {
+						//Adds a reset map button
+						let whereToInsert = document.getElementById('topAside');
+						console.log(whereToInsert);
+						whereToInsert.innerHTML = '<button type="button" id="reset" class="btn btn-dark" onclick="mapReset(true)"><img src="img/reset.png" height="20px"></button>';
+
 						toVanish = document.querySelector("#MENU");
 						toVanish.style["display"] = "none";
 
