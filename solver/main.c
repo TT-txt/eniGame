@@ -69,6 +69,21 @@ int main(int argc, char *argv[])
                                (levelToSolve.maps[1].traps + i)->activated,
                                (levelToSolve.maps[1].traps + i)->facing);
                     }
+                    printf("\nDoors :\n");
+                    for (int i = 0; i < 4; i += 1)
+                    {
+                        if (levelToSolve.maps[1].exits[i].x == -2 && levelToSolve.maps[1].exits[i].y == -2 && levelToSolve.maps[1].exits[i].z == -2)
+                        {
+                            printf("false\n");
+                        }
+                        else
+                        {
+                            printf("Coords : (%d, %d, %d)\n",
+                                   levelToSolve.maps[1].exits[i].x,
+                                   levelToSolve.maps[1].exits[i].y,
+                                   levelToSolve.maps[1].exits[i].z);
+                        }
+                    }
 
                     return (EXIT_SUCCESS);
                 }

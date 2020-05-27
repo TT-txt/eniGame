@@ -347,13 +347,29 @@ int readMap(FILE *jsonObject, MAP *map)
         {
             while (fgetc(jsonObject) != ':')
                 ;
-            map->exits[i].x = fgetc(jsonObject) - '0'; //x
+            tmp = fgetc(jsonObject);
+            if (tmp == '-')
+            {
+                map->exits[i].x = - (fgetc(jsonObject) - '0'); //Case of a negative number
+            }
+            else
+            {
+                map->exits[i].x = tmp - '0'; //x
+            }
             while (fgetc(jsonObject) != ':')
                 ;
-            map->exits[i].y = fgetc(jsonObject) - '0'; //y
+            map->exits[i].y = 0; //y
             while (fgetc(jsonObject) != ':')
                 ;
-            map->exits[i].z = fgetc(jsonObject) - '0'; //z
+            tmp = fgetc(jsonObject);
+            if (tmp == '-')
+            {
+                map->exits[i].z = -(fgetc(jsonObject) - '0'); //Case of a negative number
+            }
+            else
+            {
+                map->exits[i].z = tmp - '0'; //z
+            }
         }
         while (fgetc(jsonObject) != ',')
             ; //Go to the next array entry

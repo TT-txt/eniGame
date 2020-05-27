@@ -69,9 +69,37 @@ typedef struct Level
     int endMap;
 } LEVEL;
 
+//For Pathfinding
+
+typedef struct NODE { int x; int z; int SCost; int ECost; struct NODE* parentNode; } NODE;
+
+typedef struct LiNodElt
+{
+	NODE val;
+	struct LiNodElt* suiv;
+	struct LiNodElt* prev;
+}LiNodElt;
+
+typedef struct LiChNod
+{
+	int size;
+	struct LiNodElt* start;
+	struct LiNodElt* end;
+}LiChNod;
+
 // *******************************************
 
 // Prototypes
 int loadLevel(FILE *, LEVEL *);
 int readMap(FILE *, MAP *);
 int readCoords(FILE *, COORD **);
+
+// Prototypes for Pathfinding
+LiChNod* newLiChNod(void);
+bool isEmpLiChNod(LiChNod* li);
+LiChNod* InsertLiNodElt(LiChNod* li, NODE Value, int pos);
+LiChNod* SetLiNodElt(LiChNod* li, NODE Value, int pos);
+LiChNod* SupprLiNodElt(LiChNod* li, int pos);
+bool nodeIsIn(LiChNod* li, NODE Value);
+bool IsWalkable(int x, int z, MAP* Room); // WIP
+COORD* Pathfind(COORD* start, COORD* end, MAP* Room);
