@@ -36,14 +36,14 @@ if (!isset($_SESSION["auth"])) {
                 <tr>
                     <!--Nothing also to explain, we get the type-->
                     <th scope="col">Date</th>
-                    <th scope="col">Score/Level</th>
+                    <th scope="col">Score</th>
                 </tr>
                 
                     <?php 
                     
                     $id = $_SESSION["id"];
                     echo '</br>';
-                    $sql = "SELECT who, score, date FROM scores WHERE who=$id  ORDER by date DESC LIMIT 10";
+                    $sql = "SELECT score, date FROM SCORES WHERE who='$id'  ORDER by date DESC LIMIT 10;";
                     $result = mysqli_query($link, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
