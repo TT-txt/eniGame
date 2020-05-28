@@ -56,6 +56,12 @@ function checkKeyPress(key) {
                     }
                 }
 
+                for(let tmp of currentLevel.maps[currentMap].traps){
+                    if(tmp.type != 0 && hero.position.x - 1 == tmp.coor.x && hero.position.z == tmp.coord.z){
+                        blocked = true;
+                    }
+                }
+
                 // PushableBox special case
                 for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
                     //Check if the logic element is a box
@@ -131,6 +137,12 @@ function checkKeyPress(key) {
                     if (element.x == hero.position.x && element.z == hero.position.z - 1) {//Case of an alone player
                         blocked = true;
                         break;
+                    }
+                }
+
+                for(let tmp of currentLevel.maps[currentMap].traps){
+                    if(tmp.type != 0 && hero.position.z - 1 == tmp.coor.z && hero.position.x == tmp.coord.x){
+                        blocked = true;
                     }
                 }
 
@@ -212,6 +224,12 @@ function checkKeyPress(key) {
                     }
                 }
 
+                for(let tmp of currentLevel.maps[currentMap].traps){
+                    if(tmp.type != 0 && hero.position.x + 1== tmp.coor.x && hero.position.z == tmp.coord.z){
+                        blocked = true;
+                    }
+                }
+
                 // PushableBox special case
                 for (let k = 0; k < currentLevel.maps[currentMap].logics.length; k += 1) {
                     //Check if the logic element is a box
@@ -288,6 +306,12 @@ function checkKeyPress(key) {
                     if (element.x == hero.position.x && element.z == hero.position.z + 1) {//Case of an alone player
                         blocked = true;
                         break;
+                    }
+                }
+
+                for(let tmp of currentLevel.maps[currentMap].traps){
+                    if(tmp.type != 0 && hero.position.x == tmp.coor.x && hero.position.z + 1 == tmp.coord.z){
+                        blocked = true;
                     }
                 }
 
