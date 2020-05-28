@@ -1,6 +1,10 @@
 var createdLevel = new level(null, null, null, null);
+let ost = new Audio('sounds/ost.ogg');
+ost.loop = true;
+ost.volume = 0.7;
 
 function loadEditor() {
+    ost.play();
     const container = document.querySelector('#scene-container');
     //Fills the container with a level size selctor
     let toInsert = '<div id="levelScaler" class="align-items-center" style="display: flex;justify-content: center;flex-direction:column;background-color:#f2f2f2;width:100%;"><div style="width:100%"><div style="justify-content: center;" class="form-inline"><label style="font-size:20px;" for="levelSize">Choose your level&#39;s difficulty : &nbsp; </label><select class="form-control" id="levelSize" name="size"><option value="3" selected>DEFAULT : 3</option>'
