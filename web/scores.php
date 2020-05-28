@@ -5,12 +5,13 @@ if (!isset($_SESSION["auth"])) {
 } else if ($_SESSION["auth"] != 1) {
     header("location:home.php");
 }
+
 ?>
 <title>eniGame ~ Profile</title>
 
 <style>
 		main {
-			height: 600px; 
+			height: 900px; 
 		}
 </style>
 
@@ -19,12 +20,16 @@ if (!isset($_SESSION["auth"])) {
 <body>
     <?php include("include/nav.php"); ?>
     <main>
-        <br />
         <div class="container">
+
+        <?php 
+        include("include/connect.php");
+        ?>
+
         <table class="table table-hover mt-5">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" colspan="2">Your personal score :</th>
+                    <th scope="col" colspan="2">Your last 10 personal scores :</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,10 +38,24 @@ if (!isset($_SESSION["auth"])) {
                     <th scope="col">Date</th>
                     <th scope="col">Score/Level</th>
                 </tr>
-                <tr>
+                
+                    <?php 
                     
-                </tr>
-                <tr>
+                    $id = $_SESSION["id"];
+                    echo '</br>';
+                    $sql = "SELECT who, score, date FROM scores WHERE who=$id  ORDER by date DESC LIMIT 10";
+                    $result = mysqli_query($link, $sql);
+
+                    if (mysqli_num_rows($result) > 0) {
+                    // output data of each row
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr> <th scope='col'> " . $row["date"]. " </th> <th> " . $row["score"]. " </th> </tr> ";
+                        }
+                    } 
+                    else {
+                        echo "<tr> <th scope='col'></th>  <th></th> </tr> ";
+                        }
+                    ?>
                     
                 </tr>
             </tbody>
