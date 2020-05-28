@@ -38,4 +38,23 @@ function loadModels() {
         //Model without animation
         fireMesh = gltf.scene.children[0];
     }
+
+    //LOADING SOUNDS
+    var listener = new THREE.AudioListener();
+    camera.add( listener );
+    oof = new THREE.Audio(listener);
+    doorSound = new THREE.Audio(listener);
+
+    //load a sound and set it as the Audio object's buffer
+    var audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'sounds/oof.mp3', function( buffer ) {
+        oof.setBuffer( buffer );
+        oof.setLoop( false );
+        oof.setVolume( 0.5 );
+    });
+    audioLoader.load( 'sounds/doors.mp3', function( buffer ) {
+        doorSound.setBuffer( buffer );
+        doorSound.setLoop( false );
+        doorSound.setVolume( 0.5 );
+    });
 }

@@ -8,6 +8,7 @@ function trapTrigger(trap, heroPos, gameStarted) {
             case 0://SPIKES
                 if (heroPos.x == trap.coord.x && heroPos.z == trap.coord.z) trapped = true;
                 deathNotif.error('You died, press R to <strong>restart</strong>');
+                oof.play();
                 break;
 
             case 1: //ARROW DISPENSER 1
@@ -122,6 +123,7 @@ function trapActivate(map, heroPos) {
                     if (!trapped && heroPos.x == elt.coord.x && elt.coord.z == heroPos.z) {
                         trapped = true;
                         console.log("DEAD!");
+                        oof.play();
                         deathNotif.error('You died, press R to <strong>restart</strong>');
                     }
                     break;
@@ -277,6 +279,7 @@ function trapActivate(map, heroPos) {
                                     trapped = true;
                                     scene.remove(firecharge);
                                     console.log("DEAD!");
+                                    oof.play();
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
@@ -286,6 +289,7 @@ function trapActivate(map, heroPos) {
                                     scene.remove(firecharge);
                                     console.log("DEAD!");
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
+                                    oof.play();
                                 }
                                 break;
                             case 'w':
@@ -293,6 +297,7 @@ function trapActivate(map, heroPos) {
                                     trapped = true;
                                     scene.remove(firecharge);
                                     console.log("DEAD!");
+                                    oof.play();
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
@@ -301,6 +306,7 @@ function trapActivate(map, heroPos) {
                                     trapped = true;
                                     scene.remove(firecharge);
                                     console.log("DEAD!");
+                                    oof.play();
                                     deathNotif.error('You died, press R to <strong>restart</strong>');
                                 }
                                 break;
@@ -397,6 +403,7 @@ function arrowDeathDetection(elt, heroPos) {
                     trapped = true;
                     deathNotif.error('You died, press R to <strong>restart</strong>');
                     console.log("DEAD");
+                    oof.play();
                 }
             }
             break;
@@ -420,6 +427,7 @@ function arrowDeathDetection(elt, heroPos) {
                     trapped = true;
                     deathNotif.error('You died, press R to <strong>restart</strong>');
                     console.log("DEAD");
+                    oof.play();
                 }
             }
             break;
@@ -443,6 +451,7 @@ function arrowDeathDetection(elt, heroPos) {
                     trapped = true;
                     deathNotif.error('You died, press R to <strong>restart</strong>');
                     console.log("DEAD");
+                    oof.play();
                 }
             }
             break;
@@ -466,6 +475,7 @@ function arrowDeathDetection(elt, heroPos) {
                     trapped = true;
                     deathNotif.error('You died, press R to <strong>restart</strong>');
                     console.log("DEAD");
+                    oof.play();
                 }
             }
             break;

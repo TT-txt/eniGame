@@ -159,6 +159,10 @@
 					let arrowMesh;
 					let fireMesh;
 
+					//sounds
+					let oof;
+					let doorSound;
+					
 					//random variables, finding uses somewhere
 					let arrowIn = false;
 					let fireIn = false;

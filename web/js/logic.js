@@ -44,6 +44,7 @@ function logicTrigger(logics, heroPos, gameStarted) {
 }
 
 function doorOpen() {
+    doorSound.play();
     if (!(currentLevel.maps[currentMap].solved)) {
         //Moving the doors to stick to the wall
         if (typeof (doorL.children[0]) != 'undefined') {
@@ -67,6 +68,7 @@ function doorOpen() {
 }
 
 function doorClose() {
+    doorSound.play();
     if (currentLevel.maps[currentMap].solved) {
         //Moving the doors to stick to the wall
         if (typeof (doorL.children[0]) != 'undefined') {
