@@ -93,8 +93,9 @@
 
 								$i = 0;
 								foreach ($scoreArray as $key => $val) {
-									$i += 1;
+									if ($i > 10);
 									echo "<tr><th scope='col'>" . $i . "</th> <th scope='col'> " . $whoArray[$key] . " </th> <th> " . $val . " </th> </tr> ";
+									$i += 1;
 								}
 							} else {
 								echo "0 results";
