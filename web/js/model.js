@@ -44,17 +44,29 @@ function loadModels() {
     camera.add( listener );
     oof = new THREE.Audio(listener);
     doorSound = new THREE.Audio(listener);
+    arrowSound = new THREE.Audio(listener);
+    pressureSound = new THREE.Audio(listener);
 
     //load a sound and set it as the Audio object's buffer
     var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'sounds/oof.mp3', function( buffer ) {
+    audioLoader.load( 'sounds/oof.ogg', function( buffer ) {
         oof.setBuffer( buffer );
         oof.setLoop( false );
         oof.setVolume( 0.5 );
     });
-    audioLoader.load( 'sounds/doors.mp3', function( buffer ) {
+    audioLoader.load( 'sounds/doors.ogg', function( buffer ) {
         doorSound.setBuffer( buffer );
         doorSound.setLoop( false );
         doorSound.setVolume( 0.5 );
+    });
+    audioLoader.load( 'sounds/arrow.ogg', function( buffer ) {
+        arrowSound.setBuffer( buffer );
+        arrowSound.setLoop( false );
+        arrowSound.setVolume( 0.5 );
+    });
+    audioLoader.load( 'sounds/pressure.ogg', function( buffer ) {
+        pressureSound.setBuffer( buffer );
+        pressureSound.setLoop( false );
+        pressureSound.setVolume( 0.5 );
     });
 }

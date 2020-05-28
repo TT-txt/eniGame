@@ -162,7 +162,9 @@
 					//sounds
 					let oof;
 					let doorSound;
-					
+					let arrowSound;
+					let pressureSound;
+
 					//random variables, finding uses somewhere
 					let arrowIn = false;
 					let fireIn = false;

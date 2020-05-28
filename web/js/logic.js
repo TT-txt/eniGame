@@ -109,6 +109,7 @@ function pressurePlateOn(logicElem, toActivateIndex) {
             }
             break;
         case 2:
+            pressureSound.play();
             for (let elt of currentLevel.maps[currentMap].traps) {
                 if (logicElem.group == elt.group) {
                     trapTrigger(elt, hero.position, gameStarted);
@@ -116,6 +117,7 @@ function pressurePlateOn(logicElem, toActivateIndex) {
             }
             break;
         case 3:
+            pressureSound.play();
             for (let elt of currentLevel.maps[currentMap].traps) {
                 if (logicElem.group == elt.group) {
                     trapTrigger(elt, hero.position, gameStarted);
@@ -127,6 +129,7 @@ function pressurePlateOn(logicElem, toActivateIndex) {
 }
 
 function pressurePlateOff(logicElem, toActivateIndex) {
+    pressureSound.play();
     switch (logicElem.onUse) {
         case 0:
             //Open the map doors

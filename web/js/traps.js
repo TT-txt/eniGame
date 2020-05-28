@@ -128,6 +128,7 @@ function trapActivate(map, heroPos) {
                     }
                     break;
                 case 1://ARROW ONCE
+                    arrowSound.play();
                     switch(elt.facing){
                         case 'e':
                             if(dispenserArrow.position.x + 1 <= closestDispenserObstacle) dispenserArrow.position.x += 0.1;
