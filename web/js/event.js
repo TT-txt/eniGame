@@ -57,7 +57,7 @@ function checkKeyPress(key) {
                 }
 
                 for(let tmp of currentLevel.maps[currentMap].traps){
-                    if(tmp.type != 0 && hero.position.x - 1 == tmp.coor.x && hero.position.z == tmp.coord.z){
+                    if(tmp.type != 0 && hero.position.x - 1 == tmp.coord.x && hero.position.z == tmp.coord.z){
                         blocked = true;
                     }
                 }
@@ -141,7 +141,7 @@ function checkKeyPress(key) {
                 }
 
                 for(let tmp of currentLevel.maps[currentMap].traps){
-                    if(tmp.type != 0 && hero.position.z - 1 == tmp.coor.z && hero.position.x == tmp.coord.x){
+                    if(tmp.type != 0 && hero.position.z - 1 == tmp.coord.z && hero.position.x == tmp.coord.x){
                         blocked = true;
                     }
                 }
@@ -225,7 +225,7 @@ function checkKeyPress(key) {
                 }
 
                 for(let tmp of currentLevel.maps[currentMap].traps){
-                    if(tmp.type != 0 && hero.position.x + 1== tmp.coor.x && hero.position.z == tmp.coord.z){
+                    if(tmp.type != 0 && hero.position.x + 1== tmp.coord.x && hero.position.z == tmp.coord.z){
                         blocked = true;
                     }
                 }
@@ -310,7 +310,7 @@ function checkKeyPress(key) {
                 }
 
                 for(let tmp of currentLevel.maps[currentMap].traps){
-                    if(tmp.type != 0 && hero.position.x == tmp.coor.x && hero.position.z + 1 == tmp.coord.z){
+                    if(tmp.type != 0 && hero.position.x == tmp.coord.x && hero.position.z + 1 == tmp.coord.z){
                         blocked = true;
                     }
                 }

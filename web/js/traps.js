@@ -383,6 +383,7 @@ function trapActivate(map, heroPos) {
 }
 
 function arrowDeathDetection(elt, heroPos) {
+    boxing = false;
     switch (elt.facing) {
         case 'e':
             for (let wall of currentLevel.maps[currentMap].walls) {
