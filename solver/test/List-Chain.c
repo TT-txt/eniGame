@@ -23,7 +23,7 @@ bool isEmpLiChNod(LiChNod* li) {
 	return false;
 }
 
-LiChNod* InsertLiNodElt(LiChNod* li, NODE Value, int pos) {
+LiChNod* InsertLiNodElt(LiChNod* li, NODE* Value, int pos) {
 	if (isEmpLiChNod(li) || li->size == 0)
 	{
 		LiNodElt* newElt = NULL;
@@ -86,7 +86,7 @@ LiChNod* InsertLiNodElt(LiChNod* li, NODE Value, int pos) {
 	}
 }
 
-LiChNod* SetLiNodElt(LiChNod* li, NODE Value, int pos) {
+LiChNod* SetLiNodElt(LiChNod* li, NODE* Value, int pos) {
 	if (isEmpLiChNod(li) || li->size == 0)
 	{
 		printf("Error, list is empty");
@@ -159,12 +159,12 @@ LiChNod* SupprLiNodElt(LiChNod* li, int pos) {
 	}
 }
 
-bool nodeIsIn(LiChNod* li, NODE Value) {
+bool nodeIsIn(LiChNod* li, NODE* Value) {
 	bool isIn = false;
 	LiNodElt* tmp = li->start;
 	for (int c = 0; c < li->size; c++)
 	{
-		if (Value.x == tmp->val.x && Value.z == tmp->val.z)
+		if (Value == tmp->val)
 		{
 			isIn = true;
 		}

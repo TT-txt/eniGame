@@ -41,7 +41,10 @@ int main(int argc, char *argv[])
                     /******************************
                     ************ TESTS ************
                     ******************************/
-                    printf("-----------------\nTests (on map 1) :\nWalls :\n");
+                    printf("-----------------\nTests (on map 1) :\n");
+                    printf("\nFloor Size :\n");
+                    printf("(%d, %d, %d)\n", levelToSolve.maps[1].floor.x, levelToSolve.maps[1].floor.y, levelToSolve.maps[1].floor.z);
+                    printf("\nWalls :\n");
                     for (int i = 0; i < levelToSolve.maps[1].wallAmount; i += 1)
                     {
                         printf("(%d, %d, %d)\n", levelToSolve.maps[1].walls[i].x, (levelToSolve.maps[1].walls + i)->y, (levelToSolve.maps[1].walls + i)->z);
