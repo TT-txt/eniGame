@@ -161,8 +161,8 @@ function mapEditor(index, levelSize) {
         }
         else {
             //Takes the default value
-            createdLevel.maps[index].floor.x = 5;
-            updateMapToEdit(5, createdLevel.maps[index].floor.z, index);
+            createdLevel.maps[index].floor.x = 4;
+            updateMapToEdit(4, createdLevel.maps[index].floor.z, index);
             return;
         }
     });
@@ -179,9 +179,9 @@ function mapEditor(index, levelSize) {
             return;
         }
         else {
-            //Takes the default value
-            createdLevel.maps[index].floor.z = 5;
-            updateMapToEdit(createdLevel.maps[index].floor.x, 5, index);
+            /*Takes the default value*/
+            createdLevel.maps[index].floor.z = 4;
+            updateMapToEdit(createdLevel.maps[index].floor.x, 4, index);
             return;
         }
     });
@@ -240,7 +240,7 @@ function updateItemButton(value) {
 
 
 //Current map size table update
-function updateMapToEdit(x, z, index) {
+function updateMapToEdit(z, x, index) {
     //console.log(index);
     let tableContent = ' ';
     for (let j = 0; j < x; j += 1) {
@@ -554,14 +554,14 @@ function addContent(x, z, mapIndex) {
     // Adds the item to the level object 
     if (selectedItem == "Pressure Plate") {
         if (y < 2) {
-            createdLevel.maps[mapIndex].logics.push(new logic(0, new THREE.Vector3(x, y, z), 0, false, null));
+            createdLevel.maps[mapIndex].logics.unshift(new logic(0, new THREE.Vector3(x, y, z), 0, false, null));
         } else {
             deathNotif.dismissAll();
             deathNotif.error("You can't add a pressure plate on top of another block...");
         }
     } else if (selectedItem == "Spikes") {
         if (y < 2) {
-            createdLevel.maps[mapIndex].traps.push(new logic(0, new THREE.Vector3(x, y - 1, z), 0, false, null));
+            createdLevel.maps[mapIndex].traps.unshift(new logic(0, new THREE.Vector3(x, y - 1, z), 0, false, null));
         } else {
             deathNotif.dismissAll();
             deathNotif.error("You can't add spikes on top of another block...");

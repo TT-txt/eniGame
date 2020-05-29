@@ -184,14 +184,14 @@ function trapActivate(map, heroPos) {
                                     }
                                     break;
                                 case 'w':
-                                    if(dropperArrow.position.x >= closestDropperObstacle + 0.5) dropperArrow.position.x-=0.1;
+                                    if(dropperArrow.position.x - 1 >= closestDropperObstacle) dropperArrow.position.x-=0.1;
                                     else{ 
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
                                     }
                                     break;
                                 case 'n':
-                                    if(dropperArrow.position.z >= closestDropperObstacle + 0.5) dropperArrow.position.z-=0.1;
+                                    if(dropperArrow.position.z - 1 >= closestDropperObstacle) dropperArrow.position.z-=0.1;
                                     else{ 
                                         scene.remove(dropperArrow);
                                         arrowIn = false;
