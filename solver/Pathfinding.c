@@ -84,7 +84,7 @@ NODE* CreateMapOfNode(MAP* Room)
 	return(NodeMap);
 }
 
-ENIPATH Pathfind(COORD* start, COORD* end, MAP* Room, COORD PassBox)
+ENIPATH Pathfind(COORD* start, COORD* end, MAP* Room, COORD PassBox, COORD MakeWall)
 {
 	LiChNod* open = newLiChNod();
 	LiChNod* close = newLiChNod();
@@ -120,6 +120,7 @@ ENIPATH Pathfind(COORD* start, COORD* end, MAP* Room, COORD PassBox)
 		//printf("test Open0 = %d\n", open->start);
 		SupprLiNodElt(open,tmpLiPos);
 		//printf("test Open0 = %d\n", open->start);
+		//printf("Dist to end = %d\n", GetDist(currentNode->x, currentNode->z, end->x, end->z));
 		if (currentNode->x == end->x && currentNode->z == end->z)
 		{
 			LiChNod* resultNodLi = newLiChNod();
@@ -178,17 +179,18 @@ ENIPATH Pathfind(COORD* start, COORD* end, MAP* Room, COORD PassBox)
 					//printf("test NN : (x:%d z:%d)\n", NeighbourNode->x, NeighbourNode->z);
 					//printf("\ntest CS : %d\n", close->size);
 					//printf("CN -> x:%d y:%d\n", currentNode->x, currentNode->z);
-					if (!nodeIsIn(close, NeighbourNode) && IsWalkable(NeighbourNode->x, NeighbourNode->z, Room, PassBox))
+					if (!nodeIsIn(close, NeighbourNode) && IsWalkable(NeighbourNode->x, NeighbourNode->z, Room, PassBox) && (NeighbourNode->x != MakeWall.x || NeighbourNode->z != MakeWall.z))
 					{
 						int mouvCost = currentNode->SCost + 1;
 						//printf("mouvCost = %d\n", mouvCost);
-						//printf("NeighbourNode->SCost = %d\n", NeighbourNode->SCost);
+						//printf("NeighbourNode->SCost = %d	|	mouvCost = %d\n", NeighbourNode->SCost, mouvCost);
 						//printf("\ntest OS : %d\n", open->size);
 						if (mouvCost < NeighbourNode->SCost || !(nodeIsIn(open, NeighbourNode)))
 						{
 							NeighbourNode->SCost = mouvCost;
 							NeighbourNode->ECost = GetDist(NeighbourNode->x, NeighbourNode->z, start->x, start->z);
 							NeighbourNode->parentNode = currentNode;
+							//printf("from (x:%d z:%d)\n", currentNode->x, currentNode->z);
 						}
 						//printf("\ntest OS : %d\n", open->size);
 						if (!(nodeIsIn(open, NeighbourNode)))
@@ -288,7 +290,35 @@ DIRECTION DeDir(int x1, int z1, int x2, int z2)
 
 ENIPATH PathfindWithBox(COORD* start, COORD* end, COORD Box, MAP* Room)
 {
-	ENIPATH mainPath = Pathfind(start, end, Room, Box);
+	COORD NoWall;
+    NoWall.x = -1;
+    NoWall.y = -1;
+    NoWall.z = -1;
+	ENIPATH mainPath = Pathfind(start, end, Room, Box, NoWall);
+	if (mainPath.PathLength == -1)
+	{
+		COORD* FailureCoords = NULL;
+		FailureCoords = malloc(sizeof(COORD));
+		if (FailureCoords == NULL)
+		{
+			printf("Error, allocation failed");
+			exit(EXIT_FAILURE);
+		}
+		FailureCoords->x = -1;
+		FailureCoords->y = -1;
+		FailureCoords->z = -1;
+		ENIPATH Failure;
+		Failure.PathLength =-1;
+		Failure.PathCoordArray = FailureCoords;
+		return(Failure);
+	}
+	/*
+	printf("\nBox mainPath:\n");
+		for (int b = 0; b < mainPath.PathLength; b++)
+		{
+			printf("x=%d z=%d|", mainPath.PathCoordArray[b].x, mainPath.PathCoordArray[b].z);
+		}
+	*/
 	DIRECTION tmpDir = DeDir(start->x, start->z, mainPath.PathCoordArray[0].x, mainPath.PathCoordArray[0].z);
 	COORD* finalCoordArray = NULL;
 	finalCoordArray = malloc(sizeof(COORD)*2);
@@ -298,36 +328,96 @@ ENIPATH PathfindWithBox(COORD* start, COORD* end, COORD Box, MAP* Room)
 			exit(EXIT_FAILURE);
 		}
 	finalCoordArray[0] = CoordInDir(start->x, start->z, DeDir(mainPath.PathCoordArray[0].x, mainPath.PathCoordArray[0].z, start->x, start->z));
-	finalCoordArray[1] = mainPath.PathCoordArray[0];
-	for (int i = 1; i < (mainPath.PathLength); i++)
+	mainPath = Pathfind(finalCoordArray, end, Room, Box, NoWall);
+	if (mainPath.PathLength == -1)
 	{
-		DIRECTION accDir = DeDir(mainPath.PathCoordArray[i-1].x, mainPath.PathCoordArray[i-1].z, mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z);
+		COORD* FailureCoords = NULL;
+		FailureCoords = malloc(sizeof(COORD));
+		if (FailureCoords == NULL)
+		{
+			printf("Error, allocation failed");
+			exit(EXIT_FAILURE);
+		}
+		FailureCoords->x = -1;
+		FailureCoords->y = -1;
+		FailureCoords->z = -1;
+		ENIPATH Failure;
+		Failure.PathLength =-1;
+		Failure.PathCoordArray = FailureCoords;
+		return(Failure);
+	}
+	/*
+	printf("\nBox mainPath:\n");
+		for (int b = 0; b < mainPath.PathLength; b++)
+		{
+			printf("x=%d z=%d|", mainPath.PathCoordArray[b].x, mainPath.PathCoordArray[b].z);
+		}
+	*/
+	finalCoordArray[1] = mainPath.PathCoordArray[0];
+	int FCACount = 1;
+	for (int i = 1; i < (mainPath.PathLength)-1; i++)
+	{
+		/*
+		printf("\nCurrent BoxPath:\n");
+		for (int b = 0; b < i+FCACount; b++)
+		{
+			printf("x=%d z=%d|", finalCoordArray[b].x, finalCoordArray[b].z);
+		}
+		*/
+		DIRECTION accDir = DeDir(mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z, mainPath.PathCoordArray[i+1].x, mainPath.PathCoordArray[i+1].z);
 		if(accDir != tmpDir)
 		{
-			//ENIPATH tmpPath = Pathfind(&(mainPath.PathCoordArray[i-1]), &(), Room, Box);
+			//printf("\nTurn Trigger at_____________________\n");
+			//printf("1st => x:%d z:%d\n2nd => x:%d z:%d\n",mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z, mainPath.PathCoordArray[i+1].x, mainPath.PathCoordArray[i+1].z);
+			COORD tmpRaCoord = CoordInDir(mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z, DeDir(mainPath.PathCoordArray[i+1].x, mainPath.PathCoordArray[i+1].z, mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z));
+			ENIPATH tmpPath = Pathfind(&(mainPath.PathCoordArray[i-1]), &(tmpRaCoord), Room, Box, mainPath.PathCoordArray[i]);
+			//printf("\nPathRacc_____________________\n");
+			//printf("1st => x:%d z:%d\n2nd => x:%d z:%d\n",(mainPath.PathCoordArray[i-1]).x, (mainPath.PathCoordArray[i-1]).z, tmpRaCoord.x, tmpRaCoord.z);
+			if (tmpPath.PathLength == -1)
+			{
+				COORD* FailureCoords = NULL;
+				FailureCoords = malloc(sizeof(COORD));
+				if (FailureCoords == NULL)
+				{
+					printf("Error, allocation failed");
+					exit(EXIT_FAILURE);
+				}
+				FailureCoords->x = -1;
+				FailureCoords->y = -1;
+				FailureCoords->z = -1;
+				ENIPATH Failure;
+				Failure.PathLength =-1;
+				Failure.PathCoordArray = FailureCoords;
+				return(Failure);
+			}
+			finalCoordArray = realloc(finalCoordArray, sizeof(COORD)*(mainPath.PathLength + FCACount + i)+sizeof(COORD)*tmpPath.PathLength);
+			FCACount += (tmpPath.PathLength);
+			if (finalCoordArray == NULL)
+				{
+					printf("Error, allocation failed");
+					exit(EXIT_FAILURE);
+				}
+			//printf("tmpPathlen%d\n", tmpPath.PathLength);
+			//printf("i%d\n", i);
+			for (int j = 0; j < tmpPath.PathLength; j++)
+			{
+				//printf("I+J = %d => ", i+j);
+				finalCoordArray[i+j+1] = tmpPath.PathCoordArray[j];
+				//printf("x:%d z:%d\n",finalCoordArray[i+j].x, finalCoordArray[i+j].z);
+			}
 		}
-		else
-		{
-			finalCoordArray = realloc(finalCoordArray, sizeof(finalCoordArray)+sizeof(COORD));
-			finalCoordArray[i+1] = mainPath.PathCoordArray[i];
-		}
-		
+			finalCoordArray = realloc(finalCoordArray, sizeof(COORD)*(mainPath.PathLength + FCACount + i));
+			if (finalCoordArray == NULL)
+				{
+					printf("Error, allocation failed");
+					exit(EXIT_FAILURE);
+				}
+			finalCoordArray[i+FCACount] = mainPath.PathCoordArray[i];
+			//printf("\n_______________________Add From mainPath:\n");
+			//printf("x=%d z=%d\n", mainPath.PathCoordArray[i].x, mainPath.PathCoordArray[i].z);
 	}
-	
-
-
-	COORD* FailureCoords = NULL;
-	FailureCoords = malloc(sizeof(COORD));
-	if (FailureCoords == NULL)
-	{
-		printf("Error, allocation failed");
-		exit(EXIT_FAILURE);
-	}
-	FailureCoords->x = -1;
-	FailureCoords->y = -1;
-	FailureCoords->z = -1;
-	ENIPATH Failure;
-	Failure.PathLength =-1;
-	Failure.PathCoordArray = FailureCoords;
-	return(Failure);
+	ENIPATH Result;
+	Result.PathLength = mainPath.PathLength + FCACount - 1;
+	Result.PathCoordArray = finalCoordArray;
+	return(Result);
 }
