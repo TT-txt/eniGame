@@ -37,7 +37,7 @@
 						if ($sortBy == "score") {
 							$sql = "SELECT who, score, (SELECT name FROM USERS WHERE USERS.id = SCORES.who ) as name FROM SCORES ORDER by score DESC LIMIT 10;";
 							$result = mysqli_query($link, $sql);
-							$i = 0;
+							$i = 1;
 							if (mysqli_num_rows($result) > 0) {
 								// output data of each row
 								while ($row = mysqli_fetch_assoc($result)) {
@@ -91,7 +91,7 @@
 								}
 
 
-								$i = 0;
+								$i = 1;
 								foreach ($scoreArray as $key => $val) {
 									if ($i > 10);
 									echo "<tr><th scope='col'>" . $i . "</th> <th scope='col'> " . $whoArray[$key] . " </th> <th> " . $val . " </th> </tr> ";
