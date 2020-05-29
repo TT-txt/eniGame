@@ -8,7 +8,7 @@ function loadModels() {
     function handleHero_load(gltf) {
         //Playable character loader
         heroMesh = gltf.scene.children[0];
-        
+
         const animation = gltf.animations[0];
 
         const mixer = new THREE.AnimationMixer(heroMesh);
@@ -29,44 +29,56 @@ function loadModels() {
         spikesMesh = gltf.scene.children[0];
     }
 
-    function handleBasicc_load(gltf){
+    function handleBasicc_load(gltf) {
         //Model without animation
         arrowMesh = gltf.scene.children[0];
     }
 
-    function handleBasiccc_load(gltf){
+    function handleBasiccc_load(gltf) {
         //Model without animation
         fireMesh = gltf.scene.children[0];
     }
 
     //LOADING SOUNDS
     var listener = new THREE.AudioListener();
-    camera.add( listener );
+    camera.add(listener);
     oof = new THREE.Audio(listener);
     doorSound = new THREE.Audio(listener);
     arrowSound = new THREE.Audio(listener);
     pressureSound = new THREE.Audio(listener);
+    winSound = new THREE.Audio(listener);
+    gameoverSound = new THREE.Audio(listener);
 
     //load a sound and set it as the Audio object's buffer
     var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'sounds/oof.ogg', function( buffer ) {
-        oof.setBuffer( buffer );
-        oof.setLoop( false );
-        oof.setVolume( 0.5 );
+    audioLoader.load('sounds/oof.ogg', function (buffer) {
+        oof.setBuffer(buffer);
+        oof.setLoop(false);
+        oof.setVolume(0.5);
     });
-    audioLoader.load( 'sounds/doors.ogg', function( buffer ) {
-        doorSound.setBuffer( buffer );
-        doorSound.setLoop( false );
-        doorSound.setVolume( 0.5 );
+    audioLoader.load('sounds/doors.ogg', function (buffer) {
+        doorSound.setBuffer(buffer);
+        doorSound.setLoop(false);
+        doorSound.setVolume(0.5);
     });
-    audioLoader.load( 'sounds/arrow.ogg', function( buffer ) {
-        arrowSound.setBuffer( buffer );
-        arrowSound.setLoop( false );
-        arrowSound.setVolume( 0.5 );
+    audioLoader.load('sounds/arrow.ogg', function (buffer) {
+        arrowSound.setBuffer(buffer);
+        arrowSound.setLoop(false);
+        arrowSound.setVolume(0.5);
     });
-    audioLoader.load( 'sounds/pressure.ogg', function( buffer ) {
-        pressureSound.setBuffer( buffer );
-        pressureSound.setLoop( false );
-        pressureSound.setVolume( 0.5 );
+    audioLoader.load('sounds/pressure.ogg', function (buffer) {
+        pressureSound.setBuffer(buffer);
+        pressureSound.setLoop(false);
+        pressureSound.setVolume(0.5);
+    });
+    audioLoader.load('sounds/win.ogg', function (buffer) {
+        winSound.setBuffer(buffer);
+        winSound.setLoop(false);
+        winSound.setVolume(0.5);
+    });
+    audioLoader.load('sounds/gameover.ogg', function (buffer) {
+        gameoverSound.setBuffer(buffer);
+        gameoverSound.setLoop(false);
+        gameoverSound.setVolume(0.5);
     });
 }

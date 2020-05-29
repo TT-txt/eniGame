@@ -1,7 +1,7 @@
 var createdLevel = new level(null, null, null, null);
 let ost = new Audio('sounds/ost.ogg');
 ost.loop = true;
-ost.volume = 0.7;
+ost.volume = 0.2;
 
 function loadEditor() {
     ost.play();

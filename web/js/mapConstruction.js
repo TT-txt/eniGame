@@ -386,6 +386,7 @@ function gameOver(state) {
             message += 'I\'ll find your cheats you little sly dog!';
         }
         message += '</p><button id="CONTINUE" type="button" class="btn btn-success" onclick="playPressed()">CONTINUE</button><button id="QUIT" type="button" class="btn btn-success" onclick="window.location.href=\'home.php\'">QUIT</button>';
+        winSound.play();
         endScreen.innerHTML = message;
 
         let scoreToAdd = "toAdd=5";
@@ -462,6 +463,7 @@ function gameOver(state) {
         }
 
         message += '</p><button id="MENU" type="button" class="btn btn-success" onclick="location.reload()">MENU</button><button id="SCORE" type="button" class="btn btn-success" onclick="window.location.href=\'scores.php\'">SCORE</button></div>';
+        gameoverSound.play();
         endScreen.innerHTML = message;
     }
 }
