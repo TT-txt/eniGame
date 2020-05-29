@@ -51,7 +51,7 @@ if (isset($link)) {
                 <!-- Content -->
                 <h6 class="text-uppercase font-weight-bold">eniGame</h6>
                 <hr class="deep-purple accent-2 mb-5 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                <p style="text-align:justify;">eniGame is a randomised dungeon crawler in which you have to find the exit of an infinite amount of levels which are created procedurally. You also have the possibility to create your own levels!</p>
+                <p style="text-align:justify;">eniGame is a community based dungeon crawler in which you have to find the exit of maps filled with traps! You obviously have the possibility to create your own levels with our homebrewed editor!</p>
             </div>
             <!-- Grid column -->
 
@@ -62,22 +62,22 @@ if (isset($link)) {
                 <h6 class="text-uppercase font-weight-bold">The Team</h6>
                 <hr class="deep-purple accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px;">
                 <p>
-                    <a href="mailto:louis.ducrocq@student.yncrea.fr">Louis Ducrocq</a>
+                    <a href="https://github.com/Louis-duc" target="_blank">Louis Ducrocq</a>
                 </p>
                 <p>
-                    <a href="mailto:noe.klopocki@student.yncrea.fr">Noé Klopocki</a>
+                    <a href="https://github.com/Lorthender" target="_blank">Noé Klopocki</a>
                 </p>
                 <p>
-                    <a href="mailto:louis.manouvrier@student.yncrea.fr">Louis Manouvriez</a>
+                    <a href="https://github.com/Spac3Drago" target="_blank">Louis Manouvriez</a>
                 </p>
                 <p>
-                    <a href="mailto:hugo.martel@student.yncrea.fr">Hugo Martel</a>
+                    <a href="https://github.com/HugoMartel" target="_blank">Hugo Martel</a>
                 </p>
                 <p>
-                    <a href="mailto:theodore.martin@student.yncrea.fr">Théodore Martin</a>
+                    <a href="https://github.com/TT-txt" target="_blank">Théodore Martin</a>
                 </p>
                 <p>
-                    <a href="mailto:marie.pivette@student.yncrea.fr">Marie Pivette</a>
+                    <a href="https://github.com/mariePivette" target="_blank">Marie Pivette</a>
                 </p>
             </div>
             <!-- Grid column -->
