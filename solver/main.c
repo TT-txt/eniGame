@@ -1,4 +1,7 @@
+#include "headers.h"
 #include "levelLoader.c"
+#include "Linked-List.c"
+#include "Pathfinding.c"
 
 int main(int argc, char *argv[])
 {
@@ -86,6 +89,31 @@ int main(int argc, char *argv[])
                                    levelToSolve.maps[1].exits[i].y,
                                    levelToSolve.maps[1].exits[i].z);
                         }
+                    }
+
+                    COORD endCoord;
+                    endCoord.x = 2;
+                    endCoord.y = 0;
+                    endCoord.z = 4;
+                    COORD startCoord;
+                    startCoord.x = 0;
+                    startCoord.y = 0;
+                    startCoord.z = 1;
+                    COORD BoxCoord;
+                    BoxCoord.x = 0;
+                    BoxCoord.y = -2;
+                    BoxCoord.z = 1;
+                    ENIPATH move = Pathfind(&startCoord, &endCoord, &(levelToSolve.maps[1]), BoxCoord);
+
+                    printf("\nProto Path :\n");
+                    printf("Size : %d\n", move.PathLength);
+                    printf("Coords :\n");
+                    for (int i = 0; i < move.PathLength; i++)
+                    {
+                        printf("(%d, %d, %d)|",
+                                   move.PathCoordArray[i].x,
+                                   move.PathCoordArray[i].y,
+                                   move.PathCoordArray[i].z);
                     }
 
                     return (EXIT_SUCCESS);

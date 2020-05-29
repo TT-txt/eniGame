@@ -1,7 +1,9 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define MISSING_ARGS 2
 #define WRONG_ARGS 3
@@ -87,13 +89,19 @@ typedef struct LiChNod
 	struct LiNodElt* end;
 }LiChNod;
 
+typedef struct eniPath
+{
+    int PathLength;
+    COORD* PathCoordArray;
+}ENIPATH;
+
 // *******************************************
 
 // Prototypes
 int loadLevel(FILE *, LEVEL *);
 int readMap(FILE *, MAP *);
 int readCoords(FILE *, COORD **);
-
+/*
 // Prototypes for Pathfinding
 LiChNod* newLiChNod(void);
 bool isEmpLiChNod(LiChNod* li);
@@ -106,3 +114,4 @@ int GetDist(int x1, int z1, int x2, int z2);
 bool IsWalkable(int x, int z, MAP* Room, COORD IgnoBox);
 NODE* CreateMapOfNode(MAP* Room);
 COORD* Pathfind(COORD* start, COORD* end, MAP* Room, bool PassBox);
+*/
