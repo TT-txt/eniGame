@@ -146,7 +146,7 @@ function mapEditor(index, levelSize) {
 
 
     // Event listener to update the table size from the text inputs
-    document.getElementById("mapSizeX").addEventListener('change', function (x) {
+    document.getElementById("mapSizeZ").addEventListener('change', function (x) {
         let newX = parseInt(x.target.value);
         if (newX > 9) {
             //Takes the maximum value
@@ -166,7 +166,7 @@ function mapEditor(index, levelSize) {
             return;
         }
     });
-    document.getElementById("mapSizeZ").addEventListener('change', function (z) {
+    document.getElementById("mapSizeX").addEventListener('change', function (z) {
         let newZ = parseInt(z.target.value);
         if (newZ > 9) {
             //Takes the maximum value
@@ -554,14 +554,14 @@ function addContent(x, z, mapIndex) {
     // Adds the item to the level object 
     if (selectedItem == "Pressure Plate") {
         if (y < 2) {
-            createdLevel.maps[mapIndex].logics.push(new logic(0, new THREE.Vector3(x, y, z), 0, false, null));
+            createdLevel.maps[mapIndex].logics.unshift(new logic(0, new THREE.Vector3(x, y, z), 0, false, null));
         } else {
             deathNotif.dismissAll();
             deathNotif.error("You can't add a pressure plate on top of another block...");
         }
     } else if (selectedItem == "Spikes") {
         if (y < 2) {
-            createdLevel.maps[mapIndex].traps.push(new logic(0, new THREE.Vector3(x, y - 1, z), 0, false, null));
+            createdLevel.maps[mapIndex].traps.unshift(new logic(0, new THREE.Vector3(x, y - 1, z), 0, false, null));
         } else {
             deathNotif.dismissAll();
             deathNotif.error("You can't add spikes on top of another block...");
