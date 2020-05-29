@@ -146,7 +146,7 @@ function mapEditor(index, levelSize) {
 
 
     // Event listener to update the table size from the text inputs
-    document.getElementById("mapSizeZ").addEventListener('change', function (x) {
+    document.getElementById("mapSizeX").addEventListener('change', function (x) {
         let newX = parseInt(x.target.value);
         if (newX > 9) {
             //Takes the maximum value
@@ -161,12 +161,12 @@ function mapEditor(index, levelSize) {
         }
         else {
             //Takes the default value
-            createdLevel.maps[index].floor.x = 5;
-            updateMapToEdit(5, createdLevel.maps[index].floor.z, index);
+            createdLevel.maps[index].floor.x = 4;
+            updateMapToEdit(4, createdLevel.maps[index].floor.z, index);
             return;
         }
     });
-    document.getElementById("mapSizeX").addEventListener('change', function (z) {
+    document.getElementById("mapSizeZ").addEventListener('change', function (z) {
         let newZ = parseInt(z.target.value);
         if (newZ > 9) {
             //Takes the maximum value
@@ -179,9 +179,9 @@ function mapEditor(index, levelSize) {
             return;
         }
         else {
-            //Takes the default value
-            createdLevel.maps[index].floor.z = 5;
-            updateMapToEdit(createdLevel.maps[index].floor.x, 5, index);
+            /*Takes the default value*/
+            createdLevel.maps[index].floor.z = 4;
+            updateMapToEdit(createdLevel.maps[index].floor.x, 4, index);
             return;
         }
     });
@@ -240,7 +240,7 @@ function updateItemButton(value) {
 
 
 //Current map size table update
-function updateMapToEdit(x, z, index) {
+function updateMapToEdit(z, x, index) {
     //console.log(index);
     let tableContent = ' ';
     for (let j = 0; j < x; j += 1) {
